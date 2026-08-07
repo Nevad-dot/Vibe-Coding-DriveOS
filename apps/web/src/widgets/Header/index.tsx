@@ -1,0 +1,354 @@
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Search,
+  Moon,
+  Sun,
+  Bell,
+  User,
+  Settings,
+  Monitor,
+  LogOut,
+  X,
+  AlertCircle,
+} from "lucide-react";
+
+export const Header: React.FC = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [themeMode, setThemeMode] = useState<"light" | "dark" | "system">("light");
+  const [userName, setUserName] = useState("Adrian Hartono");
+  const [userEmail, setUserEmail] = useState("adrian@driveos.app");
+  const [userInitials, setUserInitials] = useState("AH");
+
+  // Dropdown & Modal States
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Dynamic Breadcrumb Title based on route
+  const getPageTitle = (path: string) => {
+    if (path === "/sales") return "Sales";
+    if (path === "/inventory") return "Inventory";
+    if (path === "/gallery") return "Gallery";
+    if (path === "/customers") return "Customers";
+    if (path === "/fleet") return "Fleet";
+    if (path === "/service") return "Service";
+    if (path === "/financial") return "Financial";
+    if (path === "/reports") return "Reports";
+    return "Overview";
+  };
+
+  const pageTitle = getPageTitle(pathname);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isDark =
+        document.documentElement.classList.contains("dark") ||
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setIsDarkMode(isDark);
+
+      const storedName = sessionStorage.getItem("user_name");
+      const storedEmail = sessionStorage.getItem("user_email");
+
+      if (storedName) {
+        setUserName(storedName);
+
+        const parts = storedName.trim().split(" ");
+        if (parts.length >= 2) {
+          setUserInitials((parts[0][0] + parts[1][0]).toUpperCase());
+        } else if (parts[0].length > 0) {
+          setUserInitials(parts[0].slice(0, 2).toUpperCase());
+        }
+      }
+
+      if (storedEmail) {
+        setUserEmail(storedEmail);
+      } else if (storedName) {
+        const nameSlug = storedName.toLowerCase().replace(/\s+/g, "");
+        setUserEmail(`${nameSlug}@driveos.app`);
+      }
+    }
+  }, []);
+
+  // Close dropdown on outside click (only if modal is not active)
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node) &&
+        !showLogoutModal
+      ) {
+        setIsProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showLogoutModal]);
+
+  // Theme Select Handlers
+  const handleSelectTheme = (mode: "light" | "dark" | "system") => {
+    setThemeMode(mode);
+    if (mode === "dark") {
+      document.documentElement.classList.add("dark");
+      setIsDarkMode(true);
+    } else if (mode === "light") {
+      document.documentElement.classList.remove("dark");
+      setIsDarkMode(false);
+    } else {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.documentElement.classList.add("dark");
+        setIsDarkMode(true);
+      } else {
+        document.documentElement.classList.remove("dark");
+        setIsDarkMode(false);
+      }
+    }
+  };
+
+  const toggleThemeButton = () => {
+    if (isDarkMode) {
+      handleSelectTheme("light");
+    } else {
+      handleSelectTheme("dark");
+    }
+  };
+
+  // Logout Handlers
+  const handleCancelLogout = () => {
+    setShowLogoutModal(false);
+  };
+
+  const handleConfirmLogout = () => {
+    if (typeof window !== "undefined") {
+      sessionStorage.clear();
+    }
+    setShowLogoutModal(false);
+    setIsProfileOpen(false);
+    router.push("/login");
+  };
+
+  return (
+    <>
+      <header className="h-[64px] bg-surfaceLight-card border-b border-surfaceLight-border px-6 flex items-center justify-between shrink-0 z-20 relative">
+        {/* Left Dynamic Breadcrumb */}
+        <div className="flex items-center gap-2 text-[13px] font-normal text-textGray-tertiary">
+          <span>DriveOS</span>
+          <span>/</span>
+          <span className="text-textGray-primary font-medium">{pageTitle}</span>
+        </div>
+
+        {/* Right Tools & Profile */}
+        <div className="flex items-center gap-2 relative" ref={dropdownRef}>
+          {/* Search Bar */}
+          <div className="relative flex items-center w-[260px] h-[36px] bg-surfaceLight-pearl border border-surfaceLight-border rounded-full px-3 transition-colors focus-within:border-brand">
+            <Search className="w-[16px] h-[16px] text-textGray-muted shrink-0 mr-2" strokeWidth={1.5} />
+            <input
+              type="text"
+              placeholder="Cari kendaraan, pelanggan..."
+              className="w-full bg-transparent text-[13px] text-textGray-primary placeholder-textGray-placeholder focus:outline-none font-normal pr-2"
+            />
+            <kbd className="shrink-0 text-[10px] font-medium text-textGray-muted bg-surfaceLight-card border border-surfaceLight-border px-1.5 py-0.5 rounded-md shadow-xs select-none leading-none">
+              ⌘K
+            </kbd>
+          </div>
+
+          {/* Theme Toggle Quick Button */}
+          <button
+            onClick={toggleThemeButton}
+            className="w-9 h-9 flex items-center justify-center text-textGray-secondary hover:text-textGray-primary hover:bg-surfaceLight-pearl rounded-full transition-colors shrink-0"
+            title="Toggle Light/Dark Theme"
+          >
+            {isDarkMode ? (
+              <Sun className="w-[18px] h-[18px]" strokeWidth={1.5} />
+            ) : (
+              <Moon className="w-[18px] h-[18px]" strokeWidth={1.5} />
+            )}
+          </button>
+
+          {/* Notification Bell */}
+          <button className="relative w-9 h-9 flex items-center justify-center text-textGray-secondary hover:text-textGray-primary hover:bg-surfaceLight-pearl rounded-full transition-colors shrink-0">
+            <Bell className="w-[18px] h-[18px]" strokeWidth={1.5} />
+            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+
+          {/* User Avatar - Toggles User Profile Dropdown Menu */}
+          <button
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
+            className="w-9 h-9 rounded-full bg-brand-hover text-white flex items-center justify-center font-medium text-[13px] leading-none select-none shrink-0 overflow-hidden shadow-xs hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-brand/40"
+            title="Account Menu"
+          >
+            {userInitials}
+          </button>
+
+          {/* User Profile Dropdown Menu with Framer Motion Spring Pop-Up */}
+          <AnimatePresence>
+            {isProfileOpen && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.92, y: -10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.94, y: -8 }}
+                transition={{ type: "spring", stiffness: 420, damping: 28 }}
+                className="absolute right-0 top-[48px] w-[240px] bg-surfaceLight-card border border-surfaceLight-border rounded-2xl shadow-xl p-2 z-50 flex flex-col text-[13px] origin-top-right"
+              >
+                {/* User Profile Header Info */}
+                <div className="px-3 py-2.5 border-b border-surfaceLight-border flex flex-col gap-0.5">
+                  <span className="font-semibold text-textGray-display leading-snug truncate">
+                    {userName}
+                  </span>
+                  <span className="text-[12px] text-textGray-tertiary font-normal truncate">
+                    {userEmail}
+                  </span>
+                </div>
+
+                {/* Navigation Options */}
+                <div className="py-1.5 border-b border-surfaceLight-border flex flex-col gap-0.5">
+                  <button
+                    onClick={() => setIsProfileOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-textGray-primary hover:bg-surfaceLight-pearl transition-colors font-normal w-full text-left"
+                  >
+                    <User className="w-[16px] h-[16px] text-textGray-tertiary" strokeWidth={1.5} />
+                    <span>Profile</span>
+                  </button>
+                  <button
+                    onClick={() => setIsProfileOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-textGray-primary hover:bg-surfaceLight-pearl transition-colors font-normal w-full text-left"
+                  >
+                    <Settings className="w-[16px] h-[16px] text-textGray-tertiary" strokeWidth={1.5} />
+                    <span>Settings</span>
+                  </button>
+                </div>
+
+                {/* Theme Submenu */}
+                <div className="py-2 border-b border-surfaceLight-border flex flex-col gap-1">
+                  <span className="px-3 text-[10px] font-semibold text-textGray-muted uppercase tracking-[0.08em] block mb-0.5">
+                    THEME
+                  </span>
+                  <button
+                    onClick={() => handleSelectTheme("light")}
+                    className={`flex items-center justify-between px-3 py-1.5 rounded-xl transition-colors text-left ${
+                      themeMode === "light"
+                        ? "bg-surfaceLight-pearl text-textGray-display font-medium"
+                        : "text-textGray-secondary hover:bg-surfaceLight-pearl font-normal"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Sun className="w-[16px] h-[16px] text-textGray-tertiary" strokeWidth={1.5} />
+                      <span>Light</span>
+                    </div>
+                    {themeMode === "light" && <span className="w-1.5 h-1.5 rounded-full bg-brand"></span>}
+                  </button>
+                  <button
+                    onClick={() => handleSelectTheme("dark")}
+                    className={`flex items-center justify-between px-3 py-1.5 rounded-xl transition-colors text-left ${
+                      themeMode === "dark"
+                        ? "bg-surfaceLight-pearl text-textGray-display font-medium"
+                        : "text-textGray-secondary hover:bg-surfaceLight-pearl font-normal"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Moon className="w-[16px] h-[16px] text-textGray-tertiary" strokeWidth={1.5} />
+                      <span>Dark</span>
+                    </div>
+                    {themeMode === "dark" && <span className="w-1.5 h-1.5 rounded-full bg-brand"></span>}
+                  </button>
+                  <button
+                    onClick={() => handleSelectTheme("system")}
+                    className={`flex items-center justify-between px-3 py-1.5 rounded-xl transition-colors text-left ${
+                      themeMode === "system"
+                        ? "bg-surfaceLight-pearl text-textGray-display font-medium"
+                        : "text-textGray-secondary hover:bg-surfaceLight-pearl font-normal"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Monitor className="w-[16px] h-[16px] text-textGray-tertiary" strokeWidth={1.5} />
+                      <span>System</span>
+                    </div>
+                    {themeMode === "system" && <span className="w-1.5 h-1.5 rounded-full bg-brand"></span>}
+                  </button>
+                </div>
+
+                {/* Log Out Button */}
+                <div className="pt-1">
+                  <button
+                    onClick={() => setShowLogoutModal(true)}
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-red-500 hover:bg-red-500/10 transition-colors font-medium w-full text-left"
+                  >
+                    <LogOut className="w-[16px] h-[16px] text-red-500" strokeWidth={1.5} />
+                    <span>Log out</span>
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </header>
+
+      {/* Formal Log Out Confirmation Modal */}
+      <AnimatePresence>
+        {showLogoutModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.88, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 12 }}
+              transition={{ type: "spring", stiffness: 420, damping: 28 }}
+              className="bg-surfaceLight-card border border-surfaceLight-border w-full max-w-[420px] rounded-2xl p-6 shadow-2xl flex flex-col gap-5"
+            >
+              {/* Modal Header */}
+              <div className="flex items-start justify-between gap-4">
+                <div className="w-10 h-10 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center shrink-0">
+                  <AlertCircle className="w-5 h-5" strokeWidth={1.5} />
+                </div>
+                <button
+                  onClick={handleCancelLogout}
+                  className="text-textGray-tertiary hover:text-textGray-primary p-1 rounded-lg hover:bg-surfaceLight-pearl transition-colors"
+                >
+                  <X className="w-5 h-5" strokeWidth={1.5} />
+                </button>
+              </div>
+
+              {/* Modal Body Info */}
+              <div className="flex flex-col gap-1.5">
+                <h3 className="text-[18px] font-display font-semibold text-textGray-display">
+                  Konfirmasi Keluar Sesi
+                </h3>
+                <p className="text-[13.5px] text-textGray-tertiary leading-relaxed font-normal">
+                  Apakah Anda yakin ingin keluar dari akun DriveOS Anda? Sesi kerja Anda akan diakhiri dan Anda perlu masuk kembali untuk mengakses dashboard.
+                </p>
+              </div>
+
+              {/* Modal Action Buttons */}
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  onClick={handleCancelLogout}
+                  className="px-4 py-2 rounded-full border border-surfaceLight-border text-[13.5px] font-medium text-textGray-primary hover:bg-surfaceLight-pearl transition-colors"
+                >
+                  Batal
+                </button>
+                <button
+                  onClick={handleConfirmLogout}
+                  className="px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-[13.5px] font-medium shadow-xs transition-colors"
+                >
+                  Ya, Keluar
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+
+export default Header;
