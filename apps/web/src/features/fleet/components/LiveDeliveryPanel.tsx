@@ -28,6 +28,18 @@ const LIVE_DELIVERIES = [
     status: "Loading",
     dotColor: "bg-emerald-500",
   },
+  {
+    code: "DL-2196 · Semarang ➔ Solo",
+    meta: "ETA 42m · driver Budi",
+    status: "En route",
+    dotColor: "bg-emerald-500",
+  },
+  {
+    code: "DL-2195 · Medan ➔ Binjai",
+    meta: "Jadwal 14:00",
+    status: "Scheduled",
+    dotColor: "bg-blue-500",
+  },
 ];
 
 export const LiveDeliveryPanel: React.FC = () => {
@@ -44,25 +56,25 @@ export const LiveDeliveryPanel: React.FC = () => {
           LIVE DELIVERY
         </span>
         <h3 className="text-[18px] font-display font-semibold text-textGray-display">
-          4 delivery aktif
+          6 delivery aktif
         </h3>
       </div>
 
-      {/* Delivery Items List evenly spaced to match card height */}
-      <div className="flex flex-col flex-1 justify-between divide-y divide-surfaceLight-border">
+      {/* 6 Delivery Items matching exact 6 rows of Branch Utilization Panel */}
+      <div className="flex flex-col divide-y divide-surfaceLight-border">
         {LIVE_DELIVERIES.map((item, idx) => (
-          <div key={idx} className="py-3 flex items-center justify-between gap-4 first:pt-1 last:pb-0">
+          <div key={idx} className="py-2.5 flex items-center justify-between gap-4 first:pt-1 last:pb-0">
             <div className="flex items-center gap-3">
               <span className={`w-2 h-2 rounded-full ${item.dotColor} shrink-0`} />
               <div>
-                <h4 className="text-[14px] font-semibold text-textGray-display mb-0.5">
+                <h4 className="text-[13.5px] font-semibold text-textGray-display leading-snug">
                   {item.code}
                 </h4>
-                <span className="text-[12px] text-textGray-tertiary font-normal">{item.meta}</span>
+                <span className="text-[11.5px] text-textGray-tertiary font-normal">{item.meta}</span>
               </div>
             </div>
 
-            <div className="text-[12.5px] font-normal text-textGray-tertiary shrink-0">
+            <div className="text-[12px] font-normal text-textGray-tertiary shrink-0">
               {item.status}
             </div>
           </div>
