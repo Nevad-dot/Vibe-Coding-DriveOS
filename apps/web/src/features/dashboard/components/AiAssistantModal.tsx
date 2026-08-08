@@ -36,8 +36,8 @@ const AI_RESPONSES: Record<string, string> = {
     "Rendra Prasetya memimpin performa Q3 dengan 18 unit closed (Rp 68,4 M - 120% dari target), disusul Diva Anindya (15 unit - Rp 54,2 M).",
 };
 
-const LOCAL_STORAGE_KEY = "driveos_ai_sessions_v1";
-const LOCAL_STORAGE_ACTIVE_KEY = "driveos_ai_active_session_v1";
+const LOCAL_STORAGE_KEY = "driveos_ai_sessions_v2";
+const LOCAL_STORAGE_ACTIVE_KEY = "driveos_ai_active_session_v2";
 
 export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   isOpen,
@@ -283,7 +283,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                   <div
                     key={sess.id}
                     onClick={() => setActiveSessionId(sess.id)}
-                    className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-medium inline-flex items-center gap-1.5 cursor-pointer transition-all shrink-0 max-w-[190px] ${
+                    className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-medium inline-flex items-center gap-1.5 cursor-pointer transition-all shrink-0 max-w-[200px] ${
                       isActive
                         ? "bg-surfaceLight-pearl text-textGray-display border border-surfaceLight-border shadow-2xs"
                         : "text-textGray-tertiary hover:text-textGray-primary hover:bg-surfaceLight-pearl/60 border border-transparent"
@@ -292,36 +292,51 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                     <MessageSquare className="w-3.5 h-3.5 shrink-0 text-[#4B8E55]" strokeWidth={1.5} />
 
                     {isEditingThis ? (
-                      <div className="flex items-center gap-1">
+                      <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-1"
+                      >
                         <input
                           type="text"
                           value={editingTitleText}
                           onChange={(e) => setEditingTitleText(e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
                           onKeyDown={(e) => {
-                            if (e.key === "Enter") saveRenamedTitle(sess.id);
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              saveRenamedTitle(sess.id);
+                            }
                           }}
                           autoFocus
-                          className="w-[90px] bg-surfaceLight-card border border-[#4B8E55] text-[12px] px-1.5 py-0.5 rounded text-textGray-display focus:outline-none"
+                          className="w-[100px] bg-surfaceLight-card border border-[#4B8E55] text-[12px] px-2 py-0.5 rounded-md text-textGray-display focus:outline-none shadow-xs font-medium"
                         />
                         <button
                           type="button"
-                          onClick={() => saveRenamedTitle(sess.id)}
-                          className="text-[#4B8E55] hover:text-brand p-0.5"
-                          title="Save Title"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            saveRenamedTitle(sess.id);
+                          }}
+                          className="text-[#4B8E55] hover:text-brand p-0.5 shrink-0 cursor-pointer"
+                          title="Simpan Nama"
                         >
-                          <Check className="w-3 h-3" strokeWidth={2} />
+                          <Check className="w-3.5 h-3.5" strokeWidth={2} />
                         </button>
                       </div>
                     ) : (
                       <>
-                        <span className="truncate max-w-[100px]">{sess.title}</span>
+                        <span
+                          onDoubleClick={(e) => startRenaming(e, sess)}
+                          className="truncate max-w-[100px]"
+                        >
+                          {sess.title}
+                        </span>
 
                         <div className="flex items-center gap-0.5 opacity-80 hover:opacity-100">
                           <button
                             type="button"
                             onClick={(e) => startRenaming(e, sess)}
-                            className="text-textGray-muted hover:text-[#4B8E55] transition-colors p-0.5"
-                            title="Rename Diskusi"
+                            className="text-textGray-muted hover:text-[#4B8E55] transition-colors p-0.5 cursor-pointer"
+                            title="Ubah nama diskusi"
                           >
                             <Pencil className="w-3 h-3" strokeWidth={1.5} />
                           </button>
@@ -329,7 +344,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                           <button
                             type="button"
                             onClick={(e) => deleteSession(e, sess.id)}
-                            className="text-textGray-muted hover:text-red-500 transition-colors p-0.5"
+                            className="text-textGray-muted hover:text-red-500 transition-colors p-0.5 cursor-pointer"
                             title="Hapus percakapan"
                           >
                             <Trash2 className="w-3 h-3" strokeWidth={1.5} />
