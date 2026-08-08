@@ -36,8 +36,8 @@ const AI_RESPONSES: Record<string, string> = {
     "Rendra Prasetya memimpin performa Q3 dengan 18 unit closed (Rp 68,4 M - 120% dari target), disusul Diva Anindya (15 unit - Rp 54,2 M).",
 };
 
-const LOCAL_STORAGE_KEY = "driveos_ai_sessions_v3";
-const LOCAL_STORAGE_ACTIVE_KEY = "driveos_ai_active_session_v3";
+const LOCAL_STORAGE_KEY = "driveos_ai_sessions_v4";
+const LOCAL_STORAGE_ACTIVE_KEY = "driveos_ai_active_session_v4";
 
 export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   isOpen,
@@ -176,13 +176,18 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
       text: promptText,
     };
 
-    // Update current session title if it's the first message
+    // ONLY update session title if it's the first message AND user HAS NOT set a custom title
+    const currentTitle = activeSession.title.trim();
+    const isDefaultTitle =
+      currentTitle === "Diskusi Baru" || /^Diskusi\s*\d+$/i.test(currentTitle);
     const isFirstMessage = activeSession.messages.length === 0;
-    const updatedTitle = isFirstMessage
-      ? promptText.length > 22
-        ? `${promptText.substring(0, 20)}...`
-        : promptText
-      : activeSession.title;
+
+    const updatedTitle =
+      isFirstMessage && isDefaultTitle
+        ? promptText.length > 22
+          ? `${promptText.substring(0, 20)}...`
+          : promptText
+        : activeSession.title;
 
     setSessions((prev) =>
       prev.map((s) =>
