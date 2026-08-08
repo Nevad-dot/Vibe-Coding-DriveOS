@@ -1,12 +1,24 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Sidebar from "@/widgets/Sidebar";
 import Header from "@/widgets/Header";
+import AiAssistantModal from "@/features/dashboard/components/AiAssistantModal";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+
+  // Global listener to prevent double modal instances
+  useEffect(() => {
+    const handleOpenModal = () => setIsAiModalOpen(true);
+    window.addEventListener("open-ai-modal", handleOpenModal);
+    return () => window.removeEventListener("open-ai-modal", handleOpenModal);
+  }, []);
+
   return (
     <div className="flex h-screen w-full bg-surfaceLight-pearl text-textGray-primary overflow-hidden font-sans transition-colors duration-200 relative">
       {/* Ambient Glow Orbs created directly from Color Mode Green #4B8E55 */}
@@ -25,6 +37,12 @@ export default function DashboardLayout({
           {children}
         </main>
       </div>
+
+      {/* Single Global Instance of AI Assistant Modal */}
+      <AiAssistantModal
+        isOpen={isAiModalOpen}
+        onClose={() => setIsAiModalOpen(false)}
+      />
     </div>
   );
 }

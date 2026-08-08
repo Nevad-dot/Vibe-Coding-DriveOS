@@ -37,15 +37,16 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isThinking, setIsThinking] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to latest message like ChatGPT
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
+  // ChatGPT-style auto-scroll to the absolute bottom of the container
   useEffect(() => {
-    scrollToBottom();
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages, isThinking]);
 
   const handlePromptClick = (promptText: string) => {
@@ -95,20 +96,20 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
-          className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-xs p-4"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-xs p-4"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 12 }}
             transition={{ type: "spring", stiffness: 420, damping: 28 }}
-            className="bg-surfaceLight-card border border-surfaceLight-border w-full max-w-[540px] rounded-3xl p-6 md:p-8 shadow-2xl flex flex-col gap-5 relative overflow-hidden z-[1000]"
+            className="bg-surfaceLight-card border border-surfaceLight-border w-full max-w-[540px] rounded-3xl p-6 md:p-8 shadow-2xl flex flex-col gap-5 relative overflow-hidden z-[10000]"
           >
             {/* Top Modal Header */}
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-2xl bg-brand/15 text-brand flex items-center justify-center shrink-0">
-                  <Sparkles className="w-5 h-5 text-brand" strokeWidth={1.5} />
+                <div className="w-10 h-10 rounded-2xl bg-[#4B8E55]/15 text-[#4B8E55] flex items-center justify-center shrink-0">
+                  <Sparkles className="w-5 h-5 text-[#4B8E55]" strokeWidth={1.5} />
                 </div>
                 <div>
                   <h3 className="text-[20px] font-display font-semibold text-textGray-display leading-snug">
@@ -131,8 +132,11 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               </button>
             </div>
 
-            {/* Conversation History / Preset Prompts View */}
-            <div className="flex flex-col gap-3 min-h-[200px] max-h-[360px] overflow-y-auto pr-1">
+            {/* Conversation History / Preset Prompts View with ChatGPT Auto-Scroll */}
+            <div
+              ref={scrollContainerRef}
+              className="flex flex-col gap-3 min-h-[220px] max-h-[360px] overflow-y-auto pr-1 scroll-smooth"
+            >
               {messages.length === 0 ? (
                 // Preset Suggested Prompt Pills matching Figma Mockup
                 <div className="flex flex-col gap-3 my-auto pt-1">
@@ -141,10 +145,10 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                       type="button"
                       key={idx}
                       onClick={() => handlePromptClick(prompt)}
-                      className="w-full text-left px-5 py-3.5 rounded-2xl border border-surfaceLight-border bg-surfaceLight-card text-[13.5px] text-textGray-primary hover:text-brand font-normal transition-all shadow-2xs hover:shadow-xs flex items-center justify-between group cursor-pointer"
+                      className="w-full text-left px-5 py-3.5 rounded-2xl border border-surfaceLight-border bg-surfaceLight-card text-[13.5px] text-textGray-primary hover:text-[#4B8E55] font-normal transition-all shadow-2xs hover:shadow-xs flex items-center justify-between group cursor-pointer"
                     >
                       <span>{prompt}</span>
-                      <Send className="w-3.5 h-3.5 text-textGray-tertiary group-hover:text-brand transition-colors" strokeWidth={1.5} />
+                      <Send className="w-3.5 h-3.5 text-textGray-tertiary group-hover:text-[#4B8E55] transition-colors" strokeWidth={1.5} />
                     </button>
                   ))}
                 </div>
@@ -159,14 +163,14 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                       }`}
                     >
                       {msg.sender === "ai" && (
-                        <div className="w-7 h-7 rounded-full bg-brand/15 text-brand flex items-center justify-center shrink-0 mt-0.5">
-                          <Bot className="w-4 h-4 text-brand" strokeWidth={1.5} />
+                        <div className="w-7 h-7 rounded-full bg-[#4B8E55]/15 text-[#4B8E55] flex items-center justify-center shrink-0 mt-0.5">
+                          <Bot className="w-4 h-4 text-[#4B8E55]" strokeWidth={1.5} />
                         </div>
                       )}
                       <div
                         className={`p-3.5 rounded-2xl max-w-[85%] leading-relaxed ${
                           msg.sender === "user"
-                            ? "bg-green-gradient-pill text-white font-medium shadow-xs"
+                            ? "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white font-medium shadow-xs"
                             : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-primary font-normal"
                         }`}
                       >
@@ -182,32 +186,29 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
                   {isThinking && (
                     <div className="flex gap-3 text-[13.5px] items-center text-textGray-tertiary">
-                      <div className="w-7 h-7 rounded-full bg-brand/15 text-brand flex items-center justify-center shrink-0">
-                        <Bot className="w-4 h-4 text-brand animate-pulse" strokeWidth={1.5} />
+                      <div className="w-7 h-7 rounded-full bg-[#4B8E55]/15 text-[#4B8E55] flex items-center justify-center shrink-0">
+                        <Bot className="w-4 h-4 text-[#4B8E55] animate-pulse" strokeWidth={1.5} />
                       </div>
                       <span className="italic font-normal">AI sedang menganalisis data...</span>
                     </div>
                   )}
-
-                  {/* Ref target for ChatGPT smooth auto-scroll */}
-                  <div ref={messagesEndRef} />
                 </div>
               )}
             </div>
 
-            {/* Bottom Interactive Query Form matching Figma Mockup */}
+            {/* Bottom Interactive Query Form with Green Gradient Tanya Button */}
             <form onSubmit={handleSubmit} className="flex items-center gap-3 pt-2 border-t border-surfaceLight-border">
               <input
                 type="text"
                 placeholder="Ketik pertanyaan Anda..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="flex-1 bg-surfaceLight-card border border-surfaceLight-border rounded-full px-5 py-2.5 text-[13.5px] text-textGray-primary placeholder-textGray-placeholder focus:outline-none focus:border-brand transition-colors font-normal"
+                className="flex-1 bg-surfaceLight-card border border-surfaceLight-border rounded-full px-5 py-2.5 text-[13.5px] text-textGray-primary placeholder-textGray-placeholder focus:outline-none focus:border-[#4B8E55] transition-colors font-normal"
               />
 
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-full bg-green-gradient-pill text-white font-medium text-[13.5px] transition-opacity hover:opacity-90 shadow-sm shrink-0 cursor-pointer"
+                className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white font-medium text-[13.5px] transition-opacity hover:opacity-90 shadow-sm shrink-0 cursor-pointer"
               >
                 Tanya
               </button>

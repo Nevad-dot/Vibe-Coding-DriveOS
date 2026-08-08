@@ -17,7 +17,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import AiAssistantModal from "@/features/dashboard/components/AiAssistantModal";
 
 // Custom smooth rounded Dollar Icon matching 1.5px stroke width
 const SmoothDollarIcon: React.FC<{ className?: string; strokeWidth?: number }> = ({
@@ -53,123 +52,118 @@ const NAV_ITEMS = [
 export const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
-  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+
+  const handleOpenAiModal = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("open-ai-modal"));
+    }
+  };
 
   return (
-    <>
-      <aside
-        className={`bg-surfaceLight-card border-r border-surfaceLight-border flex flex-col justify-between transition-all duration-300 z-30 shrink-0 ${
-          collapsed ? "w-[72px]" : "w-[230px]"
-        }`}
-      >
-        {/* Top Section: Logo & Nav Links */}
-        <div className="flex flex-col flex-1 overflow-y-auto">
-          {/* Brand Header */}
-          <div className={`h-[64px] flex items-center border-b border-surfaceLight-border shrink-0 ${collapsed ? "justify-center px-2" : "px-5"}`}>
-            <Link href="/overview" className="flex items-center gap-1.5 overflow-hidden">
-              {collapsed ? (
-                <span className="text-[19px] font-display font-semibold text-textGray-display select-none">
-                  D<span className="text-brand">O</span>
-                </span>
-              ) : (
-                <span className="text-[20px] font-display font-semibold tracking-tight text-textGray-display select-none whitespace-nowrap">
-                  Drive<span className="text-brand">OS</span>
-                </span>
-              )}
-            </Link>
-          </div>
-
-          {/* Navigation Items with Animated Vertical Green Line Indicator */}
-          <nav className="p-2.5 flex flex-col gap-1">
-            {NAV_ITEMS.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href || (item.href === "/overview" && pathname === "/");
-
-              return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`relative flex items-center rounded-xl text-[13.5px] transition-colors select-none ${
-                    collapsed ? "justify-center p-2.5" : "gap-3 px-3 py-2 pl-4"
-                  } ${
-                    isActive
-                      ? "bg-surfaceLight-pearl text-textGray-display font-medium"
-                      : "text-textGray-secondary hover:text-textGray-primary hover:bg-surfaceLight-pearl/60 font-normal"
-                  }`}
-                  title={collapsed ? item.label : undefined}
-                >
-                  {/* Vertical Green Active Indicator Line matching Figma Mockup */}
-                  {isActive && (
-                    <motion.span
-                      layoutId="sidebar-active-bar"
-                      className="absolute left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-[16px] bg-brand rounded-full"
-                      transition={{ type: "spring", stiffness: 450, damping: 30 }}
-                    />
-                  )}
-
-                  <Icon
-                    className={`w-[18px] h-[18px] shrink-0 ${isActive ? "text-brand" : "text-textGray-tertiary"}`}
-                    strokeWidth={1.5}
-                  />
-                  {!collapsed && <span>{item.label}</span>}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* Bottom Section: AI Card & Collapse Toggle */}
-        <div className="p-2.5 border-t border-surfaceLight-border flex flex-col gap-2 shrink-0">
-          {!collapsed && (
-            <div
-              onClick={() => setIsAiModalOpen(true)}
-              className="bg-surfaceLight-pearl border border-surfaceLight-border rounded-xl p-3 flex flex-col gap-2 cursor-pointer hover:border-brand/40 transition-colors"
-            >
-              <div className="flex items-center gap-1.5 text-[11px] font-medium text-brand uppercase tracking-wider">
-                <Sparkles className="w-[14px] h-[14px] text-brand" strokeWidth={1.5} />
-                <span>AI ASSISTANT</span>
-              </div>
-              <p className="text-[12px] text-textGray-tertiary leading-snug font-normal">
-                Tanya apa saja tentang bisnis Anda.
-              </p>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsAiModalOpen(true);
-                }}
-                className="mt-1 w-full bg-green-gradient-pill text-white text-[13px] font-medium py-1.5 px-3 rounded-lg transition-opacity hover:opacity-90 shadow-sm cursor-pointer"
-              >
-                Buka
-              </button>
-            </div>
-          )}
-
-          <button
-            type="button"
-            onClick={() => setCollapsed(!collapsed)}
-            className={`flex items-center rounded-lg text-[13px] font-normal text-textGray-tertiary hover:text-textGray-primary hover:bg-surfaceLight-pearl transition-all w-full select-none ${
-              collapsed ? "justify-center p-2.5" : "gap-2 px-3 py-2"
-            }`}
-          >
+    <aside
+      className={`bg-surfaceLight-card border-r border-surfaceLight-border flex flex-col justify-between transition-all duration-300 z-30 shrink-0 ${
+        collapsed ? "w-[72px]" : "w-[230px]"
+      }`}
+    >
+      {/* Top Section: Logo & Nav Links */}
+      <div className="flex flex-col flex-1 overflow-y-auto">
+        {/* Brand Header */}
+        <div className={`h-[64px] flex items-center border-b border-surfaceLight-border shrink-0 ${collapsed ? "justify-center px-2" : "px-5"}`}>
+          <Link href="/overview" className="flex items-center gap-1.5 overflow-hidden">
             {collapsed ? (
-              <ChevronRight className="w-[18px] h-[18px]" strokeWidth={1.5} />
+              <span className="text-[19px] font-display font-semibold text-textGray-display select-none">
+                D<span className="text-brand">O</span>
+              </span>
             ) : (
-              <>
-                <ChevronLeft className="w-[18px] h-[18px]" strokeWidth={1.5} />
-                <span>Collapse</span>
-              </>
+              <span className="text-[20px] font-display font-semibold tracking-tight text-textGray-display select-none whitespace-nowrap">
+                Drive<span className="text-brand">OS</span>
+              </span>
             )}
-          </button>
+          </Link>
         </div>
-      </aside>
 
-      {/* AI Assistant Interactive Modal Dialog */}
-      <AiAssistantModal
-        isOpen={isAiModalOpen}
-        onClose={() => setIsAiModalOpen(false)}
-      />
-    </>
+        {/* Navigation Items with Animated Vertical Green Line Indicator */}
+        <nav className="p-2.5 flex flex-col gap-1">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href || (item.href === "/overview" && pathname === "/");
+
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`relative flex items-center rounded-xl text-[13.5px] transition-colors select-none ${
+                  collapsed ? "justify-center p-2.5" : "gap-3 px-3 py-2 pl-4"
+                } ${
+                  isActive
+                    ? "bg-surfaceLight-pearl text-textGray-display font-medium"
+                    : "text-textGray-secondary hover:text-textGray-primary hover:bg-surfaceLight-pearl/60 font-normal"
+                }`}
+                title={collapsed ? item.label : undefined}
+              >
+                {/* Vertical Green Active Indicator Line matching Figma Mockup */}
+                {isActive && (
+                  <motion.span
+                    layoutId="sidebar-active-bar"
+                    className="absolute left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-[16px] bg-brand rounded-full"
+                    transition={{ type: "spring", stiffness: 450, damping: 30 }}
+                  />
+                )}
+
+                <Icon
+                  className={`w-[18px] h-[18px] shrink-0 ${isActive ? "text-brand" : "text-textGray-tertiary"}`}
+                  strokeWidth={1.5}
+                />
+                {!collapsed && <span>{item.label}</span>}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Bottom Section: AI Card & Collapse Toggle */}
+      <div className="p-2.5 border-t border-surfaceLight-border flex flex-col gap-2 shrink-0">
+        {!collapsed && (
+          <div
+            onClick={handleOpenAiModal}
+            className="bg-surfaceLight-pearl border border-surfaceLight-border rounded-xl p-3 flex flex-col gap-2 cursor-pointer hover:border-brand/40 transition-colors"
+          >
+            <div className="flex items-center gap-1.5 text-[11px] font-medium text-[#4B8E55] uppercase tracking-wider">
+              <Sparkles className="w-[14px] h-[14px] text-[#4B8E55]" strokeWidth={1.5} />
+              <span>AI ASSISTANT</span>
+            </div>
+            <p className="text-[12px] text-textGray-tertiary leading-snug font-normal">
+              Tanya apa saja tentang bisnis Anda.
+            </p>
+            <button
+              type="button"
+              onClick={handleOpenAiModal}
+              className="mt-1 w-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white text-[13px] font-medium py-1.5 px-3 rounded-lg transition-opacity hover:opacity-90 shadow-sm cursor-pointer"
+            >
+              Buka
+            </button>
+          </div>
+        )}
+
+        <button
+          type="button"
+          onClick={() => setCollapsed(!collapsed)}
+          className={`flex items-center rounded-lg text-[13px] font-normal text-textGray-tertiary hover:text-textGray-primary hover:bg-surfaceLight-pearl transition-all w-full select-none ${
+            collapsed ? "justify-center p-2.5" : "gap-2 px-3 py-2"
+          }`}
+        >
+          {collapsed ? (
+            <ChevronRight className="w-[18px] h-[18px]" strokeWidth={1.5} />
+          ) : (
+            <>
+              <ChevronLeft className="w-[18px] h-[18px]" strokeWidth={1.5} />
+              <span>Collapse</span>
+            </>
+          )}
+        </button>
+      </div>
+    </aside>
   );
 };
 
