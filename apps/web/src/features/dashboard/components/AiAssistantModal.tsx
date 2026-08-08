@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, X, Send, Bot, User } from "lucide-react";
 
@@ -37,6 +37,16 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isThinking, setIsThinking] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to latest message like ChatGPT
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isThinking]);
 
   const handlePromptClick = (promptText: string) => {
     setQuery(promptText);
@@ -122,7 +132,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
             </div>
 
             {/* Conversation History / Preset Prompts View */}
-            <div className="flex flex-col gap-3 min-h-[160px] max-h-[320px] overflow-y-auto pr-1">
+            <div className="flex flex-col gap-3 min-h-[200px] max-h-[360px] overflow-y-auto pr-1">
               {messages.length === 0 ? (
                 // Preset Suggested Prompt Pills matching Figma Mockup
                 <div className="flex flex-col gap-3 my-auto pt-1">
@@ -156,7 +166,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                       <div
                         className={`p-3.5 rounded-2xl max-w-[85%] leading-relaxed ${
                           msg.sender === "user"
-                            ? "bg-brand text-white font-medium"
+                            ? "bg-green-gradient-pill text-white font-medium shadow-xs"
                             : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-primary font-normal"
                         }`}
                       >
@@ -178,6 +188,9 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                       <span className="italic font-normal">AI sedang menganalisis data...</span>
                     </div>
                   )}
+
+                  {/* Ref target for ChatGPT smooth auto-scroll */}
+                  <div ref={messagesEndRef} />
                 </div>
               )}
             </div>
@@ -194,7 +207,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-full bg-brand hover:bg-brand-hover text-white font-medium text-[13.5px] transition-colors shadow-xs shrink-0 cursor-pointer"
+                className="px-6 py-2.5 rounded-full bg-green-gradient-pill text-white font-medium text-[13.5px] transition-opacity hover:opacity-90 shadow-sm shrink-0 cursor-pointer"
               >
                 Tanya
               </button>

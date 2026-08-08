@@ -138,7 +138,7 @@ export const Sidebar: React.FC = () => {
                   e.stopPropagation();
                   setIsAiModalOpen(true);
                 }}
-                className="mt-1 w-full bg-brand hover:bg-brand-hover text-white text-[13px] font-medium py-1.5 px-3 rounded-lg transition-colors shadow-xs cursor-pointer"
+                className="mt-1 w-full bg-green-gradient-pill text-white text-[13px] font-medium py-1.5 px-3 rounded-lg transition-opacity hover:opacity-90 shadow-sm cursor-pointer"
               >
                 Buka
               </button>
