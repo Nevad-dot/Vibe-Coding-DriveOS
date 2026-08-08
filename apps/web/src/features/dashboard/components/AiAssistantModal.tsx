@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, X, Send, Bot, User } from "lucide-react";
+import { Sparkles, X, Send, Bot, User, Plus, Trash2, MessageSquare } from "lucide-react";
 
 interface AiAssistantModalProps {
   isOpen: boolean;
@@ -13,6 +13,12 @@ interface Message {
   id: string;
   sender: "user" | "ai";
   text: string;
+}
+
+interface ChatSession {
+  id: string;
+  title: string;
+  messages: Message[];
 }
 
 const PRESET_PROMPTS = [
@@ -34,12 +40,22 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const [sessions, setSessions] = useState<ChatSession[]>([
+    {
+      id: "session-1",
+      title: "Diskusi Baru",
+      messages: [],
+    },
+  ]);
+  const [activeSessionId, setActiveSessionId] = useState<string>("session-1");
   const [query, setQuery] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
   const [isThinking, setIsThinking] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // ChatGPT-style auto-scroll to the absolute bottom of the container
+  const activeSession =
+    sessions.find((s) => s.id === activeSessionId) || sessions[0];
+
+  // ChatGPT-style auto-scroll to the bottom of message stream
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({
@@ -47,15 +63,50 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
         behavior: "smooth",
       });
     }
-  }, [messages, isThinking]);
+  }, [activeSession?.messages, isThinking]);
+
+  // Create New Chat Session
+  const createNewSession = () => {
+    const newId = `session-${Date.now()}`;
+    const newSession: ChatSession = {
+      id: newId,
+      title: `Diskusi ${sessions.length + 1}`,
+      messages: [],
+    };
+
+    setSessions((prev) => [newSession, ...prev]);
+    setActiveSessionId(newId);
+    setQuery("");
+  };
+
+  // Delete Chat Session
+  const deleteSession = (e: React.MouseEvent, idToDelete: string) => {
+    e.stopPropagation();
+    if (sessions.length <= 1) {
+      // If deleting the last session, reset it to empty
+      setSessions([
+        {
+          id: `session-${Date.now()}`,
+          title: "Diskusi Baru",
+          messages: [],
+        },
+      ]);
+      return;
+    }
+
+    const filtered = sessions.filter((s) => s.id !== idToDelete);
+    setSessions(filtered);
+    if (activeSessionId === idToDelete) {
+      setActiveSessionId(filtered[0].id);
+    }
+  };
 
   const handlePromptClick = (promptText: string) => {
-    setQuery(promptText);
     executeSearch(promptText);
   };
 
   const executeSearch = (promptText: string) => {
-    if (!promptText.trim()) return;
+    if (!promptText.trim() || !activeSession) return;
 
     const userMsg: Message = {
       id: Date.now().toString(),
@@ -63,7 +114,26 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
       text: promptText,
     };
 
-    setMessages((prev) => [...prev, userMsg]);
+    // Update current session title if it's the first message
+    const isFirstMessage = activeSession.messages.length === 0;
+    const updatedTitle = isFirstMessage
+      ? promptText.length > 28
+        ? `${promptText.substring(0, 26)}...`
+        : promptText
+      : activeSession.title;
+
+    setSessions((prev) =>
+      prev.map((s) =>
+        s.id === activeSessionId
+          ? {
+              ...s,
+              title: updatedTitle,
+              messages: [...s.messages, userMsg],
+            }
+          : s
+      )
+    );
+
     setQuery("");
     setIsThinking(true);
 
@@ -78,7 +148,13 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
         text: responseText,
       };
 
-      setMessages((prev) => [...prev, aiMsg]);
+      setSessions((prev) =>
+        prev.map((s) =>
+          s.id === activeSessionId
+            ? { ...s, messages: [...s.messages, aiMsg] }
+            : s
+        )
+      );
       setIsThinking(false);
     }, 600);
   };
@@ -103,7 +179,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 12 }}
             transition={{ type: "spring", stiffness: 420, damping: 28 }}
-            className="bg-surfaceLight-card border border-surfaceLight-border w-full max-w-[540px] rounded-3xl p-6 md:p-8 shadow-2xl flex flex-col gap-5 relative overflow-hidden z-[10000]"
+            className="bg-surfaceLight-card border border-surfaceLight-border w-full max-w-[620px] rounded-3xl p-6 md:p-8 shadow-2xl flex flex-col gap-5 relative overflow-hidden z-[10000]"
           >
             {/* Top Modal Header */}
             <div className="flex items-start justify-between gap-4">
@@ -132,14 +208,55 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               </button>
             </div>
 
+            {/* ChatGPT Sessions History Bar & New Chat Button */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-surfaceLight-border select-none">
+              <button
+                type="button"
+                onClick={createNewSession}
+                className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white text-[12px] font-medium inline-flex items-center gap-1.5 shadow-2xs hover:opacity-90 transition-opacity shrink-0 cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" strokeWidth={1.5} />
+                <span>+ Chat Baru</span>
+              </button>
+
+              {sessions.map((sess) => {
+                const isActive = sess.id === activeSessionId;
+                return (
+                  <div
+                    key={sess.id}
+                    onClick={() => setActiveSessionId(sess.id)}
+                    className={`px-3 py-1.5 rounded-xl text-[12px] font-medium inline-flex items-center gap-2 cursor-pointer transition-all shrink-0 max-w-[170px] ${
+                      isActive
+                        ? "bg-surfaceLight-pearl text-textGray-display border border-surfaceLight-border shadow-2xs"
+                        : "text-textGray-tertiary hover:text-textGray-primary hover:bg-surfaceLight-pearl/60"
+                    }`}
+                  >
+                    <MessageSquare className="w-3.5 h-3.5 shrink-0 text-[#4B8E55]" strokeWidth={1.5} />
+                    <span className="truncate">{sess.title}</span>
+                    <button
+                      type="button"
+                      onClick={(e) => deleteSession(e, sess.id)}
+                      className="text-textGray-muted hover:text-red-500 transition-colors p-0.5"
+                      title="Hapus percakapan"
+                    >
+                      <Trash2 className="w-3 h-3" strokeWidth={1.5} />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+
             {/* Conversation History / Preset Prompts View with ChatGPT Auto-Scroll */}
             <div
               ref={scrollContainerRef}
-              className="flex flex-col gap-3 min-h-[220px] max-h-[360px] overflow-y-auto pr-1 scroll-smooth"
+              className="flex flex-col gap-3 min-h-[220px] max-h-[340px] overflow-y-auto pr-1 scroll-smooth"
             >
-              {messages.length === 0 ? (
-                // Preset Suggested Prompt Pills matching Figma Mockup
-                <div className="flex flex-col gap-3 my-auto pt-1">
+              {activeSession.messages.length === 0 ? (
+                // Preset Suggested Prompt Pills (Presented on EVERY New Chat Session)
+                <div className="flex flex-col gap-3 my-auto pt-2">
+                  <span className="text-[11px] font-medium text-textGray-muted uppercase tracking-[0.08em] block mb-1">
+                    SARAN PERTANYAAN
+                  </span>
                   {PRESET_PROMPTS.map((prompt, idx) => (
                     <button
                       type="button"
@@ -155,7 +272,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               ) : (
                 // Chat Message Stream
                 <div className="flex flex-col gap-3">
-                  {messages.map((msg) => (
+                  {activeSession.messages.map((msg) => (
                     <div
                       key={msg.id}
                       className={`flex gap-3 text-[13.5px] ${

@@ -137,7 +137,7 @@ export const Sidebar: React.FC = () => {
             <button
               type="button"
               onClick={handleOpenAiModal}
-              className="mt-1 w-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white text-[13px] font-medium py-2 px-4 rounded-full transition-opacity hover:opacity-90 shadow-sm cursor-pointer"
+              className="mt-1 w-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white text-[13px] font-medium py-2 px-4 rounded-xl transition-opacity hover:opacity-90 shadow-sm cursor-pointer"
             >
               Buka
             </button>
