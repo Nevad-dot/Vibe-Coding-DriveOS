@@ -121,7 +121,10 @@ export const Sidebar: React.FC = () => {
         {/* Bottom Section: AI Card & Collapse Toggle */}
         <div className="p-2.5 border-t border-surfaceLight-border flex flex-col gap-2 shrink-0">
           {!collapsed && (
-            <div className="bg-surfaceLight-pearl border border-surfaceLight-border rounded-xl p-3 flex flex-col gap-2">
+            <div
+              onClick={() => setIsAiModalOpen(true)}
+              className="bg-surfaceLight-pearl border border-surfaceLight-border rounded-xl p-3 flex flex-col gap-2 cursor-pointer hover:border-brand/40 transition-colors"
+            >
               <div className="flex items-center gap-1.5 text-[11px] font-medium text-brand uppercase tracking-wider">
                 <Sparkles className="w-[14px] h-[14px] text-brand" strokeWidth={1.5} />
                 <span>AI ASSISTANT</span>
@@ -129,18 +132,21 @@ export const Sidebar: React.FC = () => {
               <p className="text-[12px] text-textGray-tertiary leading-snug font-normal">
                 Tanya apa saja tentang bisnis Anda.
               </p>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setIsAiModalOpen(true)}
-                className="mt-1 w-full bg-brand hover:bg-brand-hover text-white text-[13px] font-medium py-1.5 px-3 rounded-lg transition-colors shadow-xs"
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsAiModalOpen(true);
+                }}
+                className="mt-1 w-full bg-brand hover:bg-brand-hover text-white text-[13px] font-medium py-1.5 px-3 rounded-lg transition-colors shadow-xs cursor-pointer"
               >
                 Buka
-              </motion.button>
+              </button>
             </div>
           )}
 
           <button
+            type="button"
             onClick={() => setCollapsed(!collapsed)}
             className={`flex items-center rounded-lg text-[13px] font-normal text-textGray-tertiary hover:text-textGray-primary hover:bg-surfaceLight-pearl transition-all w-full select-none ${
               collapsed ? "justify-center p-2.5" : "gap-2 px-3 py-2"
