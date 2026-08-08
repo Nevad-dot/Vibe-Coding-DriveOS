@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import {
   LayoutGrid,
   TrendingUp,
@@ -63,7 +62,7 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside
-      className={`bg-surfaceLight-card border-r border-surfaceLight-border flex flex-col justify-between transition-all duration-300 z-30 shrink-0 ${
+      className={`bg-surfaceLight-card border-r border-surfaceLight-border flex flex-col justify-between transition-all duration-200 z-30 shrink-0 transform-gpu ${
         collapsed ? "w-[72px]" : "w-[230px]"
       }`}
     >
@@ -84,7 +83,7 @@ export const Sidebar: React.FC = () => {
           </Link>
         </div>
 
-        {/* Navigation Items with Animated Vertical Green Line Indicator */}
+        {/* Navigation Items with Native CSS Active Indicator Line */}
         <nav className="p-2.5 flex flex-col gap-1">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
@@ -94,7 +93,7 @@ export const Sidebar: React.FC = () => {
               <Link
                 key={item.label}
                 href={item.href}
-                className={`relative flex items-center rounded-xl text-[13.5px] transition-colors select-none ${
+                className={`relative flex items-center rounded-xl text-[13.5px] transition-all duration-150 select-none ${
                   collapsed ? "justify-center p-2.5" : "gap-3 px-3 py-2 pl-4"
                 } ${
                   isActive
@@ -103,13 +102,9 @@ export const Sidebar: React.FC = () => {
                 }`}
                 title={collapsed ? item.label : undefined}
               >
-                {/* Vertical Green Active Indicator Line matching Figma Mockup */}
+                {/* Native CSS Vertical Active Indicator Line (Zero JS Overhead) */}
                 {isActive && (
-                  <motion.span
-                    layoutId="sidebar-active-bar"
-                    className="absolute left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-[16px] bg-brand rounded-full"
-                    transition={{ type: "spring", stiffness: 450, damping: 30 }}
-                  />
+                  <span className="absolute left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-[16px] bg-brand rounded-full transition-all duration-150" />
                 )}
 
                 <Icon
@@ -147,7 +142,7 @@ export const Sidebar: React.FC = () => {
         <button
           type="button"
           onClick={() => setCollapsed(!collapsed)}
-          className={`flex items-center rounded-lg text-[13px] font-normal text-textGray-tertiary hover:text-textGray-primary hover:bg-surfaceLight-pearl transition-all w-full select-none ${
+          className={`flex items-center rounded-lg text-[13px] font-normal text-textGray-tertiary hover:text-textGray-primary hover:bg-surfaceLight-pearl transition-all duration-150 w-full select-none ${
             collapsed ? "justify-center p-2.5" : "gap-2 px-3 py-2"
           }`}
         >

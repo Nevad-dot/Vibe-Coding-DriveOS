@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 
 const BAR_DATA = [
   { month: "Jan", val: 32, height: "45%" },
@@ -17,12 +16,7 @@ export const SalesTrendChart: React.FC = () => {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(6);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.96, y: 22 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.15 }}
-      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col justify-between h-full shadow-xs"
-    >
+    <div className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col justify-between h-full shadow-xs transform-gpu">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -57,20 +51,18 @@ export const SalesTrendChart: React.FC = () => {
             >
               {/* Tooltip Value */}
               <div
-                className={`text-[11px] font-semibold transition-opacity ${
+                className={`text-[11px] font-semibold transition-opacity duration-150 ${
                   isSelected ? "opacity-100 text-textGray-display" : "opacity-0 group-hover:opacity-100 text-textGray-tertiary"
                 }`}
               >
                 {bar.val}
               </div>
 
-              {/* Bar Track & Gradient Fill */}
+              {/* Bar Track & Gradient Fill (Native CSS GPU Transitions) */}
               <div className="w-full max-w-[36px] bg-surfaceLight-pearl border border-surfaceLight-border rounded-t-xl h-full flex items-end p-0.5 overflow-hidden">
-                <motion.div
-                  initial={{ height: 0 }}
-                  animate={{ height: bar.height }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25, delay: idx * 0.05 }}
-                  className={`w-full rounded-t-lg transition-all duration-300 ${
+                <div
+                  style={{ height: bar.height }}
+                  className={`w-full rounded-t-lg transition-all duration-300 transform-gpu ${
                     isSelected
                       ? "bg-gradient-to-t from-[#2A5230] via-[#4B8E55] to-[#6BA374] opacity-100 scale-y-[1.02] shadow-sm"
                       : "bg-gradient-to-t from-[#2A5230]/75 via-[#4B8E55]/75 to-[#6BA374]/75 opacity-80 group-hover:opacity-100"
@@ -79,14 +71,14 @@ export const SalesTrendChart: React.FC = () => {
               </div>
 
               {/* Month Label */}
-              <span className={`text-[12px] font-medium transition-colors ${isSelected ? "text-textGray-display font-semibold" : "text-textGray-tertiary"}`}>
+              <span className={`text-[12px] font-medium transition-colors duration-150 ${isSelected ? "text-textGray-display font-semibold" : "text-textGray-tertiary"}`}>
                 {bar.month}
               </span>
             </div>
           );
         })}
       </div>
-    </motion.div>
+    </div>
   );
 };
 

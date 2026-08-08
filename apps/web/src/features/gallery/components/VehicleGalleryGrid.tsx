@@ -2,7 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { RotateCw, ChevronRight } from "lucide-react";
 
 const GALLERY_ITEMS = [
@@ -50,39 +49,13 @@ const GALLERY_ITEMS = [
   },
 ];
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, scale: 0.94, y: 20 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 360, damping: 26 },
-  },
-};
-
 export const VehicleGalleryGrid: React.FC = () => {
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-    >
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {GALLERY_ITEMS.map((item, idx) => (
-        <motion.div
+        <div
           key={idx}
-          variants={cardVariants}
-          whileHover={{ y: -4, transition: { duration: 0.2 } }}
-          className="bg-surfaceLight-card border border-surfaceLight-border rounded-[24px] overflow-hidden shadow-xs hover:border-brand/40 transition-colors flex flex-col"
+          className="bg-surfaceLight-card border border-surfaceLight-border rounded-[24px] overflow-hidden shadow-xs hover:border-brand/40 transition-all duration-200 hover:-translate-y-1 transform-gpu flex flex-col"
         >
           {/* Full Bleed Studio Image Container */}
           <div className="relative h-[220px] w-full bg-gray-100 dark:bg-gray-800/40 overflow-hidden">
@@ -90,7 +63,8 @@ export const VehicleGalleryGrid: React.FC = () => {
               src={item.image}
               alt={item.name}
               fill
-              className="object-cover transition-transform duration-500 hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-300 hover:scale-105 transform-gpu"
             />
 
             {/* Top-Right Units Pill Badge - Dark Mode Adaptive */}
@@ -126,9 +100,9 @@ export const VehicleGalleryGrid: React.FC = () => {
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
       ))}
-    </motion.div>
+    </div>
   );
 };
 
