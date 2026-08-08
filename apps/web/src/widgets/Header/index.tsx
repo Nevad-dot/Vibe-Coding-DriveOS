@@ -20,7 +20,7 @@ export const Header: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [themeMode, setThemeMode] = useState<"light" | "dark" | "system">("light");
+  const [themeMode, setThemeMode] = useState<"light" | "dark" | "system">("system");
   const [userName, setUserName] = useState("Adrian Hartono");
   const [userEmail, setUserEmail] = useState("adrian@driveos.app");
   const [userInitials, setUserInitials] = useState("AH");
@@ -45,12 +45,32 @@ export const Header: React.FC = () => {
 
   const pageTitle = getPageTitle(pathname);
 
+  // Theme application logic
+  const applyTheme = (mode: "light" | "dark" | "system") => {
+    if (mode === "dark") {
+      document.documentElement.classList.add("dark");
+      setIsDarkMode(true);
+    } else if (mode === "light") {
+      document.documentElement.classList.remove("dark");
+      setIsDarkMode(false);
+    } else {
+      const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (systemDark) {
+        document.documentElement.classList.add("dark");
+        setIsDarkMode(true);
+      } else {
+        document.documentElement.classList.remove("dark");
+        setIsDarkMode(false);
+      }
+    }
+  };
+
+  // Persistent Theme Mode Initialization & User Profile
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const isDark =
-        document.documentElement.classList.contains("dark") ||
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setIsDarkMode(isDark);
+      const savedTheme = (localStorage.getItem("driveos_theme_mode") as "light" | "dark" | "system") || "system";
+      setThemeMode(savedTheme);
+      applyTheme(savedTheme);
 
       const storedName = sessionStorage.getItem("user_name");
       const storedEmail = sessionStorage.getItem("user_email");
@@ -90,32 +110,18 @@ export const Header: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showLogoutModal]);
 
-  // Theme Select Handlers
+  // Theme Select Handlers with localStorage Persistence
   const handleSelectTheme = (mode: "light" | "dark" | "system") => {
     setThemeMode(mode);
-    if (mode === "dark") {
-      document.documentElement.classList.add("dark");
-      setIsDarkMode(true);
-    } else if (mode === "light") {
-      document.documentElement.classList.remove("dark");
-      setIsDarkMode(false);
-    } else {
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        document.documentElement.classList.add("dark");
-        setIsDarkMode(true);
-      } else {
-        document.documentElement.classList.remove("dark");
-        setIsDarkMode(false);
-      }
+    if (typeof window !== "undefined") {
+      localStorage.setItem("driveos_theme_mode", mode);
     }
+    applyTheme(mode);
   };
 
   const toggleThemeButton = () => {
-    if (isDarkMode) {
-      handleSelectTheme("light");
-    } else {
-      handleSelectTheme("dark");
-    }
+    const nextMode = isDarkMode ? "light" : "dark";
+    handleSelectTheme(nextMode);
   };
 
   // Logout Handlers
@@ -160,11 +166,11 @@ export const Header: React.FC = () => {
           {/* Theme Toggle Quick Button */}
           <button
             onClick={toggleThemeButton}
-            className="w-9 h-9 flex items-center justify-center text-textGray-secondary hover:text-textGray-primary hover:bg-surfaceLight-pearl rounded-full transition-colors shrink-0"
+            className="w-9 h-9 flex items-center justify-center text-textGray-secondary hover:text-textGray-primary hover:bg-surfaceLight-pearl rounded-full transition-colors shrink-0 cursor-pointer"
             title="Toggle Light/Dark Theme"
           >
             {isDarkMode ? (
-              <Sun className="w-[18px] h-[18px]" strokeWidth={1.5} />
+              <Sun className="w-[18px] h-[18px] text-amber-400" strokeWidth={1.5} />
             ) : (
               <Moon className="w-[18px] h-[18px]" strokeWidth={1.5} />
             )}
@@ -179,7 +185,7 @@ export const Header: React.FC = () => {
           {/* User Avatar - Toggles User Profile Dropdown Menu */}
           <button
             onClick={() => setIsProfileOpen(!isProfileOpen)}
-            className="w-9 h-9 rounded-full bg-brand-hover text-white flex items-center justify-center font-medium text-[13px] leading-none select-none shrink-0 overflow-hidden shadow-xs hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-brand/40"
+            className="w-9 h-9 rounded-full bg-brand-hover text-white flex items-center justify-center font-medium text-[13px] leading-none select-none shrink-0 overflow-hidden shadow-xs hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-brand/40 cursor-pointer"
             title="Account Menu"
           >
             {userInitials}
@@ -209,14 +215,14 @@ export const Header: React.FC = () => {
                 <div className="py-1.5 border-b border-surfaceLight-border flex flex-col gap-0.5">
                   <button
                     onClick={() => setIsProfileOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-textGray-primary hover:bg-surfaceLight-pearl transition-colors font-normal w-full text-left"
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-textGray-primary hover:bg-surfaceLight-pearl transition-colors font-normal w-full text-left cursor-pointer"
                   >
                     <User className="w-[16px] h-[16px] text-textGray-tertiary" strokeWidth={1.5} />
                     <span>Profile</span>
                   </button>
                   <button
                     onClick={() => setIsProfileOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-textGray-primary hover:bg-surfaceLight-pearl transition-colors font-normal w-full text-left"
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-textGray-primary hover:bg-surfaceLight-pearl transition-colors font-normal w-full text-left cursor-pointer"
                   >
                     <Settings className="w-[16px] h-[16px] text-textGray-tertiary" strokeWidth={1.5} />
                     <span>Settings</span>
@@ -230,7 +236,7 @@ export const Header: React.FC = () => {
                   </span>
                   <button
                     onClick={() => handleSelectTheme("light")}
-                    className={`flex items-center justify-between px-3 py-1.5 rounded-xl transition-colors text-left ${
+                    className={`flex items-center justify-between px-3 py-1.5 rounded-xl transition-colors text-left cursor-pointer ${
                       themeMode === "light"
                         ? "bg-surfaceLight-pearl text-textGray-display font-medium"
                         : "text-textGray-secondary hover:bg-surfaceLight-pearl font-normal"
@@ -244,7 +250,7 @@ export const Header: React.FC = () => {
                   </button>
                   <button
                     onClick={() => handleSelectTheme("dark")}
-                    className={`flex items-center justify-between px-3 py-1.5 rounded-xl transition-colors text-left ${
+                    className={`flex items-center justify-between px-3 py-1.5 rounded-xl transition-colors text-left cursor-pointer ${
                       themeMode === "dark"
                         ? "bg-surfaceLight-pearl text-textGray-display font-medium"
                         : "text-textGray-secondary hover:bg-surfaceLight-pearl font-normal"
@@ -258,7 +264,7 @@ export const Header: React.FC = () => {
                   </button>
                   <button
                     onClick={() => handleSelectTheme("system")}
-                    className={`flex items-center justify-between px-3 py-1.5 rounded-xl transition-colors text-left ${
+                    className={`flex items-center justify-between px-3 py-1.5 rounded-xl transition-colors text-left cursor-pointer ${
                       themeMode === "system"
                         ? "bg-surfaceLight-pearl text-textGray-display font-medium"
                         : "text-textGray-secondary hover:bg-surfaceLight-pearl font-normal"
@@ -276,7 +282,7 @@ export const Header: React.FC = () => {
                 <div className="pt-1">
                   <button
                     onClick={() => setShowLogoutModal(true)}
-                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-red-500 hover:bg-red-500/10 transition-colors font-medium w-full text-left"
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-red-500 hover:bg-red-500/10 transition-colors font-medium w-full text-left cursor-pointer"
                   >
                     <LogOut className="w-[16px] h-[16px] text-red-500" strokeWidth={1.5} />
                     <span>Log out</span>
@@ -312,7 +318,7 @@ export const Header: React.FC = () => {
                 </div>
                 <button
                   onClick={handleCancelLogout}
-                  className="text-textGray-tertiary hover:text-textGray-primary p-1 rounded-lg hover:bg-surfaceLight-pearl transition-colors"
+                  className="text-textGray-tertiary hover:text-textGray-primary p-1 rounded-lg hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
                 >
                   <X className="w-5 h-5" strokeWidth={1.5} />
                 </button>
@@ -332,13 +338,13 @@ export const Header: React.FC = () => {
               <div className="flex items-center justify-end gap-3 pt-2">
                 <button
                   onClick={handleCancelLogout}
-                  className="px-4 py-2 rounded-full border border-surfaceLight-border text-[13.5px] font-medium text-textGray-primary hover:bg-surfaceLight-pearl transition-colors"
+                  className="px-4 py-2 rounded-full border border-surfaceLight-border text-[13.5px] font-medium text-textGray-primary hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
                   onClick={handleConfirmLogout}
-                  className="px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-[13.5px] font-medium shadow-xs transition-colors"
+                  className="px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-[13.5px] font-medium shadow-xs transition-colors cursor-pointer"
                 >
                   Ya, Keluar
                 </button>
