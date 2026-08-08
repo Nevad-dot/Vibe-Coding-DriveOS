@@ -275,15 +275,15 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               </button>
             </div>
 
-            {/* ChatGPT Sessions History Bar with Rename & Permanent LocalStorage Persistence */}
+            {/* ChatGPT Sessions History Bar with Single Clean Plus Icon */}
             <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-surfaceLight-border select-none">
               <button
                 type="button"
                 onClick={createNewSession}
                 className="px-4 py-2 rounded-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white text-[12.5px] font-medium inline-flex items-center gap-1.5 shadow-xs hover:opacity-90 transition-opacity shrink-0 cursor-pointer"
               >
-                <Plus className="w-3.5 h-3.5" strokeWidth={1.5} />
-                <span>+ Chat Baru</span>
+                <Plus className="w-3.5 h-3.5" strokeWidth={2} />
+                <span>Chat Baru</span>
               </button>
 
               {sessions.map((sess) => {
