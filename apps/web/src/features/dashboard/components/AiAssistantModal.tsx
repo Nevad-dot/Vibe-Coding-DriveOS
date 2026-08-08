@@ -36,58 +36,64 @@ const AI_RESPONSES: Record<string, string> = {
     "Rendra Prasetya memimpin performa Q3 dengan 18 unit closed (Rp 68,4 M - 120% dari target), disusul Diva Anindya (15 unit - Rp 54,2 M).",
 };
 
-const LOCAL_STORAGE_KEY = "driveos_ai_sessions_v2";
-const LOCAL_STORAGE_ACTIVE_KEY = "driveos_ai_active_session_v2";
+const LOCAL_STORAGE_KEY = "driveos_ai_sessions_v3";
+const LOCAL_STORAGE_ACTIVE_KEY = "driveos_ai_active_session_v3";
 
 export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [sessions, setSessions] = useState<ChatSession[]>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-        } catch {
-          // Fallback if JSON parse fails
-        }
-      }
-    }
-    return [
-      {
-        id: "session-1",
-        title: "Diskusi Baru",
-        messages: [],
-      },
-    ];
-  });
-
-  const [activeSessionId, setActiveSessionId] = useState<string>(() => {
-    if (typeof window !== "undefined") {
-      const savedId = localStorage.getItem(LOCAL_STORAGE_ACTIVE_KEY);
-      if (savedId) return savedId;
-    }
-    return "session-1";
-  });
-
+  const [sessions, setSessions] = useState<ChatSession[]>([
+    {
+      id: "session-1",
+      title: "Diskusi Baru",
+      messages: [],
+    },
+  ]);
+  const [activeSessionId, setActiveSessionId] = useState<string>("session-1");
   const [query, setQuery] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
   const [editingTitleText, setEditingTitleText] = useState("");
+  
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const isLoadedRef = useRef(false);
 
-  const activeSession =
-    sessions.find((s) => s.id === activeSessionId) || sessions[0];
-
-  // Save sessions to localStorage whenever they change
+  // Load from localStorage ONLY ONCE after mount to prevent SSR hydration overwrite
   useEffect(() => {
-    if (typeof window !== "undefined" && sessions.length > 0) {
+    if (typeof window !== "undefined" && !isLoadedRef.current) {
+      const savedSessions = localStorage.getItem(LOCAL_STORAGE_KEY);
+      const savedActiveId = localStorage.getItem(LOCAL_STORAGE_ACTIVE_KEY);
+      
+      if (savedSessions) {
+        try {
+          const parsed = JSON.parse(savedSessions);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setSessions(parsed);
+            if (savedActiveId && parsed.some((s: ChatSession) => s.id === savedActiveId)) {
+              setActiveSessionId(savedActiveId);
+            } else {
+              setActiveSessionId(parsed[0].id);
+            }
+          }
+        } catch {
+          // Ignore JSON parse errors
+        }
+      }
+      isLoadedRef.current = true;
+    }
+  }, []);
+
+  // Save sessions to localStorage ONLY AFTER initial load completed
+  useEffect(() => {
+    if (typeof window !== "undefined" && isLoadedRef.current && sessions.length > 0) {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(sessions));
       localStorage.setItem(LOCAL_STORAGE_ACTIVE_KEY, activeSessionId);
     }
   }, [sessions, activeSessionId]);
+
+  const activeSession =
+    sessions.find((s) => s.id === activeSessionId) || sessions[0];
 
   // ChatGPT-style auto-scroll to bottom of message stream
   useEffect(() => {
@@ -113,7 +119,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     setQuery("");
   };
 
-  // Delete Chat Session with active border safety fix
+  // Delete Chat Session
   const deleteSession = (e: React.MouseEvent, idToDelete: string) => {
     e.stopPropagation();
 
