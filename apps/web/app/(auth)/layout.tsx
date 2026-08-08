@@ -12,10 +12,20 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col md:flex-row min-h-screen w-full bg-surfaceLight-canvas text-textGray-primary overflow-x-hidden font-sans transition-colors duration-200 relative">
-      {/* Green Ambient Glow Orbs in Auth Background */}
-      <div className="absolute top-0 left-0 w-[550px] h-[550px] bg-[#4B8E55]/15 rounded-full blur-[140px] pointer-events-none z-0" />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#6BA374]/10 rounded-full blur-[130px] pointer-events-none z-0" />
+    <div className="flex flex-col md:flex-row min-h-screen w-full bg-surfaceLight-canvas text-textGray-primary overflow-x-hidden font-sans relative">
+      {/* High-Performance Radial Gradient Background Accents (0% GPU Overhead) */}
+      <div
+        className="absolute top-0 left-0 w-[550px] h-[550px] pointer-events-none z-0 opacity-80"
+        style={{
+          background: "radial-gradient(circle, rgba(75,142,85,0.12) 0%, rgba(75,142,85,0) 70%)",
+        }}
+      />
+      <div
+        className="absolute bottom-0 right-0 w-[500px] h-[500px] pointer-events-none z-0 opacity-60"
+        style={{
+          background: "radial-gradient(circle, rgba(107,163,116,0.1) 0%, rgba(107,163,116,0) 70%)",
+        }}
+      />
 
       {/* Left Pane - Command Center Hero */}
       <div className="w-full md:w-1/2 bg-surfaceLight-canvas flex flex-col justify-between p-8 md:p-16 min-h-[50vh] md:h-screen md:sticky md:top-0 border-b md:border-b-0 md:border-r border-surfaceLight-border z-10 relative">
@@ -60,7 +70,7 @@ export default function AuthLayout({
       </div>
 
       {/* Right Pane - Form Workspace */}
-      <div className="w-full md:w-1/2 bg-surfaceLight-pearl flex flex-col justify-center items-center min-h-screen py-10 md:py-16 px-4 overflow-y-auto transition-colors duration-200 z-10 relative">
+      <div className="w-full md:w-1/2 bg-surfaceLight-pearl flex flex-col justify-center items-center min-h-screen py-10 md:py-16 px-4 overflow-y-auto z-10 relative">
         {children}
       </div>
     </div>

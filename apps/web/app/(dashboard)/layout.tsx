@@ -14,16 +14,29 @@ export default function DashboardLayout({
 
   // Global listener to prevent double modal instances
   useEffect(() => {
-    const handleOpenModal = () => setIsAiModalOpen(true);
+    const handleOpenModal = (e: Event) => {
+      e.stopPropagation();
+      setIsAiModalOpen(true);
+    };
     window.addEventListener("open-ai-modal", handleOpenModal);
     return () => window.removeEventListener("open-ai-modal", handleOpenModal);
   }, []);
 
   return (
-    <div className="flex h-screen w-full bg-surfaceLight-pearl text-textGray-primary overflow-hidden font-sans transition-colors duration-200 relative">
-      {/* Ambient Glow Orbs created directly from Color Mode Green #4B8E55 */}
-      <div className="absolute -top-24 -right-24 w-[650px] h-[650px] bg-[#4B8E55]/15 rounded-full blur-[140px] pointer-events-none z-0" />
-      <div className="absolute bottom-10 left-1/3 w-[450px] h-[450px] bg-[#6BA374]/10 rounded-full blur-[110px] pointer-events-none z-0" />
+    <div className="flex h-screen w-full bg-surfaceLight-pearl text-textGray-primary overflow-hidden font-sans relative">
+      {/* High-Performance Radial Gradient Background Accents (0% GPU Overhead) */}
+      <div
+        className="absolute -top-24 -right-24 w-[600px] h-[600px] pointer-events-none z-0 opacity-80"
+        style={{
+          background: "radial-gradient(circle, rgba(75,142,85,0.12) 0%, rgba(75,142,85,0) 70%)",
+        }}
+      />
+      <div
+        className="absolute bottom-10 left-1/3 w-[450px] h-[450px] pointer-events-none z-0 opacity-60"
+        style={{
+          background: "radial-gradient(circle, rgba(107,163,116,0.1) 0%, rgba(107,163,116,0) 70%)",
+        }}
+      />
 
       {/* Navigation Sidebar */}
       <Sidebar />
