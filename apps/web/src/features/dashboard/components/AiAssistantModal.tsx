@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, X, Send, Bot, User, Plus, Trash2, MessageSquare } from "lucide-react";
+import { Sparkles, X, Send, Bot, User, Plus, Trash2, MessageSquare, Pencil, Check } from "lucide-react";
 
 interface AiAssistantModalProps {
   isOpen: boolean;
@@ -36,24 +36,58 @@ const AI_RESPONSES: Record<string, string> = {
     "Rendra Prasetya memimpin performa Q3 dengan 18 unit closed (Rp 68,4 M - 120% dari target), disusul Diva Anindya (15 unit - Rp 54,2 M).",
 };
 
+const LOCAL_STORAGE_KEY = "driveos_ai_sessions_v1";
+const LOCAL_STORAGE_ACTIVE_KEY = "driveos_ai_active_session_v1";
+
 export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [sessions, setSessions] = useState<ChatSession[]>([
-    {
-      id: "session-1",
-      title: "Diskusi Baru",
-      messages: [],
-    },
-  ]);
-  const [activeSessionId, setActiveSessionId] = useState<string>("session-1");
+  const [sessions, setSessions] = useState<ChatSession[]>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        } catch {
+          // Fallback if JSON parse fails
+        }
+      }
+    }
+    return [
+      {
+        id: "session-1",
+        title: "Diskusi Baru",
+        messages: [],
+      },
+    ];
+  });
+
+  const [activeSessionId, setActiveSessionId] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const savedId = localStorage.getItem(LOCAL_STORAGE_ACTIVE_KEY);
+      if (savedId) return savedId;
+    }
+    return "session-1";
+  });
+
   const [query, setQuery] = useState("");
   const [isThinking, setIsThinking] = useState(false);
+  const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
+  const [editingTitleText, setEditingTitleText] = useState("");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const activeSession =
     sessions.find((s) => s.id === activeSessionId) || sessions[0];
+
+  // Save sessions to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== "undefined" && sessions.length > 0) {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(sessions));
+      localStorage.setItem(LOCAL_STORAGE_ACTIVE_KEY, activeSessionId);
+    }
+  }, [sessions, activeSessionId]);
 
   // ChatGPT-style auto-scroll to bottom of message stream
   useEffect(() => {
@@ -85,13 +119,14 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
     if (sessions.length <= 1) {
       const freshId = `session-${Date.now()}`;
-      setSessions([
+      const freshSessions = [
         {
           id: freshId,
           title: "Diskusi Baru",
           messages: [],
         },
-      ]);
+      ];
+      setSessions(freshSessions);
       setActiveSessionId(freshId);
       setQuery("");
       return;
@@ -102,6 +137,24 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     if (activeSessionId === idToDelete) {
       setActiveSessionId(filtered[0].id);
     }
+  };
+
+  // Rename Session Handlers
+  const startRenaming = (e: React.MouseEvent, session: ChatSession) => {
+    e.stopPropagation();
+    setEditingSessionId(session.id);
+    setEditingTitleText(session.title);
+  };
+
+  const saveRenamedTitle = (sessionId: string) => {
+    if (editingTitleText.trim()) {
+      setSessions((prev) =>
+        prev.map((s) =>
+          s.id === sessionId ? { ...s, title: editingTitleText.trim() } : s
+        )
+      );
+    }
+    setEditingSessionId(null);
   };
 
   const handlePromptClick = (promptText: string) => {
@@ -120,8 +173,8 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     // Update current session title if it's the first message
     const isFirstMessage = activeSession.messages.length === 0;
     const updatedTitle = isFirstMessage
-      ? promptText.length > 24
-        ? `${promptText.substring(0, 22)}...`
+      ? promptText.length > 22
+        ? `${promptText.substring(0, 20)}...`
         : promptText
       : activeSession.title;
 
@@ -182,7 +235,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 12 }}
             transition={{ type: "spring", stiffness: 420, damping: 28 }}
-            className="bg-surfaceLight-card border border-surfaceLight-border w-full max-w-[600px] rounded-3xl p-6 md:p-7 shadow-2xl flex flex-col gap-4 relative overflow-hidden z-[10000]"
+            className="bg-surfaceLight-card border border-surfaceLight-border w-full max-w-[620px] rounded-3xl p-6 md:p-7 shadow-2xl flex flex-col gap-4 relative overflow-hidden z-[10000]"
           >
             {/* Top Modal Header */}
             <div className="flex items-center justify-between gap-4">
@@ -211,7 +264,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               </button>
             </div>
 
-            {/* ChatGPT Sessions History Bar & New Chat Button with Uniform Pill Styling */}
+            {/* ChatGPT Sessions History Bar with Rename & Permanent LocalStorage Persistence */}
             <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-surfaceLight-border select-none">
               <button
                 type="button"
@@ -224,37 +277,77 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
               {sessions.map((sess) => {
                 const isActive = sess.id === activeSession?.id;
+                const isEditingThis = editingSessionId === sess.id;
+
                 return (
                   <div
                     key={sess.id}
                     onClick={() => setActiveSessionId(sess.id)}
-                    className={`px-4 py-2 rounded-full text-[12.5px] font-medium inline-flex items-center gap-2 cursor-pointer transition-all shrink-0 max-w-[170px] ${
+                    className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-medium inline-flex items-center gap-1.5 cursor-pointer transition-all shrink-0 max-w-[190px] ${
                       isActive
                         ? "bg-surfaceLight-pearl text-textGray-display border border-surfaceLight-border shadow-2xs"
                         : "text-textGray-tertiary hover:text-textGray-primary hover:bg-surfaceLight-pearl/60 border border-transparent"
                     }`}
                   >
                     <MessageSquare className="w-3.5 h-3.5 shrink-0 text-[#4B8E55]" strokeWidth={1.5} />
-                    <span className="truncate">{sess.title}</span>
-                    <button
-                      type="button"
-                      onClick={(e) => deleteSession(e, sess.id)}
-                      className="text-textGray-muted hover:text-red-500 transition-colors p-0.5"
-                      title="Hapus percakapan"
-                    >
-                      <Trash2 className="w-3 h-3" strokeWidth={1.5} />
-                    </button>
+
+                    {isEditingThis ? (
+                      <div className="flex items-center gap-1">
+                        <input
+                          type="text"
+                          value={editingTitleText}
+                          onChange={(e) => setEditingTitleText(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") saveRenamedTitle(sess.id);
+                          }}
+                          autoFocus
+                          className="w-[90px] bg-surfaceLight-card border border-[#4B8E55] text-[12px] px-1.5 py-0.5 rounded text-textGray-display focus:outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => saveRenamedTitle(sess.id)}
+                          className="text-[#4B8E55] hover:text-brand p-0.5"
+                          title="Save Title"
+                        >
+                          <Check className="w-3 h-3" strokeWidth={2} />
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <span className="truncate max-w-[100px]">{sess.title}</span>
+
+                        <div className="flex items-center gap-0.5 opacity-80 hover:opacity-100">
+                          <button
+                            type="button"
+                            onClick={(e) => startRenaming(e, sess)}
+                            className="text-textGray-muted hover:text-[#4B8E55] transition-colors p-0.5"
+                            title="Rename Diskusi"
+                          >
+                            <Pencil className="w-3 h-3" strokeWidth={1.5} />
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={(e) => deleteSession(e, sess.id)}
+                            className="text-textGray-muted hover:text-red-500 transition-colors p-0.5"
+                            title="Hapus percakapan"
+                          >
+                            <Trash2 className="w-3 h-3" strokeWidth={1.5} />
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 );
               })}
             </div>
 
-            {/* Conversation History / Preset Prompts View with Clean Vertical Gaps */}
+            {/* Conversation History / Preset Prompts View */}
             <div
               ref={scrollContainerRef}
               className="flex flex-col gap-3 min-h-[200px] max-h-[340px] overflow-y-auto pr-1 scroll-smooth"
             >
-              {activeSession.messages.length === 0 ? (
+              {activeSession?.messages.length === 0 ? (
                 // Preset Suggested Prompt Pills (Presented on EVERY New Chat Session)
                 <div className="flex flex-col gap-2.5 pt-1">
                   <span className="text-[11px] font-medium text-textGray-muted uppercase tracking-[0.08em] block">
@@ -275,7 +368,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               ) : (
                 // Chat Message Stream
                 <div className="flex flex-col gap-3 pt-1">
-                  {activeSession.messages.map((msg) => (
+                  {activeSession?.messages.map((msg) => (
                     <div
                       key={msg.id}
                       className={`flex gap-3 text-[13.5px] ${
