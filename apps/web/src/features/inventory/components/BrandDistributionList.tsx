@@ -18,7 +18,7 @@ export const BrandDistributionList: React.FC = () => {
       initial={{ opacity: 0, scale: 0.96, y: 22 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.15 }}
-      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col justify-between h-full shadow-xs"
+      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col h-full shadow-xs"
     >
       {/* Header */}
       <div className="mb-5">
@@ -30,8 +30,8 @@ export const BrandDistributionList: React.FC = () => {
         </h3>
       </div>
 
-      {/* Brand Stock Level Progress Bars with Brand Green Gradient Fill */}
-      <div className="flex flex-col gap-4">
+      {/* Brand Stock Level Progress Bars */}
+      <div className="flex-1 flex flex-col justify-between gap-4">
         {BRANDS.map((item, idx) => (
           <div key={idx} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between text-[13px]">

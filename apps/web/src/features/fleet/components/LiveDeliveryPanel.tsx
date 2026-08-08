@@ -48,10 +48,10 @@ export const LiveDeliveryPanel: React.FC = () => {
         </h3>
       </div>
 
-      {/* Delivery Items List */}
-      <div className="flex flex-col divide-y divide-surfaceLight-border">
+      {/* Delivery Items List evenly spaced to match card height */}
+      <div className="flex flex-col flex-1 justify-between divide-y divide-surfaceLight-border">
         {LIVE_DELIVERIES.map((item, idx) => (
-          <div key={idx} className="py-3.5 flex items-center justify-between gap-4 first:pt-1 last:pb-0">
+          <div key={idx} className="py-3 flex items-center justify-between gap-4 first:pt-1 last:pb-0">
             <div className="flex items-center gap-3">
               <span className={`w-2 h-2 rounded-full ${item.dotColor} shrink-0`} />
               <div>
