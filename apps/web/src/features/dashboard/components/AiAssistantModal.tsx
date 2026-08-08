@@ -2,7 +2,18 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, X, Send, Bot, User, Plus, Trash2, MessageSquare, Pencil, Check } from "lucide-react";
+import {
+  Sparkles,
+  X,
+  Send,
+  Bot,
+  User,
+  Plus,
+  Trash2,
+  MessageSquare,
+  Pencil,
+  Check,
+} from "lucide-react";
 
 interface AiAssistantModalProps {
   isOpen: boolean;
@@ -55,7 +66,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   const [isThinking, setIsThinking] = useState(false);
   const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
   const [editingTitleText, setEditingTitleText] = useState("");
-  
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isLoadedRef = useRef(false);
 
@@ -64,13 +75,16 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     if (typeof window !== "undefined" && !isLoadedRef.current) {
       const savedSessions = localStorage.getItem(LOCAL_STORAGE_KEY);
       const savedActiveId = localStorage.getItem(LOCAL_STORAGE_ACTIVE_KEY);
-      
+
       if (savedSessions) {
         try {
           const parsed = JSON.parse(savedSessions);
           if (Array.isArray(parsed) && parsed.length > 0) {
             setSessions(parsed);
-            if (savedActiveId && parsed.some((s: ChatSession) => s.id === savedActiveId)) {
+            if (
+              savedActiveId &&
+              parsed.some((s: ChatSession) => s.id === savedActiveId)
+            ) {
               setActiveSessionId(savedActiveId);
             } else {
               setActiveSessionId(parsed[0].id);
@@ -86,7 +100,11 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
   // Save sessions to localStorage ONLY AFTER initial load completed
   useEffect(() => {
-    if (typeof window !== "undefined" && isLoadedRef.current && sessions.length > 0) {
+    if (
+      typeof window !== "undefined" &&
+      isLoadedRef.current &&
+      sessions.length > 0
+    ) {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(sessions));
       localStorage.setItem(LOCAL_STORAGE_ACTIVE_KEY, activeSessionId);
     }
@@ -156,8 +174,8 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     if (editingTitleText.trim()) {
       setSessions((prev) =>
         prev.map((s) =>
-          s.id === sessionId ? { ...s, title: editingTitleText.trim() } : s
-        )
+          s.id === sessionId ? { ...s, title: editingTitleText.trim() } : s,
+        ),
       );
     }
     setEditingSessionId(null);
@@ -197,8 +215,8 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               title: updatedTitle,
               messages: [...s.messages, userMsg],
             }
-          : s
-      )
+          : s,
+      ),
     );
 
     setQuery("");
@@ -219,8 +237,8 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
         prev.map((s) =>
           s.id === activeSession.id
             ? { ...s, messages: [...s.messages, aiMsg] }
-            : s
-        )
+            : s,
+        ),
       );
       setIsThinking(false);
     }, 600);
@@ -252,7 +270,10 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-2.5">
                 <div className="w-10 h-10 rounded-2xl bg-[#4B8E55]/15 text-[#4B8E55] flex items-center justify-center shrink-0">
-                  <Sparkles className="w-5 h-5 text-[#4B8E55]" strokeWidth={1.5} />
+                  <Sparkles
+                    className="w-5 h-5 text-[#4B8E55]"
+                    strokeWidth={1.5}
+                  />
                 </div>
                 <div>
                   <h3 className="text-[20px] font-display font-semibold text-textGray-display leading-snug">
@@ -283,7 +304,8 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                 className="px-4 py-2 rounded-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white text-[12.5px] font-medium inline-flex items-center gap-1.5 shadow-xs hover:opacity-90 transition-opacity shrink-0 cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" strokeWidth={2} />
-                <span>Chat Baru</span>
+                <span>Chat Baru</span>{" "}
+                {/* Pastikan di sini TIDAK ada "+ Chat Baru" */}
               </button>
 
               {sessions.map((sess) => {
@@ -300,7 +322,10 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                         : "text-textGray-tertiary hover:text-textGray-primary hover:bg-surfaceLight-pearl/60 border border-transparent"
                     }`}
                   >
-                    <MessageSquare className="w-3.5 h-3.5 shrink-0 text-[#4B8E55]" strokeWidth={1.5} />
+                    <MessageSquare
+                      className="w-3.5 h-3.5 shrink-0 text-[#4B8E55]"
+                      strokeWidth={1.5}
+                    />
 
                     {isEditingThis ? (
                       <div
@@ -387,7 +412,10 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                       className="w-full text-left px-5 py-3 rounded-2xl border border-surfaceLight-border bg-surfaceLight-card text-[13.5px] text-textGray-primary hover:text-[#4B8E55] font-normal transition-all shadow-2xs hover:shadow-xs flex items-center justify-between group cursor-pointer"
                     >
                       <span>{prompt}</span>
-                      <Send className="w-3.5 h-3.5 text-textGray-tertiary group-hover:text-[#4B8E55] transition-colors" strokeWidth={1.5} />
+                      <Send
+                        className="w-3.5 h-3.5 text-textGray-tertiary group-hover:text-[#4B8E55] transition-colors"
+                        strokeWidth={1.5}
+                      />
                     </button>
                   ))}
                 </div>
@@ -403,7 +431,10 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                     >
                       {msg.sender === "ai" && (
                         <div className="w-7 h-7 rounded-full bg-[#4B8E55]/15 text-[#4B8E55] flex items-center justify-center shrink-0 mt-0.5">
-                          <Bot className="w-4 h-4 text-[#4B8E55]" strokeWidth={1.5} />
+                          <Bot
+                            className="w-4 h-4 text-[#4B8E55]"
+                            strokeWidth={1.5}
+                          />
                         </div>
                       )}
                       <div
@@ -426,9 +457,14 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                   {isThinking && (
                     <div className="flex gap-3 text-[13.5px] items-center text-textGray-tertiary">
                       <div className="w-7 h-7 rounded-full bg-[#4B8E55]/15 text-[#4B8E55] flex items-center justify-center shrink-0">
-                        <Bot className="w-4 h-4 text-[#4B8E55] animate-pulse" strokeWidth={1.5} />
+                        <Bot
+                          className="w-4 h-4 text-[#4B8E55] animate-pulse"
+                          strokeWidth={1.5}
+                        />
                       </div>
-                      <span className="italic font-normal">AI sedang menganalisis data...</span>
+                      <span className="italic font-normal">
+                        AI sedang menganalisis data...
+                      </span>
                     </div>
                   )}
                 </div>
@@ -436,7 +472,10 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
             </div>
 
             {/* Bottom Interactive Query Form with Green Gradient Tanya Button */}
-            <form onSubmit={handleSubmit} className="flex items-center gap-3 pt-2 border-t border-surfaceLight-border">
+            <form
+              onSubmit={handleSubmit}
+              className="flex items-center gap-3 pt-2 border-t border-surfaceLight-border"
+            >
               <input
                 type="text"
                 placeholder="Ketik pertanyaan Anda..."
