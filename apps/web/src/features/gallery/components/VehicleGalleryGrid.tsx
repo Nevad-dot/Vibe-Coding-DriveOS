@@ -84,8 +84,8 @@ export const VehicleGalleryGrid: React.FC = () => {
           whileHover={{ y: -4, transition: { duration: 0.2 } }}
           className="bg-surfaceLight-card border border-surfaceLight-border rounded-[24px] overflow-hidden shadow-xs hover:border-brand/40 transition-colors flex flex-col"
         >
-          {/* Full Bleed Image Container matching card top border radius */}
-          <div className="relative h-[220px] w-full bg-gray-100 overflow-hidden">
+          {/* Full Bleed Studio Image Container */}
+          <div className="relative h-[220px] w-full bg-gray-100 dark:bg-gray-800/40 overflow-hidden">
             <Image
               src={item.image}
               alt={item.name}
@@ -93,14 +93,14 @@ export const VehicleGalleryGrid: React.FC = () => {
               className="object-cover transition-transform duration-500 hover:scale-105"
             />
 
-            {/* Top-Right Units Pill Badge */}
-            <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-surfaceLight-border text-[12px] font-medium text-textGray-primary shadow-xs z-10">
+            {/* Top-Right Units Pill Badge - Dark Mode Adaptive */}
+            <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[12px] font-medium text-textGray-primary shadow-xs z-10">
               {item.units}
             </span>
 
-            {/* Bottom-Left 360° Badge if available */}
+            {/* Bottom-Left 360° Badge if available - Dark Mode Adaptive */}
             {item.has360 && (
-              <span className="absolute bottom-3 left-4 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md border border-surfaceLight-border text-[11px] font-medium text-textGray-primary shadow-xs z-10 inline-flex items-center gap-1">
+              <span className="absolute bottom-3 left-4 px-2.5 py-1 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[11px] font-medium text-textGray-primary shadow-xs z-10 inline-flex items-center gap-1">
                 <RotateCw className="w-3 h-3 text-textGray-tertiary" />
                 <span>360°</span>
               </span>
