@@ -53,8 +53,9 @@ export const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
-  const handleOpenAiModal = (e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
+  const handleOpenAiModal = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("open-ai-modal"));
     }
@@ -125,10 +126,7 @@ export const Sidebar: React.FC = () => {
       {/* Bottom Section: AI Card & Collapse Toggle */}
       <div className="p-2.5 border-t border-surfaceLight-border flex flex-col gap-2 shrink-0">
         {!collapsed && (
-          <div
-            onClick={handleOpenAiModal}
-            className="bg-surfaceLight-pearl border border-surfaceLight-border rounded-xl p-3 flex flex-col gap-2 cursor-pointer hover:border-brand/40 transition-colors"
-          >
+          <div className="bg-surfaceLight-pearl border border-surfaceLight-border rounded-xl p-3 flex flex-col gap-2">
             <div className="flex items-center gap-1.5 text-[11px] font-medium text-[#4B8E55] uppercase tracking-wider">
               <Sparkles className="w-[14px] h-[14px] text-[#4B8E55]" strokeWidth={1.5} />
               <span>AI ASSISTANT</span>
@@ -139,7 +137,7 @@ export const Sidebar: React.FC = () => {
             <button
               type="button"
               onClick={handleOpenAiModal}
-              className="mt-1 w-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white text-[13px] font-medium py-1.5 px-3 rounded-lg transition-opacity hover:opacity-90 shadow-sm cursor-pointer"
+              className="mt-1 w-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white text-[13px] font-medium py-2 px-4 rounded-full transition-opacity hover:opacity-90 shadow-sm cursor-pointer"
             >
               Buka
             </button>
