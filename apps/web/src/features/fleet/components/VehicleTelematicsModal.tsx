@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Eye, Gauge, Battery, Flame, ShieldAlert, Cpu } from "lucide-react";
+import { X, Gauge, Battery, Flame, ShieldCheck, Cpu, CheckCircle2 } from "lucide-react";
 
 interface VehicleTelematicsModalProps {
   isOpen: boolean;
@@ -50,8 +50,8 @@ export const VehicleTelematicsModal: React.FC<VehicleTelematicsModalProps> = ({ 
             {/* Header */}
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-[11px] font-semibold text-brand uppercase tracking-wider block mb-1 flex items-center gap-1">
-                  <Cpu className="w-3.5 h-3.5 text-[#4B8E55]" />
+                <span className="text-[11px] font-semibold text-brand uppercase tracking-wider block mb-1 flex items-center gap-1.5">
+                  <Cpu className="w-3.5 h-3.5 text-brand" />
                   TELEMATICS DIAGNOSTICS
                 </span>
                 <h3 className="text-[20px] font-display font-bold text-textGray-display leading-tight">
@@ -68,64 +68,68 @@ export const VehicleTelematicsModal: React.FC<VehicleTelematicsModalProps> = ({ 
               </button>
             </div>
 
-            {/* Diagnostic Indicators */}
+            {/* Diagnostic Indicators (Unified Brand Green Tokens) */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1">
-                <span className="text-[11px] font-medium text-textGray-tertiary uppercase flex items-center gap-1">
+              <div className="p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1.5">
+                <span className="text-[11px] font-medium text-textGray-tertiary uppercase tracking-wide flex items-center gap-1.5">
                   <Gauge className="w-3.5 h-3.5 text-brand" /> ODOMETER SAAT INI
                 </span>
-                <span className="text-[20px] font-bold text-textGray-display">{unit.odo}</span>
+                <span className="text-[19px] font-bold text-textGray-display">{unit.odo}</span>
               </div>
 
-              <div className="p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1">
-                <span className="text-[11px] font-medium text-textGray-tertiary uppercase flex items-center gap-1">
-                  <Battery className="w-3.5 h-3.5 text-emerald-500" /> BATERAI / AKI
+              <div className="p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1.5">
+                <span className="text-[11px] font-medium text-textGray-tertiary uppercase tracking-wide flex items-center gap-1.5">
+                  <Battery className="w-3.5 h-3.5 text-brand" /> BATERAI / AKI
                 </span>
-                <span className="text-[20px] font-bold text-emerald-600">98% Optimal</span>
+                <span className="text-[19px] font-bold text-brand">98% Optimal</span>
               </div>
 
-              <div className="p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1">
-                <span className="text-[11px] font-medium text-textGray-tertiary uppercase flex items-center gap-1">
-                  <Flame className="w-3.5 h-3.5 text-amber-500" /> KAPASITAS BAHAN BAKAR
+              <div className="p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1.5">
+                <span className="text-[11px] font-medium text-textGray-tertiary uppercase tracking-wide flex items-center gap-1.5">
+                  <Flame className="w-3.5 h-3.5 text-brand" /> BAHAN BAKAR
                 </span>
-                <span className="text-[16px] font-bold text-textGray-display">74% (Range ~480km)</span>
+                <span className="text-[19px] font-bold text-textGray-display">74% (~480km)</span>
               </div>
 
-              <div className="p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1">
-                <span className="text-[11px] font-medium text-textGray-tertiary uppercase flex items-center gap-1">
-                  <ShieldAlert className="w-3.5 h-3.5 text-brand" /> JADWAL SERVIS NEXT
+              <div className="p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1.5">
+                <span className="text-[11px] font-medium text-textGray-tertiary uppercase tracking-wide flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-brand" /> JADWAL SERVIS NEXT
                 </span>
-                <span className="text-[14px] font-bold text-brand">{unit.nextService}</span>
+                <span className="text-[19px] font-bold text-brand">{unit.nextService}</span>
               </div>
             </div>
 
-            {/* Health Checklist */}
-            <div className="p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-2">
-              <span className="text-[11.5px] font-semibold text-textGray-tertiary uppercase tracking-wide">
+            {/* Health Checklist (Unified Icons & Styling) */}
+            <div className="p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-3">
+              <span className="text-[11px] font-semibold text-textGray-tertiary uppercase tracking-wider block">
                 STATUS KESEHATAN MESIN & BAN
               </span>
-              <div className="grid grid-cols-2 gap-2 text-[12.5px]">
-                <span className="text-textGray-display flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" /> Tekanan Ban: 33 PSI
+              <div className="grid grid-cols-2 gap-2.5 text-[13px]">
+                <span className="text-textGray-display font-medium flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-brand shrink-0" strokeWidth={2} />
+                  Tekanan Ban: 33 PSI
                 </span>
-                <span className="text-textGray-display flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" /> Kampas Rem: 86% Baik
+                <span className="text-textGray-display font-medium flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-brand shrink-0" strokeWidth={2} />
+                  Kampas Rem: 86% Baik
                 </span>
-                <span className="text-textGray-display flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" /> Oli Mesin: Normal
+                <span className="text-textGray-display font-medium flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-brand shrink-0" strokeWidth={2} />
+                  Oli Mesin: Normal
                 </span>
-                <span className="text-textGray-display flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" /> ECU Diagnostic: OK
+                <span className="text-textGray-display font-medium flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-brand shrink-0" strokeWidth={2} />
+                  ECU Diagnostic: OK
                 </span>
               </div>
             </div>
 
             {/* Footer Action */}
-            <div className="flex items-center justify-end pt-2 border-t border-surfaceLight-border">
+            <div className="flex items-center justify-end pt-2 border-t border-surfaceLight-border mt-1">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-2.5 rounded-full bg-green-gradient-pill text-white text-[13px] font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer"
+                className="px-6 py-2.5 rounded-full bg-green-gradient-pill text-white text-[13.5px] font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer select-none whitespace-nowrap"
               >
                 Tutup Telematika
               </button>
