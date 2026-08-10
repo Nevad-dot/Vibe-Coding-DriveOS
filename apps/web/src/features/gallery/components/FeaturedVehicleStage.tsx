@@ -43,7 +43,7 @@ export const FeaturedVehicleStage: React.FC = () => {
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={() => setIsViewerOpen(true)}
             type="button"
-            className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white font-medium text-[13.5px] inline-flex items-center gap-2 shadow-sm border border-white/20 transition-all hover:opacity-95 cursor-pointer select-none"
+            className="px-6 py-2.5 rounded-full bg-green-gradient-pill text-white font-medium text-[13.5px] inline-flex items-center gap-2 shadow-sm transition-all hover:opacity-95 cursor-pointer select-none"
           >
             <RotateCw className="w-4 h-4" strokeWidth={1.5} />
             <span>Buka 360° Viewer</span>

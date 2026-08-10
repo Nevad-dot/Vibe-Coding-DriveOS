@@ -144,7 +144,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                   onClick={() => setHeadlightsOn(!headlightsOn)}
                   className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all cursor-pointer inline-flex items-center gap-2 select-none whitespace-nowrap ${
                     headlightsOn
-                      ? "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white shadow-sm"
+                      ? "bg-green-gradient-pill text-white shadow-sm"
                       : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-[#4B8E55]"
                   }`}
                 >
@@ -161,7 +161,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                   onClick={() => setDoorsOpen(!doorsOpen)}
                   className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all cursor-pointer inline-flex items-center gap-2 select-none whitespace-nowrap ${
                     doorsOpen
-                      ? "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white shadow-sm"
+                      ? "bg-green-gradient-pill text-white shadow-sm"
                       : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-[#4B8E55]"
                   }`}
                 >

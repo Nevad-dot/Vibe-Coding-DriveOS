@@ -100,7 +100,7 @@ svg {
 
 /* Brand Green Gradient Helper Utilities */
 .bg-green-gradient-pill {
-  background: linear-gradient(135deg, #33613A 0%, #4B8E55 55%, #6BA374 100%);
+  background: linear-gradient(180deg, #539A5D 0%, #4B8E55 50%, #3D7546 100%);
 }
 
 .text-green-gradient {
