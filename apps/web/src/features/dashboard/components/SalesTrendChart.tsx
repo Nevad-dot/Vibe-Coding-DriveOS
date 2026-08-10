@@ -10,11 +10,11 @@ const BAR_DATA = [
   { month: "Apr", val: 35, height: "50%" },
   { month: "Mei", val: 48, height: "72%" },
   { month: "Jun", val: 56, height: "85%" },
-  { month: "Jul", val: 64, height: "98%", active: true },
+  { month: "Jul", val: 64, height: "98%" },
 ];
 
 export const SalesTrendChart: React.FC = () => {
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(6);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [filterPeriod, setFilterPeriod] = useState<"Bulanan" | "Kuartal">("Bulanan");
 
   return (
@@ -73,7 +73,10 @@ export const SalesTrendChart: React.FC = () => {
       </div>
 
       {/* Bar Chart Area */}
-      <div className="flex items-end justify-between gap-3 h-[200px] pt-4 px-2">
+      <div
+        onMouseLeave={() => setHoveredIdx(null)}
+        className="flex items-end justify-between gap-2 h-[200px] pt-4 px-2"
+      >
         {BAR_DATA.map((bar, idx) => {
           const isSelected = hoveredIdx === idx;
 
@@ -83,19 +86,19 @@ export const SalesTrendChart: React.FC = () => {
               onMouseEnter={() => setHoveredIdx(idx)}
               className="flex-1 flex flex-col items-center gap-2 h-full justify-end cursor-pointer group"
             >
-              {/* Tooltip Value */}
+              {/* Tooltip Value (Hidden when not hovering any bar) */}
               <div
-                className={`text-[11px] font-semibold transition-opacity duration-150 ${
+                className={`text-[11px] font-semibold transition-opacity duration-150 h-4 ${
                   isSelected
                     ? "opacity-100 text-textGray-display font-bold"
-                    : "opacity-0 group-hover:opacity-100 text-textGray-tertiary"
+                    : "opacity-0 text-textGray-tertiary"
                 }`}
               >
                 {bar.val}
               </div>
 
-              {/* Bar Track & Gradient Fill */}
-              <div className="w-full bg-surfaceLight-pearl border border-surfaceLight-border rounded-t-xl h-full flex items-end p-1 overflow-hidden">
+              {/* Bar Track & Gradient Fill (Sleek max-w-[28px] bar width) */}
+              <div className="w-full max-w-[28px] mx-auto bg-surfaceLight-pearl border border-surfaceLight-border rounded-t-xl h-full flex items-end p-0.5 overflow-hidden">
                 <div
                   style={{ height: bar.height }}
                   className={`w-full rounded-t-lg transition-all duration-300 transform-gpu ${

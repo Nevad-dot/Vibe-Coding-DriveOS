@@ -10,7 +10,7 @@ const REVENUE_BAR_DATA = [
   { month: "Apr", fullMonth: "April", val: "Rp 34,5 M", shortVal: "34.5M", height: "79%" },
   { month: "Mei", fullMonth: "Mei", val: "Rp 36,1 M", shortVal: "36.1M", height: "83%" },
   { month: "Jun", fullMonth: "Juni", val: "Rp 38,1 M", shortVal: "38.1M", height: "88%" },
-  { month: "Jul", fullMonth: "Juli", val: "Rp 42,8 M", shortVal: "42.8M", height: "100%", active: true },
+  { month: "Jul", fullMonth: "Juli", val: "Rp 42,8 M", shortVal: "42.8M", height: "100%" },
   { month: "Agu", fullMonth: "Agustus", val: "Rp 39,4 M", shortVal: "39.4M", height: "91%" },
   { month: "Sep", fullMonth: "September", val: "Rp 37,8 M", shortVal: "37.8M", height: "86%" },
   { month: "Okt", fullMonth: "Oktober", val: "Rp 41,2 M", shortVal: "41.2M", height: "95%" },
@@ -19,7 +19,7 @@ const REVENUE_BAR_DATA = [
 ];
 
 export const RevenueTrendChart: React.FC = () => {
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(6);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [filterPeriod, setFilterPeriod] = useState<"12Bulan" | "Kuartal">("12Bulan");
 
   return (
@@ -42,7 +42,7 @@ export const RevenueTrendChart: React.FC = () => {
 
         {/* Header Tools: Period Filter & Selected Metric Tooltip */}
         <div className="flex items-center gap-3">
-          {hoveredIdx !== null && (
+          {hoveredIdx !== null ? (
             <div className="text-right hidden xs:block">
               <span className="text-[11px] text-textGray-tertiary font-normal block leading-tight">
                 {REVENUE_BAR_DATA[hoveredIdx].fullMonth}
@@ -50,6 +50,11 @@ export const RevenueTrendChart: React.FC = () => {
               <span className="text-[14px] font-bold text-brand">
                 {REVENUE_BAR_DATA[hoveredIdx].val}
               </span>
+            </div>
+          ) : (
+            <div className="text-right hidden xs:block opacity-0">
+              <span className="text-[11px] font-normal block leading-tight">Total</span>
+              <span className="text-[14px] font-bold">Rp 0</span>
             </div>
           )}
 
@@ -96,8 +101,11 @@ export const RevenueTrendChart: React.FC = () => {
         </div>
       </div>
 
-      {/* Bar Chart Area matching SalesTrendChart pattern */}
-      <div className="flex items-end justify-between gap-1.5 md:gap-2 h-[200px] pt-4 px-1">
+      {/* Bar Chart Area */}
+      <div
+        onMouseLeave={() => setHoveredIdx(null)}
+        className="flex items-end justify-between gap-1.5 md:gap-2 h-[200px] pt-4 px-1"
+      >
         {REVENUE_BAR_DATA.map((bar, idx) => {
           const isSelected = hoveredIdx === idx;
 
@@ -109,17 +117,17 @@ export const RevenueTrendChart: React.FC = () => {
             >
               {/* Tooltip Value */}
               <div
-                className={`text-[10px] md:text-[11px] font-semibold transition-opacity duration-150 whitespace-nowrap ${
+                className={`text-[10px] md:text-[11px] font-semibold transition-opacity duration-150 whitespace-nowrap h-4 ${
                   isSelected
                     ? "opacity-100 text-textGray-display font-bold"
-                    : "opacity-0 group-hover:opacity-100 text-textGray-tertiary"
+                    : "opacity-0 text-textGray-tertiary"
                 }`}
               >
                 {bar.shortVal}
               </div>
 
-              {/* Bar Track & Gradient Fill (Identical to SalesTrendChart) */}
-              <div className="w-full max-w-[32px] bg-surfaceLight-pearl border border-surfaceLight-border rounded-t-xl h-full flex items-end p-0.5 overflow-hidden">
+              {/* Bar Track & Gradient Fill (Sleek max-w-[24px] md:max-w-[28px] width) */}
+              <div className="w-full max-w-[24px] md:max-w-[28px] mx-auto bg-surfaceLight-pearl border border-surfaceLight-border rounded-t-xl h-full flex items-end p-0.5 overflow-hidden">
                 <motion.div
                   initial={{ height: 0 }}
                   animate={{ height: bar.height }}

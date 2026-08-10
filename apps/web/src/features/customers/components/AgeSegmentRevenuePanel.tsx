@@ -16,7 +16,7 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
       initial={{ opacity: 0, scale: 0.96, y: 22 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.15 }}
-      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col justify-between h-full shadow-xs"
+      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col shadow-xs"
     >
       {/* Header */}
       <div>
@@ -28,10 +28,10 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
         </h3>
       </div>
 
-      {/* Segment Level Progress Bars with Brand Green Gradient Fill */}
-      <div className="flex flex-col justify-between flex-1 pt-6 pb-2 gap-6">
+      {/* Segment Level Progress Bars with Brand Green Gradient Fill (No giant vertical gap) */}
+      <div className="mt-4 flex flex-col gap-3.5">
         {AGE_SEGMENTS.map((item, idx) => (
-          <div key={idx} className="flex flex-col gap-2">
+          <div key={idx} className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between text-[13.5px]">
               <span className="text-textGray-primary font-normal">{item.segment}</span>
               <span className="text-textGray-tertiary font-normal">{item.percent}</span>
