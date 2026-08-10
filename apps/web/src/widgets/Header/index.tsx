@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -16,6 +17,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { applyDriveOSTheme, getSavedThemeMode, ThemeMode } from "@/shared/lib/theme";
+import { GlobalSearchModal } from "./GlobalSearchModal";
+import { NotificationsDrawer } from "./NotificationsDrawer";
 
 export const Header: React.FC = () => {
   const router = useRouter();
@@ -27,6 +30,9 @@ export const Header: React.FC = () => {
   const [userInitials, setUserInitials] = useState("AH");
 
   // Dropdown & Modal States
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [hasUnreadNotifs, setHasUnreadNotifs] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -45,6 +51,18 @@ export const Header: React.FC = () => {
   };
 
   const pageTitle = getPageTitle(pathname);
+
+  // Global Keyboard Shortcut listener for ⌘K / Ctrl+K
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Persistent Theme Mode Initialization & User Profile
   useEffect(() => {
@@ -105,6 +123,7 @@ export const Header: React.FC = () => {
         !showLogoutModal
       ) {
         setIsProfileOpen(false);
+        setIsNotificationsOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -149,18 +168,20 @@ export const Header: React.FC = () => {
 
         {/* Right Tools & Profile */}
         <div className="flex items-center gap-2 relative" ref={dropdownRef}>
-          {/* Search Bar */}
-          <div className="relative flex items-center w-[260px] h-[36px] bg-surfaceLight-pearl border border-surfaceLight-border rounded-full px-3 transition-colors focus-within:border-brand">
-            <Search className="w-[16px] h-[16px] text-textGray-muted shrink-0 mr-2" strokeWidth={1.5} />
-            <input
-              type="text"
-              placeholder="Cari kendaraan, pelanggan..."
-              className="w-full bg-transparent text-[13px] text-textGray-primary placeholder-textGray-placeholder focus:outline-none font-normal pr-2"
-            />
+          {/* Search Bar Button */}
+          <button
+            type="button"
+            onClick={() => setIsSearchOpen(true)}
+            className="relative flex items-center w-[260px] h-[36px] bg-surfaceLight-pearl border border-surfaceLight-border rounded-full px-3 transition-colors hover:border-[#4B8E55] text-left cursor-pointer group select-none"
+          >
+            <Search className="w-[16px] h-[16px] text-textGray-muted group-hover:text-brand shrink-0 mr-2 transition-colors" strokeWidth={1.5} />
+            <span className="w-full bg-transparent text-[13px] text-textGray-placeholder group-hover:text-textGray-primary transition-colors font-normal pr-2 truncate">
+              Cari kendaraan, pelanggan...
+            </span>
             <kbd className="shrink-0 text-[10px] font-medium text-textGray-muted bg-surfaceLight-card border border-surfaceLight-border px-1.5 py-0.5 rounded-md shadow-xs select-none leading-none">
               ⌘K
             </kbd>
-          </div>
+          </button>
 
           {/* Theme Toggle Quick Button */}
           <button
@@ -175,11 +196,27 @@ export const Header: React.FC = () => {
             )}
           </button>
 
-          {/* Notification Bell */}
-          <button className="relative w-9 h-9 flex items-center justify-center text-textGray-secondary hover:text-textGray-primary hover:bg-surfaceLight-pearl rounded-full transition-colors shrink-0">
-            <Bell className="w-[18px] h-[18px]" strokeWidth={1.5} />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
+          {/* Notification Bell Button */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+              className="relative w-9 h-9 flex items-center justify-center text-textGray-secondary hover:text-textGray-primary hover:bg-surfaceLight-pearl rounded-full transition-colors shrink-0 cursor-pointer"
+              title="Notifications"
+            >
+              <Bell className="w-[18px] h-[18px]" strokeWidth={1.5} />
+              {hasUnreadNotifs && (
+                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+              )}
+            </button>
+
+            {/* Notifications Dropdown */}
+            <NotificationsDrawer
+              isOpen={isNotificationsOpen}
+              onClose={() => setIsNotificationsOpen(false)}
+              onClearUnread={() => setHasUnreadNotifs(false)}
+            />
+          </div>
 
           {/* User Avatar - Toggles User Profile Dropdown Menu */}
           <button
@@ -190,7 +227,7 @@ export const Header: React.FC = () => {
             {userInitials}
           </button>
 
-          {/* User Profile Dropdown Menu with Framer Motion Spring Pop-Up */}
+          {/* User Profile Dropdown Menu */}
           <AnimatePresence>
             {isProfileOpen && (
               <motion.div
@@ -293,22 +330,29 @@ export const Header: React.FC = () => {
         </div>
       </header>
 
-      {/* Formal Log Out Confirmation Modal */}
-      <AnimatePresence>
-        {showLogoutModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4"
-          >
+      {/* Global Command Palette Search Modal */}
+      <GlobalSearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
+
+      {/* Formal Log Out Confirmation Modal (createPortal with z-[100]) */}
+      {showLogoutModal && createPortal(
+        <AnimatePresence>
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleCancelLogout}
+              className="fixed inset-0 bg-black/75 backdrop-blur-xs"
+            />
             <motion.div
               initial={{ opacity: 0, scale: 0.88, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 12 }}
               transition={{ type: "spring", stiffness: 420, damping: 28 }}
-              className="bg-surfaceLight-card border border-surfaceLight-border w-full max-w-[420px] rounded-2xl p-6 shadow-2xl flex flex-col gap-5"
+              className="relative bg-surfaceLight-card border border-surfaceLight-border w-full max-w-[420px] rounded-2xl p-6 shadow-2xl flex flex-col gap-5 z-10"
             >
               {/* Modal Header */}
               <div className="flex items-start justify-between gap-4">
@@ -316,6 +360,7 @@ export const Header: React.FC = () => {
                   <AlertCircle className="w-5 h-5" strokeWidth={1.5} />
                 </div>
                 <button
+                  type="button"
                   onClick={handleCancelLogout}
                   className="text-textGray-tertiary hover:text-textGray-primary p-1 rounded-lg hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
                 >
@@ -336,12 +381,14 @@ export const Header: React.FC = () => {
               {/* Modal Action Buttons */}
               <div className="flex items-center justify-end gap-3 pt-2">
                 <button
+                  type="button"
                   onClick={handleCancelLogout}
                   className="px-4 py-2 rounded-full border border-surfaceLight-border text-[13.5px] font-medium text-textGray-primary hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
+                  type="button"
                   onClick={handleConfirmLogout}
                   className="px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-[13.5px] font-medium shadow-xs transition-colors cursor-pointer"
                 >
@@ -349,9 +396,10 @@ export const Header: React.FC = () => {
                 </button>
               </div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 };
