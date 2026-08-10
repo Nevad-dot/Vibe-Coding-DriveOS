@@ -33,11 +33,11 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({ isOpen
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: -8 }}
           transition={{ type: "spring", stiffness: 420, damping: 28 }}
-          className="absolute right-0 top-[48px] w-[340px] bg-surfaceLight-card border border-surfaceLight-border rounded-2xl shadow-xl p-3 z-50 flex flex-col gap-2 origin-top-right"
+          className="absolute right-0 top-[48px] w-[360px] md:w-[380px] bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl p-4 z-50 flex flex-col gap-3 origin-top-right"
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-2 py-1.5 border-b border-surfaceLight-border">
-            <span className="font-display font-semibold text-[14.5px] text-textGray-display flex items-center gap-2">
+          <div className="flex items-center justify-between pb-2 border-b border-surfaceLight-border">
+            <span className="font-display font-semibold text-[15px] text-textGray-display flex items-center gap-2">
               <Bell className="w-4 h-4 text-brand" />
               Notifikasi System
             </span>
@@ -45,7 +45,7 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({ isOpen
             <button
               type="button"
               onClick={handleMarkAllRead}
-              className="text-[11.5px] font-medium text-brand hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-[12px] font-medium text-brand hover:underline flex items-center gap-1 cursor-pointer shrink-0 whitespace-nowrap"
             >
               <Check className="w-3.5 h-3.5" />
               <span>Tandai dibaca</span>
@@ -53,28 +53,28 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({ isOpen
           </div>
 
           {/* List */}
-          <div className="max-h-[300px] overflow-y-auto flex flex-col gap-1.5 pr-0.5">
+          <div className="max-h-[320px] overflow-y-auto flex flex-col gap-2 pr-1">
             {items.map((n) => {
               const Icon = n.icon;
               return (
                 <div
                   key={n.id}
-                  className={`p-2.5 rounded-xl border transition-colors flex items-start gap-3 ${
+                  className={`p-3 rounded-2xl border transition-colors flex items-start gap-3 ${
                     n.unread
-                      ? "bg-surfaceLight-pearl/80 border-[#4B8E55]/30"
-                      : "bg-surfaceLight-card border-surfaceLight-border opacity-75"
+                      ? "bg-surfaceLight-pearl border-surfaceLight-border shadow-xs"
+                      : "bg-surfaceLight-card border-surfaceLight-border opacity-70"
                   }`}
                 >
-                  <div className="w-8 h-8 rounded-lg bg-[#4B8E55]/15 text-[#4B8E55] flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-9 h-9 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border text-brand flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
                     <Icon className="w-4 h-4" strokeWidth={1.5} />
                   </div>
 
-                  <div className="flex flex-col gap-0.5 flex-1">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[13px] font-bold text-textGray-display">{n.title}</span>
-                      <span className="text-[10.5px] text-textGray-tertiary">{n.time}</span>
+                  <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[13.5px] font-bold text-textGray-display truncate">{n.title}</span>
+                      <span className="text-[11px] text-textGray-tertiary shrink-0">{n.time}</span>
                     </div>
-                    <p className="text-[12px] text-textGray-tertiary leading-snug">{n.desc}</p>
+                    <p className="text-[12px] text-textGray-tertiary leading-relaxed font-normal">{n.desc}</p>
                   </div>
                 </div>
               );

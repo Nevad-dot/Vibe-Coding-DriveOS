@@ -172,13 +172,13 @@ export const Header: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsSearchOpen(true)}
-            className="relative flex items-center w-[260px] h-[36px] bg-surfaceLight-pearl border border-surfaceLight-border rounded-full px-3 transition-colors hover:border-[#4B8E55] text-left cursor-pointer group select-none"
+            className="relative flex items-center w-[260px] h-[36px] bg-surfaceLight-pearl border border-surfaceLight-border rounded-full px-3.5 transition-all hover:border-[#4B8E55] text-left cursor-pointer group select-none shadow-xs"
           >
-            <Search className="w-[16px] h-[16px] text-textGray-muted group-hover:text-brand shrink-0 mr-2 transition-colors" strokeWidth={1.5} />
-            <span className="w-full bg-transparent text-[13px] text-textGray-placeholder group-hover:text-textGray-primary transition-colors font-normal pr-2 truncate">
+            <Search className="w-[15px] h-[15px] text-textGray-tertiary shrink-0 mr-2.5 transition-colors group-hover:text-brand" strokeWidth={1.5} />
+            <span className="w-full bg-transparent text-[13px] text-textGray-placeholder font-normal pr-2 truncate">
               Cari kendaraan, pelanggan...
             </span>
-            <kbd className="shrink-0 text-[10px] font-medium text-textGray-muted bg-surfaceLight-card border border-surfaceLight-border px-1.5 py-0.5 rounded-md shadow-xs select-none leading-none">
+            <kbd className="shrink-0 text-[10px] font-medium text-textGray-tertiary bg-surfaceLight-card border border-surfaceLight-border px-1.5 py-0.5 rounded-md shadow-xs select-none leading-none">
               ⌘K
             </kbd>
           </button>
