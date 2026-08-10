@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 const BAR_DATA = [
   { month: "Jan", val: 32, height: "45%" },
@@ -29,25 +30,43 @@ export const SalesTrendChart: React.FC = () => {
           </h3>
         </div>
 
-        <div className="flex items-center gap-1 bg-surfaceLight-pearl border border-surfaceLight-border p-1 rounded-full text-[12px] font-medium text-textGray-secondary">
+        {/* Sliding Filter Pill Controls */}
+        <div className="relative flex items-center bg-surfaceLight-pearl border border-surfaceLight-border p-1 rounded-full text-[12px] font-medium text-textGray-secondary">
           <button
+            type="button"
             onClick={() => setFilterPeriod("Bulanan")}
-            className={`px-3 py-1 rounded-full transition-all duration-150 cursor-pointer ${
+            className={`relative z-10 px-3.5 py-1 rounded-full transition-colors cursor-pointer text-[12px] font-medium select-none ${
               filterPeriod === "Bulanan"
-                ? "bg-surfaceLight-card border border-surfaceLight-border text-textGray-display shadow-xs font-semibold"
-                : "hover:text-textGray-primary"
+                ? "text-textGray-display font-semibold"
+                : "text-textGray-tertiary hover:text-textGray-primary"
             }`}
           >
+            {filterPeriod === "Bulanan" && (
+              <motion.div
+                layoutId="activeSalesPill"
+                transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                className="absolute inset-0 bg-surfaceLight-card border border-surfaceLight-border rounded-full shadow-xs -z-10"
+              />
+            )}
             Bulanan
           </button>
+
           <button
+            type="button"
             onClick={() => setFilterPeriod("Kuartal")}
-            className={`px-3 py-1 rounded-full transition-all duration-150 cursor-pointer ${
+            className={`relative z-10 px-3.5 py-1 rounded-full transition-colors cursor-pointer text-[12px] font-medium select-none ${
               filterPeriod === "Kuartal"
-                ? "bg-surfaceLight-card border border-surfaceLight-border text-textGray-display shadow-xs font-semibold"
-                : "hover:text-textGray-primary"
+                ? "text-textGray-display font-semibold"
+                : "text-textGray-tertiary hover:text-textGray-primary"
             }`}
           >
+            {filterPeriod === "Kuartal" && (
+              <motion.div
+                layoutId="activeSalesPill"
+                transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                className="absolute inset-0 bg-surfaceLight-card border border-surfaceLight-border rounded-full shadow-xs -z-10"
+              />
+            )}
             Kuartal
           </button>
         </div>
