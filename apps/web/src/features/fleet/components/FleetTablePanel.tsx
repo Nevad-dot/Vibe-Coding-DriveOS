@@ -1,8 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Wrench, Phone, Eye } from "lucide-react";
+import { ContactDriverModal } from "./ContactDriverModal";
+import { VehicleTelematicsModal } from "./VehicleTelematicsModal";
+import { ScheduleServiceModal } from "@/features/service/components/ScheduleServiceModal";
 
 const FLEET_UNITS = [
   {
@@ -58,93 +61,139 @@ const FLEET_UNITS = [
 ];
 
 export const FleetTablePanel: React.FC = () => {
+  const [selectedDriverUnit, setSelectedDriverUnit] = useState<typeof FLEET_UNITS[0] | null>(null);
+  const [selectedTelematicsUnit, setSelectedTelematicsUnit] = useState<typeof FLEET_UNITS[0] | null>(null);
+  const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.96, y: 22 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.25 }}
-      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col shadow-xs"
-    >
-      {/* Header */}
-      <div className="mb-5 flex items-center justify-between">
-        <div>
-          <span className="text-[11px] font-medium text-textGray-muted uppercase tracking-[0.08em] block mb-1">
-            ARMADA KENDARAAN
+    <>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 22 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.25 }}
+        className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col shadow-xs"
+      >
+        {/* Header */}
+        <div className="mb-5 flex items-center justify-between">
+          <div>
+            <span className="text-[11px] font-medium text-textGray-muted uppercase tracking-[0.08em] block mb-1">
+              ARMADA KENDARAAN
+            </span>
+            <h3 className="text-[18px] font-display font-semibold text-textGray-display">
+              Daftar Unit Fleet & Status Servis
+            </h3>
+          </div>
+
+          <span className="text-[13px] text-textGray-tertiary font-normal">
+            Showing 5 of 126 active vehicles
           </span>
-          <h3 className="text-[18px] font-display font-semibold text-textGray-display">
-            Daftar Unit Fleet & Status Servis
-          </h3>
         </div>
 
-        <span className="text-[13px] text-textGray-tertiary font-normal">
-          Showing 5 of 126 active vehicles
-        </span>
-      </div>
-
-      {/* Fleet Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-[13.5px]">
-          <thead>
-            <tr className="border-b border-surfaceLight-border text-[11px] font-semibold text-textGray-muted uppercase tracking-wider">
-              <th className="pb-3 font-medium">Kendaraan & Plat</th>
-              <th className="pb-3 font-medium">Cabang</th>
-              <th className="pb-3 font-medium">Status Operasional</th>
-              <th className="pb-3 font-medium">Odometer</th>
-              <th className="pb-3 font-medium">Jadwal Servis</th>
-              <th className="pb-3 font-medium text-right">Aksi Cepat</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-surfaceLight-border">
-            {FLEET_UNITS.map((unit, idx) => (
-              <tr key={idx} className="group hover:bg-surfaceLight-pearl/60 transition-colors">
-                <td className="py-3.5 pr-4">
-                  <div className="flex flex-col">
-                    <span className="font-semibold text-textGray-display leading-snug">
-                      {unit.plate}
-                    </span>
-                    <span className="text-[12px] text-textGray-tertiary font-normal">
-                      {unit.model}
-                    </span>
-                  </div>
-                </td>
-
-                <td className="py-3.5 px-2 text-textGray-primary font-normal">
-                  {unit.branch}
-                </td>
-
-                <td className="py-3.5 px-2">
-                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${unit.statusColor}`}>
-                    {unit.status}
-                  </span>
-                </td>
-
-                <td className="py-3.5 px-2 font-semibold text-textGray-display">
-                  {unit.odo}
-                </td>
-
-                <td className="py-3.5 px-2 text-textGray-tertiary font-normal">
-                  {unit.nextService}
-                </td>
-
-                <td className="py-3.5 pl-4 text-right">
-                  <div className="flex items-center justify-end gap-1.5">
-                    <button className="p-1.5 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-brand hover:border-brand transition-colors" title="Contact Driver">
-                      <Phone className="w-4 h-4" strokeWidth={1.5} />
-                    </button>
-                    <button className="p-1.5 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-brand hover:border-brand transition-colors" title="Schedule Maintenance">
-                      <Wrench className="w-4 h-4" strokeWidth={1.5} />
-                    </button>
-                    <button className="p-1.5 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-brand hover:border-brand transition-colors" title="View Telematics">
-                      <Eye className="w-4 h-4" strokeWidth={1.5} />
-                    </button>
-                  </div>
-                </td>
+        {/* Fleet Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-[13.5px]">
+            <thead>
+              <tr className="border-b border-surfaceLight-border text-[11px] font-semibold text-textGray-muted uppercase tracking-wider">
+                <th className="pb-3 font-medium">Kendaraan & Plat</th>
+                <th className="pb-3 font-medium">Cabang</th>
+                <th className="pb-3 font-medium">Status Operasional</th>
+                <th className="pb-3 font-medium">Odometer</th>
+                <th className="pb-3 font-medium">Jadwal Servis</th>
+                <th className="pb-3 font-medium text-right">Aksi Cepat</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </motion.div>
+            </thead>
+            <tbody className="divide-y divide-surfaceLight-border">
+              {FLEET_UNITS.map((unit, idx) => (
+                <tr key={idx} className="group hover:bg-surfaceLight-pearl/60 transition-colors">
+                  <td className="py-3.5 pr-4">
+                    <div className="flex flex-col">
+                      <span className="font-semibold text-textGray-display leading-snug">
+                        {unit.plate}
+                      </span>
+                      <span className="text-[12px] text-textGray-tertiary font-normal">
+                        {unit.model}
+                      </span>
+                    </div>
+                  </td>
+
+                  <td className="py-3.5 px-2 text-textGray-primary font-normal">
+                    {unit.branch}
+                  </td>
+
+                  <td className="py-3.5 px-2">
+                    <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${unit.statusColor}`}>
+                      {unit.status}
+                    </span>
+                  </td>
+
+                  <td className="py-3.5 px-2 font-semibold text-textGray-display">
+                    {unit.odo}
+                  </td>
+
+                  <td className="py-3.5 px-2 text-textGray-tertiary font-normal">
+                    {unit.nextService}
+                  </td>
+
+                  <td className="py-3.5 pl-4 text-right">
+                    <div className="flex items-center justify-end gap-1.5">
+                      {/* Phone Icon -> Contact Driver */}
+                      <button
+                        type="button"
+                        onClick={() => setSelectedDriverUnit(unit)}
+                        className="p-2 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
+                        title="Hubungi Pengemudi"
+                      >
+                        <Phone className="w-4 h-4" strokeWidth={1.5} />
+                      </button>
+
+                      {/* Wrench Icon -> Schedule Maintenance */}
+                      <button
+                        type="button"
+                        onClick={() => setIsServiceModalOpen(true)}
+                        className="p-2 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
+                        title="Jadwalkan Servis"
+                      >
+                        <Wrench className="w-4 h-4" strokeWidth={1.5} />
+                      </button>
+
+                      {/* Eye Icon -> View Telematics */}
+                      <button
+                        type="button"
+                        onClick={() => setSelectedTelematicsUnit(unit)}
+                        className="p-2 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
+                        title="Lihat Telematika"
+                      >
+                        <Eye className="w-4 h-4" strokeWidth={1.5} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </motion.div>
+
+      {/* Driver Contact Modal */}
+      <ContactDriverModal
+        isOpen={selectedDriverUnit !== null}
+        onClose={() => setSelectedDriverUnit(null)}
+        unit={selectedDriverUnit}
+      />
+
+      {/* Telematics Modal */}
+      <VehicleTelematicsModal
+        isOpen={selectedTelematicsUnit !== null}
+        onClose={() => setSelectedTelematicsUnit(null)}
+        unit={selectedTelematicsUnit}
+      />
+
+      {/* Schedule Service Maintenance Modal */}
+      <ScheduleServiceModal
+        isOpen={isServiceModalOpen}
+        onClose={() => setIsServiceModalOpen(false)}
+      />
+    </>
   );
 };
 
