@@ -73,7 +73,7 @@ export const TopConsultantsList: React.FC = () => {
             </div>
 
             {/* Level Bar Container */}
-            <div className="w-full h-2 bg-surfaceLight-pearl border border-surfaceLight-border rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-[#272A34] rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: person.fillWidth }}

@@ -1,8 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Default SVG constraints to prevent raw SVG scaling before CSS hydration */
+svg {
+  max-width: 100%;
+}
 
 :root {
   /* Light Mode Tokens (Source: /Color Mode/Light Mode.tokens.json) */
