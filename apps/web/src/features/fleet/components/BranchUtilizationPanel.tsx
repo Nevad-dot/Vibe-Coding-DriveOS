@@ -40,7 +40,7 @@ export const BranchUtilizationPanel: React.FC = () => {
             </div>
 
             {/* Level Bar Track */}
-            <div className="w-full h-2 bg-[#E9EAEB] dark:bg-[#272A34] rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-surfaceLight-pearl rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: item.fillWidth }}
