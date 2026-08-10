@@ -47,16 +47,16 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-black/75 backdrop-blur-xs"
           />
 
-          {/* Modal Container */}
+          {/* Modal Container with Max Height Safety & Responsive Scroll */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[580px] bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl overflow-hidden z-10 p-6 md:p-8 flex flex-col gap-6"
+            className="relative w-full max-w-[560px] max-h-[90vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl overflow-hidden z-10 p-6 md:p-8 flex flex-col gap-5"
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between">
@@ -78,16 +78,16 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
               </button>
             </div>
 
-            {/* Vehicle Hero Image Presentation */}
-            <div className="relative w-full h-[240px] rounded-2xl bg-gray-100 dark:bg-gray-800/40 border border-surfaceLight-border overflow-hidden">
+            {/* Vehicle Studio Presentation Container (Sleek aspect ratio & object contain) */}
+            <div className="relative w-full h-[220px] rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border overflow-hidden flex items-center justify-center p-3">
               <Image
                 src={vehicle.image}
                 alt={vehicle.name}
                 fill
-                className="object-cover"
+                className="object-contain p-2"
                 priority
               />
-              <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border text-[12px] font-semibold text-textGray-display backdrop-blur-xs shadow-xs">
+              <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[12px] font-semibold text-textGray-display shadow-xs z-10">
                 {vehicle.units} Tersedia
               </span>
             </div>
@@ -107,15 +107,15 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
               </div>
             ) : (
               <>
-                {/* Price & Location Metadata */}
+                {/* Price & Location Metadata Box */}
                 <div className="flex items-center justify-between p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border">
                   <div>
-                    <span className="text-[11px] text-textGray-tertiary font-medium block">HARGA OTR SHOWROOM</span>
+                    <span className="text-[11px] text-textGray-tertiary font-medium block uppercase tracking-wide">HARGA OTR SHOWROOM</span>
                     <span className="text-[22px] font-bold text-brand">{vehicle.price}</span>
                   </div>
 
                   <div className="text-right">
-                    <span className="text-[11px] text-textGray-tertiary font-medium block flex items-center justify-end gap-1">
+                    <span className="text-[11px] text-textGray-tertiary font-medium block uppercase tracking-wide flex items-center justify-end gap-1">
                       <MapPin className="w-3 h-3 text-textGray-tertiary" /> CABANG LOKASI
                     </span>
                     <span className="text-[13.5px] font-semibold text-textGray-display">Jakarta Pusat & Selatan</span>
@@ -123,25 +123,25 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
                 </div>
 
                 {/* Specs Highlights */}
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="p-3 rounded-xl bg-surfaceLight-pearl/60 border border-surfaceLight-border flex flex-col gap-1">
-                    <div className="flex items-center gap-1 text-textGray-tertiary text-[11px]">
+                <div className="grid grid-cols-3 gap-2.5">
+                  <div className="p-3 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1">
+                    <div className="flex items-center gap-1 text-textGray-tertiary text-[11px] font-medium uppercase tracking-wide">
                       <Gauge className="w-3.5 h-3.5 text-brand" />
                       <span>PERFORMA</span>
                     </div>
                     <span className="text-[13px] font-semibold text-textGray-display">High Output</span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-surfaceLight-pearl/60 border border-surfaceLight-border flex flex-col gap-1">
-                    <div className="flex items-center gap-1 text-textGray-tertiary text-[11px]">
+                  <div className="p-3 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1">
+                    <div className="flex items-center gap-1 text-textGray-tertiary text-[11px] font-medium uppercase tracking-wide">
                       <ShieldCheck className="w-3.5 h-3.5 text-brand" />
                       <span>GARANSI</span>
                     </div>
                     <span className="text-[13px] font-semibold text-textGray-display">3 Thn Resmi</span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-surfaceLight-pearl/60 border border-surfaceLight-border flex flex-col gap-1">
-                    <div className="flex items-center gap-1 text-textGray-tertiary text-[11px]">
+                  <div className="p-3 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1">
+                    <div className="flex items-center gap-1 text-textGray-tertiary text-[11px] font-medium uppercase tracking-wide">
                       <TrendingUp className="w-3.5 h-3.5 text-brand" />
                       <span>MINAT LEAD</span>
                     </div>
@@ -150,11 +150,11 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
                 </div>
 
                 {/* Footer Action Buttons */}
-                <div className="flex items-center justify-between gap-3 pt-2 border-t border-surfaceLight-border">
+                <div className="flex items-center justify-between gap-3 pt-2 border-t border-surfaceLight-border mt-1">
                   <Link
                     href="/sales"
                     onClick={onClose}
-                    className="px-4 py-2.5 rounded-xl border border-surfaceLight-border text-textGray-secondary hover:text-textGray-display hover:bg-surfaceLight-pearl text-[13px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                    className="px-4 py-2.5 rounded-full border border-surfaceLight-border bg-surfaceLight-card text-textGray-display hover:bg-surfaceLight-pearl text-[13px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5 shadow-xs"
                   >
                     <TrendingUp className="w-4 h-4 text-textGray-tertiary" />
                     <span>Lihat Sales Pipeline</span>
@@ -163,7 +163,7 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
                   <button
                     type="button"
                     onClick={handleOrderUnit}
-                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white text-[13px] font-semibold hover:opacity-90 transition-opacity shadow-sm cursor-pointer inline-flex items-center gap-1.5"
+                    className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white text-[13px] font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer inline-flex items-center gap-1.5 select-none"
                   >
                     <Sparkles className="w-4 h-4" strokeWidth={1.5} />
                     <span>Pesan Unit Ini</span>

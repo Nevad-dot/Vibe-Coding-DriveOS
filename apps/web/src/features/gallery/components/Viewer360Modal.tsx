@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { X, RotateCw, Sun, DoorClosed, Sparkles, Check } from "lucide-react";
+import { X, RotateCw, Sun, DoorClosed, Check } from "lucide-react";
 
 interface Viewer360ModalProps {
   isOpen: boolean;
@@ -50,16 +50,16 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-md"
+            className="fixed inset-0 bg-black/75 backdrop-blur-xs"
           />
 
-          {/* Modal Container */}
+          {/* Modal Container with Adaptive Dark/Light Mode Design Tokens */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[860px] bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl overflow-hidden z-10 p-6 md:p-8 flex flex-col gap-6"
+            className="relative w-full max-w-[820px] max-h-[92vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl overflow-hidden z-10 p-6 md:p-8 flex flex-col gap-6"
           >
             {/* Header Controls */}
             <div className="flex items-center justify-between">
@@ -81,40 +81,40 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
               </button>
             </div>
 
-            {/* 360 View Stage */}
-            <div className="relative w-full h-[320px] md:h-[400px] rounded-2xl bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-900/80 dark:to-gray-950 border border-surfaceLight-border overflow-hidden flex items-center justify-center">
-              {/* Headlights Effect */}
+            {/* 360 View Stage with Seamless Theme Adaptability */}
+            <div className="relative w-full h-[300px] md:h-[380px] rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border overflow-hidden flex items-center justify-center p-4">
+              {/* Headlights Glow Effect */}
               {headlightsOn && (
                 <div className="absolute inset-0 bg-amber-400/10 backdrop-brightness-110 transition-all pointer-events-none z-10" />
               )}
 
-              {/* Rotatable Vehicle Image */}
+              {/* Rotatable Vehicle Image with Object Contain */}
               <motion.div
                 animate={{ rotateY: rotationAngle }}
                 transition={{ type: "spring", stiffness: 180, damping: 22 }}
-                className="relative w-full h-full max-w-[680px] max-h-[360px]"
+                className="relative w-full h-full max-w-[640px] max-h-[340px]"
               >
                 <Image
                   src="/images/gallery/porsche_gt3.png"
                   alt={vehicleName}
                   fill
-                  className="object-contain transform-gpu p-4"
+                  className="object-contain transform-gpu p-2"
                   priority
                 />
               </motion.div>
 
               {/* Angle Indicator Badge */}
-              <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border text-[12px] font-medium text-textGray-display backdrop-blur-xs flex items-center gap-1.5 shadow-xs">
+              <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[12px] font-medium text-textGray-display shadow-xs flex items-center gap-1.5 z-20">
                 <RotateCw className="w-3.5 h-3.5 text-brand" strokeWidth={1.5} />
                 <span>Angle: {rotationAngle}°</span>
               </div>
 
               {/* Controls Toolbar */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 px-4 py-2 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border backdrop-blur-md shadow-lg z-20">
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-2 rounded-full bg-surfaceLight-card border border-surfaceLight-border shadow-lg z-20">
                 <button
                   type="button"
                   onClick={handleRotate}
-                  className="px-3.5 py-1.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[12.5px] font-medium hover:border-brand transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[12.5px] font-medium hover:border-brand transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none"
                 >
                   <RotateCw className="w-3.5 h-3.5 text-brand" />
                   <span>Putar 90°</span>
@@ -123,7 +123,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setHeadlightsOn(!headlightsOn)}
-                  className={`px-3.5 py-1.5 rounded-full border text-[12.5px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5 ${
+                  className={`px-3.5 py-1.5 rounded-full border text-[12.5px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none ${
                     headlightsOn
                       ? "bg-amber-400/20 border-amber-400 text-amber-500"
                       : "bg-surfaceLight-pearl border-surfaceLight-border text-textGray-display hover:border-brand"
@@ -136,7 +136,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setDoorsOpen(!doorsOpen)}
-                  className={`px-3.5 py-1.5 rounded-full border text-[12.5px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5 ${
+                  className={`px-3.5 py-1.5 rounded-full border text-[12.5px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none ${
                     doorsOpen
                       ? "bg-emerald-400/20 border-emerald-400 text-emerald-500"
                       : "bg-surfaceLight-pearl border-surfaceLight-border text-textGray-display hover:border-brand"
@@ -149,7 +149,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
             </div>
 
             {/* Bottom Panel: Exterior Color Picker & Specs */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center pt-1">
               {/* Color Selector */}
               <div className="flex flex-col gap-2">
                 <span className="text-[12px] font-medium text-textGray-primary">
