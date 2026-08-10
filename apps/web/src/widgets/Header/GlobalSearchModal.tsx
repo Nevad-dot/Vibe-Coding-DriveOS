@@ -4,22 +4,45 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, Car, Users, TrendingUp, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import { Search, X, Car, Users, TrendingUp, ArrowRight, ShieldCheck, Sparkles, Wrench, DollarSign, FileText, Package } from "lucide-react";
 
 interface GlobalSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+// Curated Comprehensive Search Index covering key items across all modules
 const SEARCH_DATABASE = [
-  { id: "s1", type: "Vehicle", title: "Porsche 911 GT3", subtitle: "Rp 5,8 M · 3 Unit Tersedia · Showroom Floor", path: "/gallery", icon: Car },
-  { id: "s2", type: "Vehicle", title: "BMW M5 Competition", subtitle: "Rp 3,4 M · 5 Unit Tersedia · Ready Stock", path: "/gallery", icon: Car },
-  { id: "s3", type: "Customer", title: "Bpk. Hendra Wijaya", subtitle: "PT Trans Logistik · Hot Lead VIP", path: "/customers", icon: Users },
-  { id: "s4", type: "Customer", title: "Ibu Sinta Pramudita", subtitle: "Customer Aktif · Jakarta Selatan", path: "/customers", icon: Users },
-  { id: "s5", type: "Sales Deal", title: "Deal #1084 — Porsche 911 GT3", subtitle: "Rp 5.800.000.000 · Negosiasi SPK", path: "/sales", icon: TrendingUp },
-  { id: "s6", type: "Sales Deal", title: "Deal #1085 — BMW X7 M Sport", subtitle: "Rp 2.450.000.000 · SPK Diterbitkan", path: "/sales", icon: TrendingUp },
-  { id: "s7", type: "Page", title: "Fleet & Logistics Intelligence", subtitle: "126 Unit Active · Real-time GPS Tracking", path: "/fleet", icon: ShieldCheck },
-  { id: "s8", type: "Page", title: "Service & Workshop Management", subtitle: "18 Bay Active · Booking Servis", path: "/service", icon: ShieldCheck },
+  // 1. Vehicles
+  { id: "v1", type: "Kendaraan", title: "Porsche 911 GT3", subtitle: "Rp 5,8 M · 3 Unit Tersedia · Showroom Jakarta", path: "/gallery", icon: Car, keywords: "porsche gt3 mobil galeri showroom" },
+  { id: "v2", type: "Kendaraan", title: "BMW M5 Competition", subtitle: "Rp 3,4 M · 5 Unit Tersedia · Ready Stock", path: "/gallery", icon: Car, keywords: "bmw m5 sedan mobil galeri" },
+  { id: "v3", type: "Kendaraan", title: "Mercedes-AMG GT", subtitle: "Rp 4,9 M · 2 Unit Tersedia · Coupe", path: "/gallery", icon: Car, keywords: "mercedes amg gt coupe" },
+  { id: "v4", type: "Kendaraan", title: "Audi RS e-tron GT", subtitle: "Rp 4,1 M · 4 Unit Tersedia · EV Electric", path: "/gallery", icon: Car, keywords: "audi etron listrik ev" },
+
+  // 2. Customers
+  { id: "c1", type: "Pelanggan", title: "Bpk. Hendra Wijaya", subtitle: "PT Trans Logistik · Hot Lead VIP · CSAT 5.0", path: "/customers", icon: Users, keywords: "hendra pt trans logistik customer vip" },
+  { id: "c2", type: "Pelanggan", title: "Ibu Sinta Pramudita", subtitle: "Customer Aktif · Jakarta Selatan", path: "/customers", icon: Users, keywords: "sinta pelanggan aktif" },
+  { id: "c3", type: "Pelanggan", title: "PT Astra Logistik", subtitle: "Corporate Fleet Account · 12 Unit Active", path: "/customers", icon: Users, keywords: "astra armada corporate" },
+
+  // 3. Sales Deals
+  { id: "d1", type: "Sales Deal", title: "Deal #1084 — Porsche 911 GT3", subtitle: "Rp 5.800.000.000 · Tahap Negosiasi SPK", path: "/sales", icon: TrendingUp, keywords: "deal porsche 911 negosiasi" },
+  { id: "d2", type: "Sales Deal", title: "Deal #1085 — BMW X7 M Sport", subtitle: "Rp 2.450.000.000 · SPK Diterbitkan", path: "/sales", icon: TrendingUp, keywords: "deal bmw x7 spk" },
+
+  // 4. Inventory & Restock
+  { id: "i1", type: "Inventory", title: "Restock Order #RST-2026-09", subtitle: "Porsche 911 GT3 · 3 Unit Restock Pending", path: "/inventory", icon: Package, keywords: "restock order stok inventory" },
+  { id: "i2", type: "Inventory", title: "Stok Showroom Jakarta Pusat", subtitle: "14 Unit Available · High Turnover", path: "/inventory", icon: Package, keywords: "stok cabang jakarta pusat" },
+
+  // 5. Fleet & Telematics
+  { id: "f1", type: "Fleet Unit", title: "Unit B 1088 RFS — BMW X7", subtitle: "Driver Arif · On-Route Tol Dalam Kota", path: "/fleet", icon: ShieldCheck, keywords: "plat b1088rfs bmw fleet driver arif" },
+  { id: "f2", type: "Fleet Unit", title: "Unit B 2291 TNG — Mercedes S 450", subtitle: "In Service Workshop · Servis Rutin", path: "/fleet", icon: ShieldCheck, keywords: "plat b2291tng mercedes fleet" },
+
+  // 6. Service & Workshop
+  { id: "s1", type: "Servis", title: "Bay 01 Express — Servis Berkala", subtitle: "BMW X7 (B 1088 RFS) · Jam 09:00 WIB", path: "/service", icon: Wrench, keywords: "bay 01 servis bengkel workshop" },
+  { id: "s2", type: "Servis", title: "Bay 02 Heavy Repair — Inspeksi Mesin", subtitle: "Porsche Cayenne (D 1402 ABD)", path: "/service", icon: Wrench, keywords: "bay 02 perbaikan porsche" },
+
+  // 7. Financial & Reports
+  { id: "fn1", type: "Keuangan", title: "Laporan Financial Q3 2026", subtitle: "Revenue Rp 42,8 M · Margin 18,4%", path: "/financial", icon: DollarSign, keywords: "keuangan p&l margin revenue" },
+  { id: "rp1", type: "Laporan", title: "Executive Summary Bulanan", subtitle: "Ringkasan Performa Direksi & Investor", path: "/reports", icon: FileText, keywords: "laporan executive summary pdf excel" },
 ];
 
 export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, onClose }) => {
@@ -47,12 +70,13 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
   if (!mounted) return null;
 
   const filteredResults = query.trim() === ""
-    ? SEARCH_DATABASE.slice(0, 5)
+    ? SEARCH_DATABASE.slice(0, 6)
     : SEARCH_DATABASE.filter(
         (item) =>
           item.title.toLowerCase().includes(query.toLowerCase()) ||
           item.subtitle.toLowerCase().includes(query.toLowerCase()) ||
-          item.type.toLowerCase().includes(query.toLowerCase())
+          item.type.toLowerCase().includes(query.toLowerCase()) ||
+          item.keywords.toLowerCase().includes(query.toLowerCase())
       );
 
   const handleSelect = (path: string) => {
@@ -73,7 +97,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
             className="fixed inset-0 bg-black/75 backdrop-blur-xs"
           />
 
-          {/* Search Command Palette Container with Consistent Spacing Grid */}
+          {/* Search Command Palette Container */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: -16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -87,7 +111,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
               <input
                 type="text"
                 autoFocus
-                placeholder="Cari kendaraan, pelanggan, deal, atau halaman..."
+                placeholder="Cari mobil, pelanggan, deal, plat armada, atau servis..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="w-full bg-transparent text-[15px] font-medium text-textGray-display placeholder:text-textGray-tertiary/60 focus:outline-none"
@@ -106,15 +130,15 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
               </kbd>
             </div>
 
-            {/* Results Section with Uniform Padding & Gaps */}
-            <div className="flex flex-col max-h-[380px] overflow-y-auto">
+            {/* Results Section */}
+            <div className="flex flex-col max-h-[400px] overflow-y-auto">
               <span className="px-5 pt-3.5 pb-2 text-[11px] font-semibold text-textGray-muted uppercase tracking-wider block">
-                {query.trim() ? "HASIL PENCARIAN" : "REKOMENDASI CEPAT"}
+                {query.trim() ? `HASIL PENCARIAN (${filteredResults.length})` : "ITEMS & DATA UTAMA"}
               </span>
 
               {filteredResults.length === 0 ? (
                 <div className="py-10 text-center text-[14px] text-textGray-tertiary font-medium">
-                  Tidak ditemukan hasil untuk &quot;{query}&quot;
+                  Tidak ditemukan data untuk &quot;{query}&quot;
                 </div>
               ) : (
                 <div className="px-3 pb-3 flex flex-col gap-2">
@@ -158,9 +182,9 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
             <div className="px-5 py-3.5 bg-surfaceLight-pearl border-t border-surfaceLight-border flex items-center justify-between text-[12px] text-textGray-tertiary">
               <span className="flex items-center gap-1.5 font-medium">
                 <Sparkles className="w-3.5 h-3.5 text-brand" />
-                Navigasi instan dengan ⌘K / Ctrl+K
+                Cari instan data kendaraan, customer & deal
               </span>
-              <span className="font-semibold text-brand">DriveOS Intelligence Engine</span>
+              <span className="font-semibold text-brand">DriveOS Search Engine</span>
             </div>
           </motion.div>
         </div>
