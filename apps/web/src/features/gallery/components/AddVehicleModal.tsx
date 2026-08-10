@@ -216,7 +216,7 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({ isOpen, onClos
                     whileTap={{ scale: 0.9 }}
                     className={`w-5 h-5 rounded-full transition-all duration-200 flex items-center justify-center border shrink-0 ${
                       has360
-                        ? "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] border-transparent shadow-xs"
+                        ? "bg-[#4B8E55] border-[#4B8E55] shadow-xs"
                         : "bg-surfaceLight-pearl border-surfaceLight-border group-hover:border-[#4B8E55]"
                     }`}
                   >
