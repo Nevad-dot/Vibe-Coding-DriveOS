@@ -53,7 +53,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
             className="fixed inset-0 bg-black/75 backdrop-blur-xs"
           />
 
-          {/* Modal Container with Adaptive Dark/Light Mode Design Tokens */}
+          {/* Modal Container */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -81,17 +81,28 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
               </button>
             </div>
 
-            {/* 360 View Stage with Seamless Theme Adaptability */}
+            {/* 360 View Stage with Animated Glow Effects */}
             <div className="relative w-full h-[300px] md:h-[380px] rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border overflow-hidden flex items-center justify-center p-4">
-              {/* Headlights Glow Effect */}
-              {headlightsOn && (
-                <div className="absolute inset-0 bg-amber-400/10 backdrop-brightness-110 transition-all pointer-events-none z-10" />
-              )}
+              {/* Headlights Brand Beam Animation */}
+              <AnimatePresence>
+                {headlightsOn && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute inset-0 bg-gradient-to-r from-[#4B8E55]/15 via-[#6BA374]/20 to-transparent blur-md pointer-events-none z-10"
+                  />
+                )}
+              </AnimatePresence>
 
-              {/* Rotatable Vehicle Image with Object Contain */}
+              {/* Rotatable Vehicle Image with Door Open Scale Pulse */}
               <motion.div
-                animate={{ rotateY: rotationAngle }}
-                transition={{ type: "spring", stiffness: 180, damping: 22 }}
+                animate={{
+                  rotateY: rotationAngle,
+                  scale: doorsOpen ? 1.04 : 1,
+                }}
+                transition={{ type: "spring", stiffness: 220, damping: 24 }}
                 className="relative w-full h-full max-w-[640px] max-h-[340px]"
               >
                 <Image
@@ -109,42 +120,51 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                 <span>Angle: {rotationAngle}°</span>
               </div>
 
-              {/* Controls Toolbar */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-2 rounded-full bg-surfaceLight-card border border-surfaceLight-border shadow-lg z-20">
-                <button
+              {/* Unified Brand Green Animated Controls Toolbar */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-surfaceLight-card border border-surfaceLight-border shadow-lg z-20">
+                {/* Rotate 90° */}
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
                   type="button"
                   onClick={handleRotate}
                   className="px-3.5 py-1.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[12.5px] font-medium hover:border-brand transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none whitespace-nowrap"
                 >
                   <RotateCw className="w-3.5 h-3.5 text-brand" />
                   <span>Putar 90°</span>
-                </button>
+                </motion.button>
 
-                <button
+                {/* Headlights Toggle (Consistent Brand Green System) */}
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
                   type="button"
                   onClick={() => setHeadlightsOn(!headlightsOn)}
-                  className={`px-3.5 py-1.5 rounded-full border text-[12.5px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none whitespace-nowrap ${
+                  className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 select-none whitespace-nowrap ${
                     headlightsOn
-                      ? "bg-amber-400/20 border-amber-400 text-amber-500"
-                      : "bg-surfaceLight-pearl border-surfaceLight-border text-textGray-display hover:border-brand"
+                      ? "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white shadow-xs"
+                      : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-brand"
                   }`}
                 >
-                  <Sun className="w-3.5 h-3.5" />
+                  <Sun className={`w-3.5 h-3.5 ${headlightsOn ? "text-white" : "text-textGray-tertiary"}`} />
                   <span>{headlightsOn ? "Lampu Nyala" : "Nyalakan Lampu"}</span>
-                </button>
+                </motion.button>
 
-                <button
+                {/* Doors Toggle (Consistent Brand Green System) */}
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
                   type="button"
                   onClick={() => setDoorsOpen(!doorsOpen)}
-                  className={`px-3.5 py-1.5 rounded-full border text-[12.5px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none whitespace-nowrap ${
+                  className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 select-none whitespace-nowrap ${
                     doorsOpen
-                      ? "bg-emerald-400/20 border-emerald-400 text-emerald-500"
-                      : "bg-surfaceLight-pearl border-surfaceLight-border text-textGray-display hover:border-brand"
+                      ? "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white shadow-xs"
+                      : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-brand"
                   }`}
                 >
-                  <DoorClosed className="w-3.5 h-3.5" />
+                  <DoorClosed className={`w-3.5 h-3.5 ${doorsOpen ? "text-white" : "text-textGray-tertiary"}`} />
                   <span>{doorsOpen ? "Pintu Terbuka" : "Buka Pintu"}</span>
-                </button>
+                </motion.button>
               </div>
             </div>
 
@@ -157,19 +177,21 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                 </span>
                 <div className="flex items-center gap-3">
                   {COLORS.map((color) => (
-                    <button
+                    <motion.button
                       key={color.name}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
                       type="button"
                       onClick={() => setSelectedColor(color)}
                       style={{ backgroundColor: color.hex, borderColor: color.border }}
                       className={`w-7 h-7 rounded-full border-2 transition-transform cursor-pointer relative flex items-center justify-center ${
-                        selectedColor.name === color.name ? "scale-110 ring-2 ring-[#4B8E55]" : "hover:scale-105 opacity-85"
+                        selectedColor.name === color.name ? "ring-2 ring-[#4B8E55] shadow-xs" : "opacity-85 hover:opacity-100"
                       }`}
                     >
                       {selectedColor.name === color.name && (
                         <Check className={`w-3.5 h-3.5 ${color.hex === "#F5F5F7" ? "text-gray-900" : "text-white"}`} strokeWidth={2.5} />
                       )}
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
               </div>
