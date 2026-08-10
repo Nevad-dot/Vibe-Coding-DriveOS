@@ -117,7 +117,7 @@ export const Sidebar: React.FC = () => {
                     <motion.div
                       layoutId="activeSidebarGreenBar"
                       transition={{ type: "spring", stiffness: 420, damping: 30 }}
-                      className="absolute left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-[18px] bg-brand rounded-full z-10"
+                      className="absolute left-1.5 top-2.5 bottom-2.5 w-[3px] bg-brand rounded-full z-10"
                     />
                   </>
                 )}
