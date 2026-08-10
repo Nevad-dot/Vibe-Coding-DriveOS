@@ -1,22 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-const AGE_SEGMENTS = [
-  { segment: "25–34 tahun", percent: "22%", fillWidth: "22%" },
-  { segment: "35–44 tahun", percent: "47%", fillWidth: "47%" },
-  { segment: "45–54 tahun", percent: "21%", fillWidth: "21%" },
-  { segment: "55+ tahun", percent: "10%", fillWidth: "10%" },
+const SEGMENTS = [
+  { label: "35–44 thn", fullLabel: "35–44 tahun", percent: 47, val: "47%", color: "#4B8E55", stroke: "#4B8E55" },
+  { label: "25–34 thn", fullLabel: "25–34 tahun", percent: 22, val: "22%", color: "#33613A", stroke: "#33613A" },
+  { label: "45–54 thn", fullLabel: "45–54 tahun", percent: 21, val: "21%", color: "#6BA374", stroke: "#6BA374" },
+  { label: "55+ thn", fullLabel: "55+ tahun", percent: 10, val: "10%", color: "#8EBE97", stroke: "#8EBE97" },
 ];
 
 export const AgeSegmentRevenuePanel: React.FC = () => {
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+
+  // SVG Donut calculation
+  const radius = 52;
+  const circumference = 2 * Math.PI * radius;
+  let accumulatedPercent = 0;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96, y: 22 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.15 }}
-      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col shadow-xs"
+      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col justify-between h-full shadow-xs"
     >
       {/* Header */}
       <div>
@@ -28,26 +35,96 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
         </h3>
       </div>
 
-      {/* Segment Level Progress Bars with Brand Green Gradient Fill (No giant vertical gap) */}
-      <div className="mt-4 flex flex-col gap-3.5">
-        {AGE_SEGMENTS.map((item, idx) => (
-          <div key={idx} className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between text-[13.5px]">
-              <span className="text-textGray-primary font-normal">{item.segment}</span>
-              <span className="text-textGray-tertiary font-normal">{item.percent}</span>
-            </div>
+      {/* Donut Circular Graph + Legend Breakdown */}
+      <div className="flex-1 flex flex-col sm:flex-row items-center justify-between gap-6 py-4">
+        {/* Left Side: SVG Donut Chart */}
+        <div className="relative w-[150px] h-[150px] flex items-center justify-center shrink-0">
+          <svg className="w-full h-full -rotate-90 transform-gpu" viewBox="0 0 140 140">
+            {/* Background Ring Track */}
+            <circle
+              cx="70"
+              cy="70"
+              r={radius}
+              className="stroke-surfaceLight-pearl"
+              strokeWidth="14"
+              fill="transparent"
+            />
 
-            {/* Level Progress Bar Container */}
-            <div className="w-full h-2 bg-surfaceLight-pearl border border-surfaceLight-border rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: item.fillWidth }}
-                transition={{ type: "spring", stiffness: 300, damping: 25, delay: 0.25 + idx * 0.05 }}
-                className="h-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] rounded-full shadow-xs"
-              />
-            </div>
+            {/* Donut Segments */}
+            {SEGMENTS.map((seg, idx) => {
+              const strokeDashoffset = circumference - (seg.percent / 100) * circumference;
+              const rotation = (accumulatedPercent / 100) * 360;
+              accumulatedPercent += seg.percent;
+
+              const isHovered = hoveredIdx === idx;
+
+              return (
+                <motion.circle
+                  key={seg.label}
+                  cx="70"
+                  cy="70"
+                  r={radius}
+                  stroke={seg.stroke}
+                  strokeWidth={isHovered ? "18" : "14"}
+                  fill="transparent"
+                  strokeDasharray={circumference}
+                  initial={{ strokeDashoffset: circumference }}
+                  animate={{ strokeDashoffset }}
+                  transition={{ type: "spring", stiffness: 220, damping: 24, delay: 0.2 + idx * 0.08 }}
+                  style={{
+                    transformOrigin: "70px 70px",
+                    transform: `rotate(${rotation}deg)`,
+                  }}
+                  onMouseEnter={() => setHoveredIdx(idx)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                  className="cursor-pointer transition-all duration-200"
+                />
+              );
+            })}
+          </svg>
+
+          {/* Center Donut Label */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none select-none">
+            <span className="text-[22px] font-bold text-textGray-display leading-none">
+              {hoveredIdx !== null ? SEGMENTS[hoveredIdx].val : "47%"}
+            </span>
+            <span className="text-[11px] text-textGray-tertiary font-medium mt-1">
+              {hoveredIdx !== null ? SEGMENTS[hoveredIdx].label : "35–44 thn"}
+            </span>
           </div>
-        ))}
+        </div>
+
+        {/* Right Side: Segment Legend Breakdown */}
+        <div className="flex-1 flex flex-col gap-2 w-full">
+          {SEGMENTS.map((seg, idx) => {
+            const isHovered = hoveredIdx === idx;
+
+            return (
+              <div
+                key={seg.label}
+                onMouseEnter={() => setHoveredIdx(idx)}
+                onMouseLeave={() => setHoveredIdx(null)}
+                className={`flex items-center justify-between p-2 rounded-xl transition-colors cursor-pointer ${
+                  isHovered ? "bg-surfaceLight-pearl/80" : "hover:bg-surfaceLight-pearl/40"
+                }`}
+              >
+                <div className="flex items-center gap-2.5">
+                  <span
+                    className="w-3 h-3 rounded-full shrink-0"
+                    style={{ backgroundColor: seg.color }}
+                  />
+                  <span className="text-[13px] font-normal text-textGray-primary">
+                    {seg.fullLabel}
+                  </span>
+                </div>
+
+                <span className="text-[13px] font-semibold text-textGray-display">
+                  {seg.val}
+                </span>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </motion.div>
   );
