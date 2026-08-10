@@ -61,7 +61,7 @@ const BrandCardItem: React.FC<BrandCardProps> = ({
   delayIndex,
 }) => {
   return (
-    <div className="flex flex-col gap-2 py-3 border-b border-[#272A34] last:border-b-0">
+    <div className="flex flex-col gap-2 py-3 border-b border-surfaceLight-border last:border-b-0">
       {/* Header Row */}
       <div className="flex items-center justify-between">
         <h4 className="text-[15px] font-bold text-textGray-display">{brand}</h4>

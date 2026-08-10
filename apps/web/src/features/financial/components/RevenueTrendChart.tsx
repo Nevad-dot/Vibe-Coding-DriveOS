@@ -56,9 +56,9 @@ export const RevenueTrendChart: React.FC = () => {
           <div className="flex items-center gap-1 bg-surfaceLight-pearl border border-surfaceLight-border p-1 rounded-full text-[12px] font-medium text-textGray-secondary">
             <button
               onClick={() => setFilterPeriod("12Bulan")}
-              className={`px-3 py-1 rounded-full transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-full transition-all duration-150 cursor-pointer ${
                 filterPeriod === "12Bulan"
-                  ? "bg-surfaceLight-card text-textGray-display shadow-xs font-semibold"
+                  ? "bg-surfaceLight-card border border-surfaceLight-border text-textGray-display shadow-xs font-semibold"
                   : "hover:text-textGray-primary"
               }`}
             >
@@ -66,9 +66,9 @@ export const RevenueTrendChart: React.FC = () => {
             </button>
             <button
               onClick={() => setFilterPeriod("Kuartal")}
-              className={`px-3 py-1 rounded-full transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-full transition-all duration-150 cursor-pointer ${
                 filterPeriod === "Kuartal"
-                  ? "bg-surfaceLight-card text-textGray-display shadow-xs font-semibold"
+                  ? "bg-surfaceLight-card border border-surfaceLight-border text-textGray-display shadow-xs font-semibold"
                   : "hover:text-textGray-primary"
               }`}
             >

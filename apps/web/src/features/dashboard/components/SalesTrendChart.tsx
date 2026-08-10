@@ -14,6 +14,7 @@ const BAR_DATA = [
 
 export const SalesTrendChart: React.FC = () => {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(6);
+  const [filterPeriod, setFilterPeriod] = useState<"Bulanan" | "Kuartal">("Bulanan");
 
   return (
     <div className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col justify-between h-full shadow-xs transform-gpu">
@@ -28,11 +29,25 @@ export const SalesTrendChart: React.FC = () => {
           </h3>
         </div>
 
-        <div className="flex items-center gap-1.5 bg-surfaceLight-pearl border border-surfaceLight-border p-1 rounded-full text-[12px] font-medium text-textGray-secondary">
-          <button className="px-3 py-1 rounded-full bg-surfaceLight-card text-textGray-display shadow-xs">
+        <div className="flex items-center gap-1 bg-surfaceLight-pearl border border-surfaceLight-border p-1 rounded-full text-[12px] font-medium text-textGray-secondary">
+          <button
+            onClick={() => setFilterPeriod("Bulanan")}
+            className={`px-3 py-1 rounded-full transition-all duration-150 cursor-pointer ${
+              filterPeriod === "Bulanan"
+                ? "bg-surfaceLight-card border border-surfaceLight-border text-textGray-display shadow-xs font-semibold"
+                : "hover:text-textGray-primary"
+            }`}
+          >
             Bulanan
           </button>
-          <button className="px-3 py-1 rounded-full hover:text-textGray-primary transition-colors">
+          <button
+            onClick={() => setFilterPeriod("Kuartal")}
+            className={`px-3 py-1 rounded-full transition-all duration-150 cursor-pointer ${
+              filterPeriod === "Kuartal"
+                ? "bg-surfaceLight-card border border-surfaceLight-border text-textGray-display shadow-xs font-semibold"
+                : "hover:text-textGray-primary"
+            }`}
+          >
             Kuartal
           </button>
         </div>
@@ -52,14 +67,16 @@ export const SalesTrendChart: React.FC = () => {
               {/* Tooltip Value */}
               <div
                 className={`text-[11px] font-semibold transition-opacity duration-150 ${
-                  isSelected ? "opacity-100 text-textGray-display" : "opacity-0 group-hover:opacity-100 text-textGray-tertiary"
+                  isSelected
+                    ? "opacity-100 text-textGray-display font-bold"
+                    : "opacity-0 group-hover:opacity-100 text-textGray-tertiary"
                 }`}
               >
                 {bar.val}
               </div>
 
-              {/* Bar Track & Gradient Fill (Native CSS GPU Transitions) */}
-              <div className="w-full max-w-[36px] bg-surfaceLight-pearl border border-surfaceLight-border rounded-t-xl h-full flex items-end p-0.5 overflow-hidden">
+              {/* Bar Track & Gradient Fill */}
+              <div className="w-full bg-surfaceLight-pearl border border-surfaceLight-border rounded-t-xl h-full flex items-end p-1 overflow-hidden">
                 <div
                   style={{ height: bar.height }}
                   className={`w-full rounded-t-lg transition-all duration-300 transform-gpu ${
@@ -71,7 +88,11 @@ export const SalesTrendChart: React.FC = () => {
               </div>
 
               {/* Month Label */}
-              <span className={`text-[12px] font-medium transition-colors duration-150 ${isSelected ? "text-textGray-display font-semibold" : "text-textGray-tertiary"}`}>
+              <span
+                className={`text-[12px] font-medium transition-colors duration-150 ${
+                  isSelected ? "text-textGray-display font-semibold" : "text-textGray-tertiary"
+                }`}
+              >
                 {bar.month}
               </span>
             </div>
