@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Plus, CheckCircle2, Sparkles, ChevronDown, Car } from "lucide-react";
+import { X, Plus, CheckCircle2, Sparkles, ChevronDown, Car, Check } from "lucide-react";
 
 interface AddVehicleModalProps {
   isOpen: boolean;
@@ -206,18 +206,25 @@ export const AddVehicleModal: React.FC<AddVehicleModalProps> = ({ isOpen, onClos
                   </div>
                 </div>
 
-                {/* Checkbox 360 viewer */}
-                <div className="flex items-center gap-2 pt-1">
-                  <input
-                    type="checkbox"
-                    id="has360"
-                    checked={has360}
-                    onChange={(e) => setHas360(e.target.checked)}
-                    className="w-4 h-4 rounded text-[#4B8E55] focus:ring-[#4B8E55] cursor-pointer"
-                  />
-                  <label htmlFor="has360" className="text-[13px] text-textGray-primary cursor-pointer">
+                {/* Custom Rounded Green Checkbox 360 viewer */}
+                <div
+                  onClick={() => setHas360(!has360)}
+                  className="flex items-center gap-2.5 pt-1.5 cursor-pointer select-none group"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className={`w-5 h-5 rounded-full transition-all duration-200 flex items-center justify-center border shrink-0 ${
+                      has360
+                        ? "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] border-transparent shadow-xs"
+                        : "bg-surfaceLight-pearl border-surfaceLight-border group-hover:border-[#4B8E55]"
+                    }`}
+                  >
+                    {has360 && <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />}
+                  </motion.div>
+                  <span className="text-[13px] font-medium text-textGray-primary group-hover:text-textGray-display transition-colors">
                     Aktifkan Fitur 360° Studio Interactive Viewer
-                  </label>
+                  </span>
                 </div>
 
                 {/* Action Buttons */}
