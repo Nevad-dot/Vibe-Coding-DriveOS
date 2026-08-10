@@ -14,7 +14,7 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   // SVG Donut calculation
-  const radius = 52;
+  const radius = 48;
   const circumference = 2 * Math.PI * radius;
   let accumulatedPercent = 0;
 
@@ -23,7 +23,7 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
       initial={{ opacity: 0, scale: 0.96, y: 22 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.15 }}
-      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col justify-between h-full shadow-xs"
+      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col shadow-xs"
     >
       {/* Header */}
       <div>
@@ -35,18 +35,18 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
         </h3>
       </div>
 
-      {/* Donut Circular Graph + Legend Breakdown */}
-      <div className="flex-1 flex flex-col sm:flex-row items-center justify-between gap-6 py-4">
-        {/* Left Side: SVG Donut Chart */}
-        <div className="relative w-[150px] h-[150px] flex items-center justify-center shrink-0">
-          <svg className="w-full h-full -rotate-90 transform-gpu" viewBox="0 0 140 140">
+      {/* Donut Circular Graph + Compact Legend Breakdown */}
+      <div className="mt-5 flex flex-col sm:flex-row items-center gap-6 md:gap-8">
+        {/* Left Side: Compact SVG Donut Chart */}
+        <div className="relative w-[130px] h-[130px] flex items-center justify-center shrink-0">
+          <svg className="w-full h-full -rotate-90 transform-gpu" viewBox="0 0 130 130">
             {/* Background Ring Track */}
             <circle
-              cx="70"
-              cy="70"
+              cx="65"
+              cy="65"
               r={radius}
               className="stroke-surfaceLight-pearl"
-              strokeWidth="14"
+              strokeWidth="12"
               fill="transparent"
             />
 
@@ -61,18 +61,18 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
               return (
                 <motion.circle
                   key={seg.label}
-                  cx="70"
-                  cy="70"
+                  cx="65"
+                  cy="65"
                   r={radius}
                   stroke={seg.stroke}
-                  strokeWidth={isHovered ? "18" : "14"}
+                  strokeWidth={isHovered ? "16" : "12"}
                   fill="transparent"
                   strokeDasharray={circumference}
                   initial={{ strokeDashoffset: circumference }}
                   animate={{ strokeDashoffset }}
                   transition={{ type: "spring", stiffness: 220, damping: 24, delay: 0.2 + idx * 0.08 }}
                   style={{
-                    transformOrigin: "70px 70px",
+                    transformOrigin: "65px 65px",
                     transform: `rotate(${rotation}deg)`,
                   }}
                   onMouseEnter={() => setHoveredIdx(idx)}
@@ -85,17 +85,17 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
 
           {/* Center Donut Label */}
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none select-none">
-            <span className="text-[22px] font-bold text-textGray-display leading-none">
+            <span className="text-[20px] font-bold text-textGray-display leading-none">
               {hoveredIdx !== null ? SEGMENTS[hoveredIdx].val : "47%"}
             </span>
-            <span className="text-[11px] text-textGray-tertiary font-medium mt-1">
+            <span className="text-[10.5px] text-textGray-tertiary font-medium mt-1">
               {hoveredIdx !== null ? SEGMENTS[hoveredIdx].label : "35–44 thn"}
             </span>
           </div>
         </div>
 
-        {/* Right Side: Segment Legend Breakdown */}
-        <div className="flex-1 flex flex-col gap-2 w-full">
+        {/* Right Side: Compact Legend Breakdown */}
+        <div className="flex-1 flex flex-col gap-1.5 w-full">
           {SEGMENTS.map((seg, idx) => {
             const isHovered = hoveredIdx === idx;
 
@@ -104,13 +104,13 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
                 key={seg.label}
                 onMouseEnter={() => setHoveredIdx(idx)}
                 onMouseLeave={() => setHoveredIdx(null)}
-                className={`flex items-center justify-between p-2 rounded-xl transition-colors cursor-pointer ${
+                className={`flex items-center justify-between px-2.5 py-1.5 rounded-xl transition-colors cursor-pointer ${
                   isHovered ? "bg-surfaceLight-pearl/80" : "hover:bg-surfaceLight-pearl/40"
                 }`}
               >
                 <div className="flex items-center gap-2.5">
                   <span
-                    className="w-3 h-3 rounded-full shrink-0"
+                    className="w-2.5 h-2.5 rounded-full shrink-0"
                     style={{ backgroundColor: seg.color }}
                   />
                   <span className="text-[13px] font-normal text-textGray-primary">
