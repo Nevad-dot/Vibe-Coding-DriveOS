@@ -2,12 +2,34 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { TrendingUp, CreditCard, Repeat } from "lucide-react";
 
 const SEGMENTS = [
   { label: "35–44 thn", fullLabel: "35–44 tahun", percent: 47, val: "47%", color: "#4B8E55", stroke: "#4B8E55" },
   { label: "25–34 thn", fullLabel: "25–34 tahun", percent: 22, val: "22%", color: "#33613A", stroke: "#33613A" },
   { label: "45–54 thn", fullLabel: "45–54 tahun", percent: 21, val: "21%", color: "#6BA374", stroke: "#6BA374" },
   { label: "55+ thn", fullLabel: "55+ tahun", percent: 10, val: "10%", color: "#8EBE97", stroke: "#8EBE97" },
+];
+
+const DEMOGRAPHIC_STATS = [
+  {
+    icon: TrendingUp,
+    label: "Usia Rata-rata",
+    val: "38 Tahun",
+    sub: "Peak buying power",
+  },
+  {
+    icon: CreditCard,
+    label: "Metode Transaksi",
+    val: "68% Leasing",
+    sub: "Finance partner",
+  },
+  {
+    icon: Repeat,
+    label: "Repeat Order",
+    val: "34% Retensi",
+    sub: "Loyal customer base",
+  },
 ];
 
 export const AgeSegmentRevenuePanel: React.FC = () => {
@@ -23,7 +45,7 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
       initial={{ opacity: 0, scale: 0.96, y: 22 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.15 }}
-      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col shadow-xs"
+      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col justify-between h-full shadow-xs"
     >
       {/* Header */}
       <div>
@@ -36,8 +58,8 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
       </div>
 
       {/* Donut Circular Graph + Compact Legend Breakdown */}
-      <div className="mt-5 flex flex-col sm:flex-row items-center gap-6 md:gap-8">
-        {/* Left Side: Static SVG Donut Chart (pointer-events-none: graph ignores direct hover) */}
+      <div className="mt-4 flex flex-col sm:flex-row items-center gap-6 md:gap-8">
+        {/* Left Side: Static SVG Donut Chart */}
         <div className="relative w-[130px] h-[130px] flex items-center justify-center shrink-0 pointer-events-none select-none">
           <svg className="w-full h-full -rotate-90 transform-gpu" viewBox="0 0 130 130">
             {/* Background Ring Track */}
@@ -92,7 +114,7 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Side: Compact Legend Breakdown (Hovering titles triggers segment selection) */}
+        {/* Right Side: Compact Legend Breakdown */}
         <div className="flex-1 flex flex-col gap-1.5 w-full">
           {SEGMENTS.map((seg, idx) => {
             const isHovered = hoveredIdx === idx;
@@ -123,6 +145,32 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
             );
           })}
         </div>
+      </div>
+
+      {/* Relevant Sub-content: Customer Intelligence Metadata Grid (Fills bottom void perfectly) */}
+      <div className="mt-4 pt-4 border-t border-surfaceLight-border grid grid-cols-3 gap-2">
+        {DEMOGRAPHIC_STATS.map((stat, i) => {
+          const Icon = stat.icon;
+          return (
+            <div
+              key={i}
+              className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl flex flex-col gap-1"
+            >
+              <div className="flex items-center gap-1.5 text-textGray-tertiary">
+                <Icon className="w-3.5 h-3.5 text-brand shrink-0" strokeWidth={1.5} />
+                <span className="text-[10.5px] font-medium text-textGray-muted truncate">
+                  {stat.label}
+                </span>
+              </div>
+              <span className="text-[13px] font-semibold text-textGray-display leading-tight truncate">
+                {stat.val}
+              </span>
+              <span className="text-[10px] text-textGray-tertiary font-normal truncate">
+                {stat.sub}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </motion.div>
   );
