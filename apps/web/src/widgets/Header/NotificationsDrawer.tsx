@@ -33,12 +33,12 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({ isOpen
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: -8 }}
           transition={{ type: "spring", stiffness: 420, damping: 28 }}
-          className="absolute right-0 top-[48px] w-[360px] md:w-[380px] bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl p-4 z-50 flex flex-col gap-3 origin-top-right"
+          className="absolute right-0 top-[52px] w-[360px] bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl p-5 flex flex-col gap-4 z-50 origin-top-right"
         >
-          {/* Header */}
-          <div className="flex items-center justify-between pb-2 border-b border-surfaceLight-border">
+          {/* Drawer Header */}
+          <div className="flex items-center justify-between pb-3 border-b border-surfaceLight-border">
             <span className="font-display font-semibold text-[15px] text-textGray-display flex items-center gap-2">
-              <Bell className="w-4 h-4 text-brand" />
+              <Bell className="w-4 h-4 text-brand" strokeWidth={1.75} />
               Notifikasi System
             </span>
 
@@ -47,34 +47,34 @@ export const NotificationsDrawer: React.FC<NotificationsDrawerProps> = ({ isOpen
               onClick={handleMarkAllRead}
               className="text-[12px] font-medium text-brand hover:underline flex items-center gap-1 cursor-pointer shrink-0 whitespace-nowrap"
             >
-              <Check className="w-3.5 h-3.5" />
+              <Check className="w-3.5 h-3.5" strokeWidth={2} />
               <span>Tandai dibaca</span>
             </button>
           </div>
 
-          {/* List */}
-          <div className="max-h-[320px] overflow-y-auto flex flex-col gap-2 pr-1">
+          {/* Notification List with Consistent Padding & Gaps */}
+          <div className="max-h-[320px] overflow-y-auto flex flex-col gap-2.5 pr-1">
             {items.map((n) => {
               const Icon = n.icon;
               return (
                 <div
                   key={n.id}
-                  className={`p-3 rounded-2xl border transition-colors flex items-start gap-3 ${
+                  className={`p-3.5 rounded-2xl border transition-all flex items-start gap-3.5 ${
                     n.unread
-                      ? "bg-surfaceLight-pearl border-surfaceLight-border shadow-xs"
+                      ? "bg-surfaceLight-pearl border-surfaceLight-border shadow-2xs"
                       : "bg-surfaceLight-card border-surfaceLight-border opacity-70"
                   }`}
                 >
-                  <div className="w-9 h-9 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border text-brand flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                  <div className="w-9 h-9 rounded-xl bg-surfaceLight-card border border-surfaceLight-border text-brand flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
                     <Icon className="w-4 h-4" strokeWidth={1.5} />
                   </div>
 
-                  <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                  <div className="flex flex-col gap-1 flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-[13.5px] font-bold text-textGray-display truncate">{n.title}</span>
-                      <span className="text-[11px] text-textGray-tertiary shrink-0">{n.time}</span>
+                      <span className="text-[13.5px] font-semibold text-textGray-display truncate leading-snug">{n.title}</span>
+                      <span className="text-[11px] text-textGray-tertiary shrink-0 font-normal">{n.time}</span>
                     </div>
-                    <p className="text-[12px] text-textGray-tertiary leading-relaxed font-normal">{n.desc}</p>
+                    <p className="text-[12.5px] text-textGray-tertiary leading-relaxed font-normal">{n.desc}</p>
                   </div>
                 </div>
               );
