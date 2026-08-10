@@ -15,12 +15,13 @@ import {
   X,
   AlertCircle,
 } from "lucide-react";
+import { applyDriveOSTheme, getSavedThemeMode, ThemeMode } from "@/shared/lib/theme";
 
 export const Header: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [themeMode, setThemeMode] = useState<"light" | "dark" | "system">("system");
+  const [themeMode, setThemeMode] = useState<ThemeMode>("system");
   const [userName, setUserName] = useState("Adrian Hartono");
   const [userEmail, setUserEmail] = useState("adrian@driveos.app");
   const [userInitials, setUserInitials] = useState("AH");
@@ -45,32 +46,30 @@ export const Header: React.FC = () => {
 
   const pageTitle = getPageTitle(pathname);
 
-  // Theme application logic
-  const applyTheme = (mode: "light" | "dark" | "system") => {
-    if (mode === "dark") {
-      document.documentElement.classList.add("dark");
-      setIsDarkMode(true);
-    } else if (mode === "light") {
-      document.documentElement.classList.remove("dark");
-      setIsDarkMode(false);
-    } else {
-      const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (systemDark) {
-        document.documentElement.classList.add("dark");
-        setIsDarkMode(true);
-      } else {
-        document.documentElement.classList.remove("dark");
-        setIsDarkMode(false);
-      }
-    }
-  };
-
   // Persistent Theme Mode Initialization & User Profile
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedTheme = (localStorage.getItem("driveos_theme_mode") as "light" | "dark" | "system") || "system";
-      setThemeMode(savedTheme);
-      applyTheme(savedTheme);
+      const initialMode = getSavedThemeMode();
+      const result = applyDriveOSTheme(initialMode);
+      setThemeMode(result.mode);
+      setIsDarkMode(result.isDark);
+
+      // System Preference Real-time Listener
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handleSystemChange = (e: MediaQueryListEvent) => {
+        const saved = localStorage.getItem("driveos_theme_mode");
+        if (!saved || saved === "system") {
+          if (e.matches) {
+            document.documentElement.classList.add("dark");
+            setIsDarkMode(true);
+          } else {
+            document.documentElement.classList.remove("dark");
+            setIsDarkMode(false);
+          }
+        }
+      };
+
+      mediaQuery.addEventListener("change", handleSystemChange);
 
       const storedName = sessionStorage.getItem("user_name");
       const storedEmail = sessionStorage.getItem("user_email");
@@ -92,10 +91,12 @@ export const Header: React.FC = () => {
         const nameSlug = storedName.toLowerCase().replace(/\s+/g, "");
         setUserEmail(`${nameSlug}@driveos.app`);
       }
+
+      return () => mediaQuery.removeEventListener("change", handleSystemChange);
     }
   }, []);
 
-  // Close dropdown on outside click (only if modal is not active)
+  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -111,12 +112,10 @@ export const Header: React.FC = () => {
   }, [showLogoutModal]);
 
   // Theme Select Handlers with localStorage Persistence
-  const handleSelectTheme = (mode: "light" | "dark" | "system") => {
-    setThemeMode(mode);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("driveos_theme_mode", mode);
-    }
-    applyTheme(mode);
+  const handleSelectTheme = (mode: ThemeMode) => {
+    const result = applyDriveOSTheme(mode);
+    setThemeMode(result.mode);
+    setIsDarkMode(result.isDark);
   };
 
   const toggleThemeButton = () => {

@@ -69,7 +69,7 @@ const BrandCardItem: React.FC<BrandCardProps> = ({
       </div>
 
       {/* Sleek Dark Track (bg-[#272A34] - never white) */}
-      <div className="w-full h-2 bg-[#272A34] rounded-full overflow-hidden my-1">
+      <div className="w-full h-2 bg-[#E9EAEB] dark:bg-[#272A34] rounded-full overflow-hidden my-1">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: fillWidth }}

@@ -38,7 +38,7 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
             </div>
 
             {/* Level Progress Bar Container */}
-            <div className="w-full h-2 bg-[#272A34] rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-[#E9EAEB] dark:bg-[#272A34] rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: item.fillWidth }}

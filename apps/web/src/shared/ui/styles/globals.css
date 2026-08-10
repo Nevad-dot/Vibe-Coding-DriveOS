@@ -33,34 +33,8 @@ svg {
   --font-geist: 'Geist', -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Eye-Friendly Dark Mode Tokens */
-    --bg-canvas: #0E1015;
-    --bg-primary: #0E1015;
-    --bg-secondary: #16181F;
-    --bg-pearl: #16181F;
-    --bg-card: #16181F;
-    --bg-brand-solid: #4B8E55;
-    --bg-brand-solid-hover: #33613A;
-
-    --text-display: #F9FAFB;
-    --text-primary: #F3F4F6;
-    --text-secondary: #D1D5DB;
-    --text-tertiary: #9CA3AF;
-    --text-muted: #6B7280;
-    --text-placeholder: #9CA3AF;
-    --text-brand: #6BA374;
-
-    --border-primary: #272A34;
-    --border-secondary: #272A34;
-    --border-subtle: #1E2028;
-    --border-brand: #6BA374;
-  }
-}
-
+/* Dark Mode Tokens triggered explicitly by class="dark" on <html> */
 .dark {
-  /* Manual dark class override matching eye-friendly dark mode */
   --bg-canvas: #0E1015;
   --bg-primary: #0E1015;
   --bg-secondary: #16181F;
@@ -100,19 +74,37 @@ svg {
   html, body {
     margin: 0;
     padding: 0;
-    width: 100%;
     height: 100%;
+    width: 100%;
   }
 }
 
-/* Dedicated Brand Green Gradient System Derived From #4B8E55 */
-.text-green-gradient {
-  background: linear-gradient(135deg, #2D5834 0%, #4B8E55 50%, #6BA374 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(113, 118, 128, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(113, 118, 128, 0.4);
+}
+
+/* Brand Green Gradient Helper Utilities */
 .bg-green-gradient-pill {
-  background: linear-gradient(135deg, #33613A 0%, #4B8E55 55%, #5B9B64 100%);
-  box-shadow: 0 4px 14px 0 rgba(75, 142, 85, 0.28);
+  background: linear-gradient(135deg, #33613A 0%, #4B8E55 55%, #6BA374 100%);
+}
+
+.text-green-gradient {
+  background: linear-gradient(135deg, #33613A 0%, #4B8E55 55%, #6BA374 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
