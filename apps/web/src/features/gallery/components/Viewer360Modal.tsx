@@ -116,53 +116,56 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
 
               {/* Angle Indicator Badge */}
               <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[12px] font-medium text-textGray-display shadow-xs flex items-center gap-1.5 z-20">
-                <RotateCw className="w-3.5 h-3.5 text-brand" strokeWidth={1.5} />
+                <RotateCw className="w-4 h-4 shrink-0 stroke-[1.75] text-[#4B8E55]" />
                 <span>Angle: {rotationAngle}°</span>
               </div>
 
-              {/* Unified Brand Green Animated Controls Toolbar */}
+              {/* Animated Controls Toolbar with Bold Crisp Icons */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-surfaceLight-card border border-surfaceLight-border shadow-lg z-20">
                 {/* Rotate 90° */}
                 <motion.button
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.96 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.94 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 25 }}
                   type="button"
                   onClick={handleRotate}
-                  className="px-3.5 py-1.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[12.5px] font-medium hover:border-brand transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none whitespace-nowrap"
+                  className="px-4 py-2 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[13px] font-medium hover:border-[#4B8E55] transition-colors cursor-pointer inline-flex items-center gap-2 select-none whitespace-nowrap"
                 >
-                  <RotateCw className="w-3.5 h-3.5 text-brand" />
+                  <RotateCw className="w-4 h-4 shrink-0 stroke-[1.75] text-[#4B8E55]" />
                   <span>Putar 90°</span>
                 </motion.button>
 
-                {/* Headlights Toggle (Consistent Brand Green System) */}
+                {/* Headlights Toggle (Brand Green System with Bold Icon) */}
                 <motion.button
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.96 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.94 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 25 }}
                   type="button"
                   onClick={() => setHeadlightsOn(!headlightsOn)}
-                  className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 select-none whitespace-nowrap ${
+                  className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all cursor-pointer inline-flex items-center gap-2 select-none whitespace-nowrap ${
                     headlightsOn
-                      ? "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white shadow-xs"
-                      : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-brand"
+                      ? "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white shadow-sm"
+                      : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-[#4B8E55]"
                   }`}
                 >
-                  <Sun className={`w-3.5 h-3.5 ${headlightsOn ? "text-white" : "text-textGray-tertiary"}`} />
+                  <Sun className={`w-4 h-4 shrink-0 stroke-[1.75] ${headlightsOn ? "text-white" : "text-[#4B8E55]"}`} />
                   <span>{headlightsOn ? "Lampu Nyala" : "Nyalakan Lampu"}</span>
                 </motion.button>
 
-                {/* Doors Toggle (Consistent Brand Green System) */}
+                {/* Doors Toggle (Brand Green System with Bold Icon) */}
                 <motion.button
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.96 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.94 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 25 }}
                   type="button"
                   onClick={() => setDoorsOpen(!doorsOpen)}
-                  className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-medium transition-all cursor-pointer inline-flex items-center gap-1.5 select-none whitespace-nowrap ${
+                  className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all cursor-pointer inline-flex items-center gap-2 select-none whitespace-nowrap ${
                     doorsOpen
-                      ? "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white shadow-xs"
-                      : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-brand"
+                      ? "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white shadow-sm"
+                      : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-[#4B8E55]"
                   }`}
                 >
-                  <DoorClosed className={`w-3.5 h-3.5 ${doorsOpen ? "text-white" : "text-textGray-tertiary"}`} />
+                  <DoorClosed className={`w-4 h-4 shrink-0 stroke-[1.75] ${doorsOpen ? "text-white" : "text-[#4B8E55]"}`} />
                   <span>{doorsOpen ? "Pintu Terbuka" : "Buka Pintu"}</span>
                 </motion.button>
               </div>
@@ -179,8 +182,9 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                   {COLORS.map((color) => (
                     <motion.button
                       key={color.name}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.12 }}
+                      whileTap={{ scale: 0.92 }}
+                      transition={{ type: "spring", stiffness: 450, damping: 25 }}
                       type="button"
                       onClick={() => setSelectedColor(color)}
                       style={{ backgroundColor: color.hex, borderColor: color.border }}
