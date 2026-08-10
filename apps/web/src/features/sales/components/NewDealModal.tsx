@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Plus, CheckCircle2, Sparkles } from "lucide-react";
+import { X, Plus, CheckCircle2, Sparkles, ChevronDown } from "lucide-react";
 
 interface NewDealModalProps {
   isOpen: boolean;
@@ -11,12 +12,17 @@ interface NewDealModalProps {
 }
 
 export const NewDealModal: React.FC<NewDealModalProps> = ({ isOpen, onClose, onSuccess }) => {
+  const [mounted, setMounted] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [vehicleModel, setVehicleModel] = useState("Porsche 911 GT3 RS");
   const [dealValue, setDealValue] = useState("");
   const [stage, setStage] = useState("Hot Lead");
   const [consultant, setConsultant] = useState("Rendra Prasetya");
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,30 +46,32 @@ export const NewDealModal: React.FC<NewDealModalProps> = ({ isOpen, onClose, onS
     }, 1200);
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Backdrop */}
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          {/* Full Screen Backdrop Overlay (Covers Sidebar & Header) */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-xs"
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs"
           />
 
-          {/* Modal Container */}
+          {/* Modal Card Container */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[500px] bg-surfaceLight-card border border-surfaceLight-border rounded-2xl shadow-xl p-6 overflow-hidden z-10"
+            className="relative w-full max-w-[500px] bg-surfaceLight-card border border-surfaceLight-border rounded-2xl shadow-2xl p-6 overflow-hidden z-10"
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between mb-5 pb-4 border-b border-surfaceLight-border">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-full bg-[#4B8E55]/15 flex items-center justify-center text-[#4B8E55]">
                   <Plus className="w-4 h-4" strokeWidth={2} />
                 </div>
@@ -127,17 +135,20 @@ export const NewDealModal: React.FC<NewDealModalProps> = ({ isOpen, onClose, onS
                     <label className="text-[12px] font-medium text-textGray-primary">
                       Model Kendaraan
                     </label>
-                    <select
-                      value={vehicleModel}
-                      onChange={(e) => setVehicleModel(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[13.5px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer"
-                    >
-                      <option value="Porsche 911 GT3 RS">Porsche 911 GT3 RS</option>
-                      <option value="BMW M4 Competition">BMW M4 Competition</option>
-                      <option value="Mercedes-AMG GT">Mercedes-AMG GT</option>
-                      <option value="Ferrari 296 GTB">Ferrari 296 GTB</option>
-                      <option value="Audi RS6 Avant">Audi RS6 Avant</option>
-                    </select>
+                    <div className="relative">
+                      <select
+                        value={vehicleModel}
+                        onChange={(e) => setVehicleModel(e.target.value)}
+                        className="w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[13.5px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer"
+                      >
+                        <option value="Porsche 911 GT3 RS">Porsche 911 GT3 RS</option>
+                        <option value="BMW M4 Competition">BMW M4 Competition</option>
+                        <option value="Mercedes-AMG GT">Mercedes-AMG GT</option>
+                        <option value="Ferrari 296 GTB">Ferrari 296 GTB</option>
+                        <option value="Audi RS6 Avant">Audi RS6 Avant</option>
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textGray-tertiary pointer-events-none" strokeWidth={1.5} />
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-1.5">
@@ -161,32 +172,38 @@ export const NewDealModal: React.FC<NewDealModalProps> = ({ isOpen, onClose, onS
                     <label className="text-[12px] font-medium text-textGray-primary">
                       Stage Prospek
                     </label>
-                    <select
-                      value={stage}
-                      onChange={(e) => setStage(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[13.5px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer"
-                    >
-                      <option value="Hot Lead">Hot Lead</option>
-                      <option value="Negosiasi">Negosiasi</option>
-                      <option value="Test Drive">Test Drive</option>
-                      <option value="SPK Signed">SPK Signed</option>
-                    </select>
+                    <div className="relative">
+                      <select
+                        value={stage}
+                        onChange={(e) => setStage(e.target.value)}
+                        className="w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[13.5px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer"
+                      >
+                        <option value="Hot Lead">Hot Lead</option>
+                        <option value="Negosiasi">Negosiasi</option>
+                        <option value="Test Drive">Test Drive</option>
+                        <option value="SPK Signed">SPK Signed</option>
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textGray-tertiary pointer-events-none" strokeWidth={1.5} />
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-1.5">
                     <label className="text-[12px] font-medium text-textGray-primary">
                       Sales Consultant
                     </label>
-                    <select
-                      value={consultant}
-                      onChange={(e) => setConsultant(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[13.5px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer"
-                    >
-                      <option value="Rendra Prasetya">Rendra Prasetya</option>
-                      <option value="Diva Anindya">Diva Anindya</option>
-                      <option value="Ilham Ramadhan">Ilham Ramadhan</option>
-                      <option value="Nadia Utami">Nadia Utami</option>
-                    </select>
+                    <div className="relative">
+                      <select
+                        value={consultant}
+                        onChange={(e) => setConsultant(e.target.value)}
+                        className="w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[13.5px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer"
+                      >
+                        <option value="Rendra Prasetya">Rendra Prasetya</option>
+                        <option value="Diva Anindya">Diva Anindya</option>
+                        <option value="Ilham Ramadhan">Ilham Ramadhan</option>
+                        <option value="Nadia Utami">Nadia Utami</option>
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textGray-tertiary pointer-events-none" strokeWidth={1.5} />
+                    </div>
                   </div>
                 </div>
 
@@ -213,7 +230,8 @@ export const NewDealModal: React.FC<NewDealModalProps> = ({ isOpen, onClose, onS
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 
