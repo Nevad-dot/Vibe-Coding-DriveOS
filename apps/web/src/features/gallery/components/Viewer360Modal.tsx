@@ -114,7 +114,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                 <button
                   type="button"
                   onClick={handleRotate}
-                  className="px-3.5 py-1.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[12.5px] font-medium hover:border-brand transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none"
+                  className="px-3.5 py-1.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[12.5px] font-medium hover:border-brand transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none whitespace-nowrap"
                 >
                   <RotateCw className="w-3.5 h-3.5 text-brand" />
                   <span>Putar 90°</span>
@@ -123,7 +123,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setHeadlightsOn(!headlightsOn)}
-                  className={`px-3.5 py-1.5 rounded-full border text-[12.5px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none ${
+                  className={`px-3.5 py-1.5 rounded-full border text-[12.5px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none whitespace-nowrap ${
                     headlightsOn
                       ? "bg-amber-400/20 border-amber-400 text-amber-500"
                       : "bg-surfaceLight-pearl border-surfaceLight-border text-textGray-display hover:border-brand"
@@ -136,7 +136,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setDoorsOpen(!doorsOpen)}
-                  className={`px-3.5 py-1.5 rounded-full border text-[12.5px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none ${
+                  className={`px-3.5 py-1.5 rounded-full border text-[12.5px] font-medium transition-colors cursor-pointer inline-flex items-center gap-1.5 select-none whitespace-nowrap ${
                     doorsOpen
                       ? "bg-emerald-400/20 border-emerald-400 text-emerald-500"
                       : "bg-surfaceLight-pearl border-surfaceLight-border text-textGray-display hover:border-brand"
