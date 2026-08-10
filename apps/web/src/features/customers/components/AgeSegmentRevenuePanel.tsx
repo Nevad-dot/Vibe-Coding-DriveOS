@@ -37,8 +37,8 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
 
       {/* Donut Circular Graph + Compact Legend Breakdown */}
       <div className="mt-5 flex flex-col sm:flex-row items-center gap-6 md:gap-8">
-        {/* Left Side: Compact SVG Donut Chart */}
-        <div className="relative w-[130px] h-[130px] flex items-center justify-center shrink-0">
+        {/* Left Side: Static SVG Donut Chart (pointer-events-none: graph ignores direct hover) */}
+        <div className="relative w-[130px] h-[130px] flex items-center justify-center shrink-0 pointer-events-none select-none">
           <svg className="w-full h-full -rotate-90 transform-gpu" viewBox="0 0 130 130">
             {/* Background Ring Track */}
             <circle
@@ -75,9 +75,7 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
                     transformOrigin: "65px 65px",
                     transform: `rotate(${rotation}deg)`,
                   }}
-                  onMouseEnter={() => setHoveredIdx(idx)}
-                  onMouseLeave={() => setHoveredIdx(null)}
-                  className="cursor-pointer transition-all duration-200"
+                  className="transition-all duration-200"
                 />
               );
             })}
@@ -94,7 +92,7 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Side: Compact Legend Breakdown */}
+        {/* Right Side: Compact Legend Breakdown (Hovering titles triggers segment selection) */}
         <div className="flex-1 flex flex-col gap-1.5 w-full">
           {SEGMENTS.map((seg, idx) => {
             const isHovered = hoveredIdx === idx;
