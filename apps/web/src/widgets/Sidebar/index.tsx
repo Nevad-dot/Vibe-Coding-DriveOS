@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   LayoutGrid,
   TrendingUp,
@@ -85,8 +86,8 @@ export const Sidebar: React.FC = () => {
           </Link>
         </div>
 
-        {/* Navigation Items with Native CSS Active Indicator Line */}
-        <nav className="p-2.5 flex flex-col gap-1">
+        {/* Navigation Items with Framer Motion Sliding Indicator */}
+        <nav className="p-2.5 flex flex-col gap-1 relative">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href || (item.href === "/overview" && pathname === "/");
@@ -95,25 +96,37 @@ export const Sidebar: React.FC = () => {
               <Link
                 key={item.label}
                 href={item.href}
-                className={`relative flex items-center rounded-xl text-[13.5px] transition-all duration-150 select-none ${
+                className={`relative flex items-center rounded-xl text-[13.5px] transition-colors duration-150 select-none ${
                   collapsed ? "justify-center p-2.5" : "gap-3 px-3 py-2 pl-4"
                 } ${
                   isActive
-                    ? "bg-surfaceLight-pearl text-textGray-display font-medium"
+                    ? "text-textGray-display font-medium"
                     : "text-textGray-secondary hover:text-textGray-primary hover:bg-surfaceLight-pearl/60 font-normal"
                 }`}
                 title={collapsed ? item.label : undefined}
               >
-                {/* Native CSS Vertical Active Indicator Line (Zero JS Overhead) */}
+                {/* Sliding Framer Motion Active Background & Green Indicator Bar */}
                 {isActive && (
-                  <span className="absolute left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-[16px] bg-brand rounded-full transition-all duration-150" />
+                  <>
+                    <motion.div
+                      layoutId="activeSidebarPill"
+                      transition={{ type: "spring", stiffness: 420, damping: 30 }}
+                      className="absolute inset-0 bg-surfaceLight-pearl rounded-xl -z-10"
+                    />
+
+                    <motion.div
+                      layoutId="activeSidebarGreenBar"
+                      transition={{ type: "spring", stiffness: 420, damping: 30 }}
+                      className="absolute left-1.5 top-1/2 -translate-y-1/2 w-[3px] h-[18px] bg-brand rounded-full z-10"
+                    />
+                  </>
                 )}
 
                 <Icon
-                  className={`w-[18px] h-[18px] shrink-0 ${isActive ? "text-brand" : "text-textGray-tertiary"}`}
+                  className={`w-[18px] h-[18px] shrink-0 z-10 ${isActive ? "text-brand" : "text-textGray-tertiary"}`}
                   strokeWidth={1.5}
                 />
-                {!collapsed && <span>{item.label}</span>}
+                {!collapsed && <span className="z-10">{item.label}</span>}
               </Link>
             );
           })}
