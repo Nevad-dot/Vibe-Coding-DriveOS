@@ -23,11 +23,11 @@ const COLORS = [
 
 const VEHICLE_SPECS: Record<string, { engine: string; hp: string; accel: string; image: string }> = {
   "Porsche 911 GT3": { engine: "4.0L Flat-6", hp: "510 HP", accel: "3.4 Detik", image: "/images/gallery/porsche_gt3.png" },
-  "BMW M5 Competition": { engine: "4.4L V8 TwinTurbo", hp: "625 HP", accel: "3.3 Detik", image: "/images/gallery/bmw_m5.png" },
-  "Mercedes-AMG GT": { engine: "4.0L V8 Biturbo", hp: "585 HP", accel: "3.2 Detik", image: "/images/gallery/mercedes_amg_gt.png" },
-  "Audi RS e-tron GT": { engine: "Dual EV Motors", hp: "646 HP", accel: "3.3 Detik", image: "/images/gallery/audi_etron.png" },
+  "BMW M5 Competition": { engine: "4.4L V8 Turbo", hp: "625 HP", accel: "3.3 Detik", image: "/images/gallery/bmw_m5.png" },
+  "Mercedes-AMG GT": { engine: "4.0L V8 Turbo", hp: "585 HP", accel: "3.2 Detik", image: "/images/gallery/mercedes_amg_gt.png" },
+  "Audi RS e-tron GT": { engine: "Dual Motor EV", hp: "646 HP", accel: "3.3 Detik", image: "/images/gallery/audi_etron.png" },
   "Ferrari 296 GTB": { engine: "3.0L V6 Hybrid", hp: "830 HP", accel: "2.9 Detik", image: "/images/gallery/ferrari_296.png" },
-  "Tesla Model S Plaid": { engine: "Tri-Motor AWD EV", hp: "1,020 HP", accel: "2.1 Detik", image: "/images/gallery/tesla_model_s.png" },
+  "Tesla Model S Plaid": { engine: "Tri-Motor EV", hp: "1,020 HP", accel: "2.1 Detik", image: "/images/gallery/tesla_model_s.png" },
 };
 
 export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
@@ -236,17 +236,17 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
 
               {/* Specs Badge Grid */}
               <div className="grid grid-cols-3 gap-2 text-center">
-                <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl">
-                  <span className="text-[10.5px] text-textGray-tertiary block font-medium uppercase">MESIN</span>
-                  <span className="text-[13px] font-bold text-textGray-display">{spec.engine}</span>
+                <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl min-w-0">
+                  <span className="text-[10.5px] text-textGray-tertiary block font-medium uppercase tracking-tight truncate">MESIN</span>
+                  <span className="text-[12.5px] font-bold text-textGray-display truncate block whitespace-nowrap">{spec.engine}</span>
                 </div>
-                <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl">
-                  <span className="text-[10.5px] text-textGray-tertiary block font-medium uppercase">TENAGA</span>
-                  <span className="text-[13px] font-bold text-brand">{spec.hp}</span>
+                <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl min-w-0">
+                  <span className="text-[10.5px] text-textGray-tertiary block font-medium uppercase tracking-tight truncate">TENAGA</span>
+                  <span className="text-[12.5px] font-bold text-brand truncate block whitespace-nowrap">{spec.hp}</span>
                 </div>
-                <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl">
-                  <span className="text-[10.5px] text-textGray-tertiary block font-medium uppercase">0–100 KM/H</span>
-                  <span className="text-[13px] font-bold text-textGray-display">{spec.accel}</span>
+                <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl min-w-0">
+                  <span className="text-[10.5px] text-textGray-tertiary block font-medium uppercase tracking-tight truncate">0–100 KM/H</span>
+                  <span className="text-[12.5px] font-bold text-textGray-display truncate block whitespace-nowrap">{spec.accel}</span>
                 </div>
               </div>
             </div>
