@@ -35,8 +35,7 @@ export const GalleryHeroHeader: React.FC<GalleryHeroHeaderProps> = ({ onAddVehic
           </h1>
 
           <p className="text-[14px] md:text-[15px] text-textGray-tertiary font-normal">
-            22 unit unggulan · 360° viewer · siap dipresentasikan ke calon
-            pembeli.
+            22 unit unggulan · 360° viewer · siap dipresentasikan ke calon pembeli.
           </p>
         </div>
 
@@ -48,7 +47,7 @@ export const GalleryHeroHeader: React.FC<GalleryHeroHeaderProps> = ({ onAddVehic
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={() => setIsModalOpen(true)}
             type="button"
-            className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white font-medium text-[13.5px] inline-flex items-center justify-center gap-2 transition-all hover:opacity-95 shadow-sm whitespace-nowrap cursor-pointer select-none"
+            className="px-6 py-2.5 rounded-full bg-green-gradient-pill text-white font-medium text-[13.5px] inline-flex items-center justify-center gap-2 transition-colors shadow-xs whitespace-nowrap cursor-pointer select-none"
           >
             <Plus className="w-4 h-4 shrink-0" strokeWidth={1.5} />
             <span>Tambah Kendaraan</span>
@@ -61,6 +60,9 @@ export const GalleryHeroHeader: React.FC<GalleryHeroHeaderProps> = ({ onAddVehic
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={(data) => {
+          if (onAddVehicle) {
+            onAddVehicle(data);
+          }
           setToastMessage(
             `Unit ${data.vehicleName} (${data.price}) berhasil ditambahkan ke galeri!`,
           );
