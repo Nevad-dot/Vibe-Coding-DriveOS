@@ -51,6 +51,8 @@ export const Header: React.FC = () => {
     if (path === "/service") return "Service";
     if (path === "/financial") return "Financial";
     if (path === "/reports") return "Reports";
+    if (path === "/profile") return "Profile";
+    if (path === "/settings") return "Settings";
     return "Overview";
   };
 
@@ -277,7 +279,7 @@ export const Header: React.FC = () => {
                   <button
                     onClick={() => {
                       setIsProfileOpen(false);
-                      setIsProfileModalOpen(true);
+                      router.push("/profile");
                     }}
                     className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-textGray-primary hover:bg-surfaceLight-pearl transition-colors font-normal w-full text-left cursor-pointer"
                   >
@@ -287,7 +289,7 @@ export const Header: React.FC = () => {
                   <button
                     onClick={() => {
                       setIsProfileOpen(false);
-                      setIsSettingsModalOpen(true);
+                      router.push("/settings");
                     }}
                     className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-textGray-primary hover:bg-surfaceLight-pearl transition-colors font-normal w-full text-left cursor-pointer"
                   >
