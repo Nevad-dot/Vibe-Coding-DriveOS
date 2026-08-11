@@ -106,15 +106,15 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
             className="relative w-full max-w-[640px] bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl overflow-hidden z-10 flex flex-col"
           >
             {/* Search Input Header */}
-            <div className="px-5 py-4 border-b border-surfaceLight-border flex items-center gap-3.5">
-              <Search className="w-5 h-5 text-brand shrink-0" strokeWidth={1.75} />
+            <div className="px-5 py-3.5 border-b border-surfaceLight-border flex items-center gap-3">
+              <Search className="w-[18px] h-[18px] text-textGray-tertiary shrink-0" strokeWidth={1.5} />
               <input
                 type="text"
                 autoFocus
-                placeholder="Cari mobil, pelanggan, deal, plat armada, atau servis..."
+                placeholder="Cari kendaraan, pelanggan, deal, atau servis..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="w-full bg-transparent text-[15px] font-medium text-textGray-display placeholder:text-textGray-tertiary/60 focus:outline-none"
+                className="w-full bg-transparent text-[14.5px] font-normal text-textGray-display placeholder:text-textGray-placeholder focus:outline-none"
               />
               {query && (
                 <button
@@ -122,10 +122,10 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
                   onClick={() => setQuery("")}
                   className="p-1 rounded-full text-textGray-tertiary hover:text-textGray-display hover:bg-surfaceLight-pearl transition-colors cursor-pointer shrink-0"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-4 h-4" strokeWidth={1.5} />
                 </button>
               )}
-              <kbd className="text-[11px] font-semibold text-textGray-tertiary bg-surfaceLight-pearl border border-surfaceLight-border px-2 py-1 rounded-lg shadow-xs select-none shrink-0">
+              <kbd className="text-[10px] font-medium text-textGray-tertiary bg-surfaceLight-pearl border border-surfaceLight-border px-1.5 py-0.5 rounded-md shadow-xs select-none shrink-0 font-mono">
                 ESC
               </kbd>
             </div>
@@ -178,13 +178,21 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
               )}
             </div>
 
-            {/* Footer */}
-            <div className="px-5 py-3.5 bg-surfaceLight-pearl border-t border-surfaceLight-border flex items-center justify-between text-[12px] text-textGray-tertiary">
-              <span className="flex items-center gap-1.5 font-medium">
-                <Sparkles className="w-3.5 h-3.5 text-brand" />
-                Cari instan data kendaraan, customer & deal
+            {/* Clean Minimalist Footer */}
+            <div className="px-5 py-3 bg-surfaceLight-pearl border-t border-surfaceLight-border flex items-center justify-between text-[11.5px] text-textGray-tertiary">
+              <div className="flex items-center gap-3 font-normal">
+                <span className="flex items-center gap-1">
+                  <kbd className="px-1.5 py-0.5 rounded-md bg-surfaceLight-card border border-surfaceLight-border font-mono text-[10px] text-textGray-secondary">↵</kbd>
+                  <span>Buka</span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <kbd className="px-1.5 py-0.5 rounded-md bg-surfaceLight-card border border-surfaceLight-border font-mono text-[10px] text-textGray-secondary">ESC</kbd>
+                  <span>Tutup</span>
+                </span>
+              </div>
+              <span className="font-medium text-textGray-muted text-[11.5px] tracking-tight">
+                DriveOS Search
               </span>
-              <span className="font-semibold text-brand">DriveOS Search Engine</span>
             </div>
           </motion.div>
         </div>
