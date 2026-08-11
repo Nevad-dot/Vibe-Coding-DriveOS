@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { RotateCw, ChevronRight, Trash2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { RotateCw, ChevronRight, Trash2, RotateCcw } from "lucide-react";
 import { VehicleDetailModal } from "./VehicleDetailModal";
 import { Viewer360Modal } from "./Viewer360Modal";
 import { ConfirmDeleteModal } from "@/shared/components/ConfirmDeleteModal";
@@ -18,6 +19,8 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
   const [selectedVehicle, setSelectedVehicle] = useState<any>(null);
   const [viewer360Vehicle, setViewer360Vehicle] = useState<any>(null);
   const [deleteTarget, setDeleteTarget] = useState<VehicleRecord | null>(null);
+  const [lastDeletedVehicle, setLastDeletedVehicle] = useState<VehicleRecord | null>(null);
+  const [undoTimer, setUndoTimer] = useState<NodeJS.Timeout | null>(null);
   const [, setRefreshTick] = useState(0);
 
   useEffect(() => {
@@ -36,9 +39,33 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
 
   const handleConfirmDelete = async () => {
     if (!deleteTarget) return;
-    await vehiclesService.delete(deleteTarget.id);
-    setItems((prev) => prev.filter((v) => v.id !== deleteTarget.id));
+    const target = deleteTarget;
+    await vehiclesService.delete(target.id);
+    setItems((prev) => prev.filter((v) => v.id !== target.id));
     setDeleteTarget(null);
+    setLastDeletedVehicle(target);
+
+    if (undoTimer) clearTimeout(undoTimer);
+    const timer = setTimeout(() => {
+      setLastDeletedVehicle(null);
+    }, 7000);
+    setUndoTimer(timer);
+  };
+
+  const handleUndoDelete = async () => {
+    if (!lastDeletedVehicle) return;
+    const restored = await vehiclesService.create({
+      name: lastDeletedVehicle.name,
+      brand: lastDeletedVehicle.brand,
+      price: lastDeletedVehicle.price,
+      units: lastDeletedVehicle.units,
+      branch: lastDeletedVehicle.branch,
+      has360: lastDeletedVehicle.has360,
+      image_url: lastDeletedVehicle.image_url,
+    });
+    setItems((prev) => [restored, ...prev]);
+    setLastDeletedVehicle(null);
+    if (undoTimer) clearTimeout(undoTimer);
   };
 
   return (
@@ -149,6 +176,31 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
         itemName={deleteTarget?.name || "Kendaraan"}
         description="Tindakan ini akan menghapus data unit kendaraan dari database DriveOS secara permanen."
       />
+
+      {/* Floating Undo Delete Toast Notification */}
+      <AnimatePresence>
+        {lastDeletedVehicle && (
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 30, scale: 0.95 }}
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] px-5 py-3 rounded-2xl bg-surfaceLight-card border border-surfaceLight-border shadow-2xl flex items-center gap-4 text-[13px]"
+          >
+            <span className="text-textGray-display font-medium">
+              Unit <strong className="font-bold">{lastDeletedVehicle.name}</strong> berhasil dihapus.
+            </span>
+
+            <button
+              type="button"
+              onClick={handleUndoDelete}
+              className="px-4 py-1.5 rounded-full bg-green-gradient-pill text-white font-semibold text-[12.5px] inline-flex items-center gap-1.5 shadow-sm hover:opacity-95 cursor-pointer transition-opacity"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Batal Hapus (Undo)</span>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

@@ -48,6 +48,10 @@ export default function CustomersPage() {
     setCampaigns((prev) => [newItem, ...prev]);
   };
 
+  const handleDeleteCampaign = (id: string) => {
+    setCampaigns((prev) => prev.filter((c) => c.id !== id));
+  };
+
   return (
     <div className="w-full flex flex-col">
       {/* Top Header Banner */}
@@ -64,7 +68,10 @@ export default function CustomersPage() {
           <CustomersMetricsGrid />
 
           {/* 2. Persistent Campaigns Database Panel ("Bentuk Fisik Data") */}
-          <CampaignsHistoryPanel campaigns={campaigns} />
+          <CampaignsHistoryPanel
+            campaigns={campaigns}
+            onDeleteCampaign={handleDeleteCampaign}
+          />
 
           {/* 3. Middle Section: Age Segment Revenue Distribution & Top Customers */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">

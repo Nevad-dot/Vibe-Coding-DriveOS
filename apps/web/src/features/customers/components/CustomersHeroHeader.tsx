@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Send, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { Send } from "lucide-react";
 import { SendCampaignModal } from "./SendCampaignModal";
 
 interface CustomersHeroHeaderProps {
@@ -38,8 +38,7 @@ export const CustomersHeroHeader: React.FC<CustomersHeroHeaderProps> = ({ onAddC
           </h1>
 
           <p className="text-[14px] md:text-[15px] text-textGray-tertiary font-normal">
-            214 pelanggan aktif · CSAT 4,6 / 5 · segmen 35–44 menyumbang 47%
-            revenue.
+            214 pelanggan aktif · CSAT 4,6 / 5 · segmen 35–44 menyumbang 47% revenue.
           </p>
         </div>
 
@@ -63,6 +62,7 @@ export const CustomersHeroHeader: React.FC<CustomersHeroHeaderProps> = ({ onAddC
       <SendCampaignModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onSuccess={onAddCampaign}
       />
     </>
   );
