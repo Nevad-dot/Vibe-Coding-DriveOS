@@ -5,6 +5,7 @@ import Image from "next/image";
 import { RotateCw, ChevronRight, Trash2 } from "lucide-react";
 import { VehicleDetailModal } from "./VehicleDetailModal";
 import { Viewer360Modal } from "./Viewer360Modal";
+import { ConfirmDeleteModal } from "@/shared/components/ConfirmDeleteModal";
 import { vehiclesService, VehicleRecord } from "@/shared/lib/supabase/vehiclesService";
 import { formatCurrencyValue } from "@/shared/lib/settingsStore";
 
@@ -16,6 +17,7 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
   const [items, setItems] = useState<VehicleRecord[]>([]);
   const [selectedVehicle, setSelectedVehicle] = useState<any>(null);
   const [viewer360Vehicle, setViewer360Vehicle] = useState<any>(null);
+  const [deleteTarget, setDeleteTarget] = useState<VehicleRecord | null>(null);
   const [, setRefreshTick] = useState(0);
 
   useEffect(() => {
@@ -32,12 +34,11 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
     return () => window.removeEventListener("driveos-settings-changed", handleSettingsChange);
   }, [customVehicles]);
 
-  const handleDeleteVehicle = async (id: string, name: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (confirm(`Hapus unit ${name} dari database?`)) {
-      await vehiclesService.delete(id);
-      setItems((prev) => prev.filter((v) => v.id !== id));
-    }
+  const handleConfirmDelete = async () => {
+    if (!deleteTarget) return;
+    await vehiclesService.delete(deleteTarget.id);
+    setItems((prev) => prev.filter((v) => v.id !== deleteTarget.id));
+    setDeleteTarget(null);
   };
 
   return (
@@ -62,20 +63,23 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
               <button
                 type="button"
                 onClick={() => setViewer360Vehicle(item)}
-                className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[11.5px] font-semibold text-brand flex items-center gap-1.5 shadow-xs hover:bg-surfaceLight-pearl cursor-pointer transition-all hover:scale-105"
+                className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[11.5px] font-semibold text-brand flex items-center gap-1.5 shadow-xs hover:bg-surfaceLight-pearl cursor-pointer transition-all hover:scale-105 z-10"
               >
                 <RotateCw className="w-3.5 h-3.5 text-[#4B8E55]" />
                 <span>360° View</span>
               </button>
 
-              {/* Quick Delete DB Button */}
+              {/* Sleek Consistent Delete Action Badge */}
               <button
                 type="button"
-                title="Hapus dari Database"
-                onClick={(e) => handleDeleteVehicle(item.id, item.name, e)}
-                className="absolute top-3 left-3 w-8 h-8 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border text-red-500 hover:bg-red-500 hover:text-white flex items-center justify-center shadow-xs cursor-pointer transition-all opacity-0 group-hover:opacity-100"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDeleteTarget(item);
+                }}
+                className="absolute top-3 left-3 px-3 py-1.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[11.5px] font-semibold text-textGray-secondary hover:text-red-600 hover:border-red-500/30 shadow-xs flex items-center gap-1.5 cursor-pointer transition-all opacity-0 group-hover:opacity-100 hover:scale-105 z-10"
               >
                 <Trash2 className="w-3.5 h-3.5" />
+                <span>Hapus</span>
               </button>
             </div>
 
@@ -135,6 +139,16 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
           imageUrl={viewer360Vehicle.image_url}
         />
       )}
+
+      {/* Custom Confirmation Delete Popup Modal */}
+      <ConfirmDeleteModal
+        isOpen={Boolean(deleteTarget)}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleConfirmDelete}
+        title="Konfirmasi Hapus Kendaraan"
+        itemName={deleteTarget?.name || "Kendaraan"}
+        description="Tindakan ini akan menghapus data unit kendaraan dari database DriveOS secara permanen."
+      />
     </>
   );
 };
