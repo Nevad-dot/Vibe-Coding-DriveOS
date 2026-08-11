@@ -46,7 +46,7 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
               <button
                 type="button"
                 onClick={() => setViewer360Vehicle(item)}
-                className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border text-[11.5px] font-semibold text-brand flex items-center gap-1.5 shadow-sm backdrop-blur-xs hover:bg-surfaceLight-card cursor-pointer transition-all hover:scale-105"
+                className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[11.5px] font-semibold text-brand flex items-center gap-1.5 shadow-xs hover:bg-surfaceLight-pearl cursor-pointer transition-all hover:scale-105"
               >
                 <RotateCw className="w-3.5 h-3.5 text-[#4B8E55]" />
                 <span>360° View</span>
