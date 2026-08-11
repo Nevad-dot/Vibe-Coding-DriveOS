@@ -32,28 +32,25 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
             key={item.id}
             className="bg-surfaceLight-card border border-surfaceLight-border rounded-2xl overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all duration-300"
           >
-            {/* Vehicle Image Container */}
-            <div className="relative w-full h-[210px] bg-gradient-to-b from-surfaceLight-pearl to-surfaceLight-card overflow-hidden flex items-center justify-center p-4">
-              <div className="relative w-full h-full transform group-hover:scale-105 transition-transform duration-500">
-                <Image
-                  src={item.image_url || "/images/gallery/porsche_gt3.png"}
-                  alt={item.name}
-                  fill
-                  className="object-contain drop-shadow-md"
-                  unoptimized
-                />
-              </div>
+            {/* Full Frame Studio Image Container */}
+            <div className="relative w-full h-[240px] overflow-hidden rounded-t-2xl bg-gradient-to-b from-surfaceLight-pearl to-surfaceLight-card">
+              <Image
+                src={item.image_url || "/images/gallery/porsche_gt3.png"}
+                alt={item.name}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                unoptimized
+              />
 
-              {item.has360 && (
-                <button
-                  type="button"
-                  onClick={() => setViewer360Vehicle(item)}
-                  className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border text-[11px] font-semibold text-brand flex items-center gap-1.5 shadow-xs backdrop-blur-xs hover:bg-surfaceLight-card cursor-pointer"
-                >
-                  <RotateCw className="w-3 h-3 text-[#4B8E55]" />
-                  <span>360° View</span>
-                </button>
-              )}
+              {/* 360° View Button on EVERY vehicle card section */}
+              <button
+                type="button"
+                onClick={() => setViewer360Vehicle(item)}
+                className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border text-[11.5px] font-semibold text-brand flex items-center gap-1.5 shadow-sm backdrop-blur-xs hover:bg-surfaceLight-card cursor-pointer transition-all hover:scale-105"
+              >
+                <RotateCw className="w-3.5 h-3.5 text-[#4B8E55]" />
+                <span>360° View</span>
+              </button>
             </div>
 
             {/* Content & Action Bar */}
