@@ -19,6 +19,7 @@ import {
   CurrencyType,
   LanguageType,
 } from "@/shared/lib/settingsStore";
+import { GradientToggleSwitch } from "@/shared/components/GradientToggleSwitch";
 
 export default function SettingsPage() {
   const [currency, setCurrency] = useState<CurrencyType>("IDR");
@@ -146,21 +147,10 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setEmailAlerts(!emailAlerts)}
-                    className={`relative w-12 h-6.5 rounded-full transition-all duration-300 p-0.5 cursor-pointer shadow-2xs shrink-0 ${
-                      emailAlerts ? "bg-green-gradient-pill" : "bg-surfaceLight-card border border-surfaceLight-border"
-                    }`}
-                  >
-                    <motion.div
-                      animate={{ x: emailAlerts ? 22 : 0 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      className="w-5 h-5 rounded-full bg-white shadow-xs flex items-center justify-center text-[10px] font-bold"
-                    >
-                      {emailAlerts && <Check className="w-3 h-3 text-[#4B8E55]" strokeWidth={3} />}
-                    </motion.div>
-                  </button>
+                  <GradientToggleSwitch
+                    checked={emailAlerts}
+                    onChange={setEmailAlerts}
+                  />
                 </div>
 
                 {/* Custom Gradient Toggle Switch 2 */}
@@ -173,21 +163,10 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setPushAlerts(!pushAlerts)}
-                    className={`relative w-12 h-6.5 rounded-full transition-all duration-300 p-0.5 cursor-pointer shadow-2xs shrink-0 ${
-                      pushAlerts ? "bg-green-gradient-pill" : "bg-surfaceLight-card border border-surfaceLight-border"
-                    }`}
-                  >
-                    <motion.div
-                      animate={{ x: pushAlerts ? 22 : 0 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      className="w-5 h-5 rounded-full bg-white shadow-xs flex items-center justify-center text-[10px] font-bold"
-                    >
-                      {pushAlerts && <Check className="w-3 h-3 text-[#4B8E55]" strokeWidth={3} />}
-                    </motion.div>
-                  </button>
+                  <GradientToggleSwitch
+                    checked={pushAlerts}
+                    onChange={setPushAlerts}
+                  />
                 </div>
               </div>
             </motion.div>
@@ -217,21 +196,10 @@ export default function SettingsPage() {
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setTwoFactor(!twoFactor)}
-                    className={`relative w-12 h-6.5 rounded-full transition-all duration-300 p-0.5 cursor-pointer shadow-2xs shrink-0 ${
-                      twoFactor ? "bg-green-gradient-pill" : "bg-surfaceLight-card border border-surfaceLight-border"
-                    }`}
-                  >
-                    <motion.div
-                      animate={{ x: twoFactor ? 22 : 0 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      className="w-5 h-5 rounded-full bg-white shadow-xs flex items-center justify-center text-[10px] font-bold"
-                    >
-                      {twoFactor && <Check className="w-3 h-3 text-[#4B8E55]" strokeWidth={3} />}
-                    </motion.div>
-                  </button>
+                  <GradientToggleSwitch
+                    checked={twoFactor}
+                    onChange={setTwoFactor}
+                  />
                 </div>
 
                 <div className="flex items-center justify-between p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border">
