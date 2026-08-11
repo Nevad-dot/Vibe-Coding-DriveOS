@@ -1,27 +1,42 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import SalesHeroHeader from "@/features/sales/components/SalesHeroHeader";
 import SalesMetricsGrid from "@/features/sales/components/SalesMetricsGrid";
 import SalesTrendChart from "@/features/dashboard/components/SalesTrendChart";
 import SalesFunnelPanel from "@/features/sales/components/SalesFunnelPanel";
 import TopConsultantsList from "@/features/sales/components/TopConsultantsList";
 import HotLeadsList from "@/features/sales/components/HotLeadsList";
-
-export const metadata = {
-  title: "DriveOS — Sales Intelligence",
-  description: "Sales Intelligence & Pipeline Management — Real-time revenue, conversion, and deals.",
-};
+import { salesService, DealRecord } from "@/shared/lib/supabase/salesService";
 
 export default function SalesPage() {
+  const [deals, setDeals] = useState<DealRecord[]>([]);
+
+  useEffect(() => {
+    salesService.getAll().then((data) => setDeals(data));
+  }, []);
+
+  const handleAddDeal = async (data: { customerName: string; vehicleModel: string; dealValue: string; stage: string; consultant: string }) => {
+    const created = await salesService.create({
+      customerName: data.customerName,
+      vehicleModel: data.vehicleModel,
+      dealValue: data.dealValue,
+      stage: data.stage,
+      consultant: data.consultant,
+    });
+    setDeals((prev) => [created, ...prev]);
+  };
+
   return (
     <div className="w-full flex flex-col">
-      {/* Top Header Banner: Pure White background with horizontal divider line */}
+      {/* Top Header Banner */}
       <div className="bg-surfaceLight-card border-b border-surfaceLight-border px-6 md:px-8 py-6 md:py-7 w-full">
         <div className="max-w-[1440px] mx-auto">
-          <SalesHeroHeader />
+          <SalesHeroHeader onAddDeal={handleAddDeal} />
         </div>
       </div>
 
-      {/* Main Sales Canvas: Slightly tinted gray background with all cards */}
+      {/* Main Sales Canvas */}
       <div className="bg-surfaceLight-pearl px-6 md:px-8 py-6 md:py-8 w-full min-h-[calc(100vh-200px)]">
         <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
           {/* 1. KPI Metrics Grid */}
@@ -37,10 +52,10 @@ export default function SalesPage() {
             </div>
           </div>
 
-          {/* 3. Bottom Section: Top Consultants & Hot Leads */}
+          {/* 3. Bottom Section: Top Consultants & Persistent Deals Pipeline */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
             <TopConsultantsList />
-            <HotLeadsList />
+            <HotLeadsList deals={deals} />
           </div>
         </div>
       </div>

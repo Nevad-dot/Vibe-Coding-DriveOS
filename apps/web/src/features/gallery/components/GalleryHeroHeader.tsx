@@ -5,7 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, CheckCircle2 } from "lucide-react";
 import { AddVehicleModal } from "./AddVehicleModal";
 
-export const GalleryHeroHeader: React.FC = () => {
+interface GalleryHeroHeaderProps {
+  onAddVehicle?: (data: { vehicleName: string; brand: string; price: string; units: number; branch: string; has360: boolean }) => void;
+}
+
+export const GalleryHeroHeader: React.FC<GalleryHeroHeaderProps> = ({ onAddVehicle }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -24,12 +28,15 @@ export const GalleryHeroHeader: React.FC = () => {
           </span>
 
           <h1 className="text-[28px] md:text-[34px] font-display tracking-tight leading-snug">
-            <span className="font-semibold text-textGray-display">Setiap unit, dalam </span>
+            <span className="font-semibold text-textGray-display">
+              Setiap unit, dalam{" "}
+            </span>
             <span className="font-bold text-green-gradient">detail penuh.</span>
           </h1>
 
           <p className="text-[14px] md:text-[15px] text-textGray-tertiary font-normal">
-            22 unit unggulan · 360° viewer · siap dipresentasikan ke calon pembeli.
+            22 unit unggulan · 360° viewer · siap dipresentasikan ke calon
+            pembeli.
           </p>
         </div>
 
@@ -54,7 +61,9 @@ export const GalleryHeroHeader: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={(data) => {
-          setToastMessage(`Unit ${data.vehicleName} (${data.price}) berhasil ditambahkan ke galeri!`);
+          setToastMessage(
+            `Unit ${data.vehicleName} (${data.price}) berhasil ditambahkan ke galeri!`,
+          );
           setTimeout(() => setToastMessage(null), 3500);
         }}
       />

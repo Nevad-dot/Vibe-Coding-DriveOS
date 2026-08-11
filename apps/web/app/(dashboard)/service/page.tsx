@@ -1,34 +1,51 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import ServiceHeroHeader from "@/features/service/components/ServiceHeroHeader";
 import ServiceMetricsGrid from "@/features/service/components/ServiceMetricsGrid";
 import LiveStatusPanel from "@/features/service/components/LiveStatusPanel";
 import UpcomingSchedulePanel from "@/features/service/components/UpcomingSchedulePanel";
-
-export const metadata = {
-  title: "DriveOS — Service Management",
-  description: "Real-time service bay utilization, active job status, and upcoming service schedules.",
-};
+import { serviceAppointmentsService, ServiceAppointmentRecord } from "@/shared/lib/supabase/serviceAppointmentsService";
 
 export default function ServicePage() {
+  const [appointments, setAppointments] = useState<ServiceAppointmentRecord[]>([]);
+
+  useEffect(() => {
+    serviceAppointmentsService.getAll().then((data) => setAppointments(data));
+  }, []);
+
+  const handleAddService = async (data: { vehicle: string; customer: string; serviceType: string; bay: string; date: string; time: string }) => {
+    const created = await serviceAppointmentsService.create({
+      vehiclePlate: data.vehicle,
+      customerName: data.customer,
+      serviceType: data.serviceType,
+      bay: data.bay,
+      date: data.date || "Hari ini",
+      time: data.time || "09:00",
+      status: "Scheduled",
+    });
+    setAppointments((prev) => [created, ...prev]);
+  };
+
   return (
     <div className="w-full flex flex-col">
-      {/* Top Header Banner: Pure White background with horizontal divider line */}
+      {/* Top Header Banner */}
       <div className="bg-surfaceLight-card border-b border-surfaceLight-border px-6 md:px-8 py-6 md:py-7 w-full">
         <div className="max-w-[1440px] mx-auto">
-          <ServiceHeroHeader />
+          <ServiceHeroHeader onAddService={handleAddService} />
         </div>
       </div>
 
-      {/* Main Service Canvas: Pearl background with metrics grid and 2-column live status & upcoming schedule panels */}
+      {/* Main Service Canvas */}
       <div className="bg-surfaceLight-pearl px-6 md:px-8 py-6 md:py-8 w-full pb-16">
         <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
-          {/* 1. Top Service KPI Metrics Grid */}
+          {/* 1. Service KPI Metrics Grid */}
           <ServiceMetricsGrid />
 
-          {/* 2. Middle Section: Live Status & Upcoming 7 Days Schedule (Equal Height) */}
+          {/* 2. Middle Section: Live Status & Persistent Upcoming Schedule Panel */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
             <LiveStatusPanel />
-            <UpcomingSchedulePanel />
+            <UpcomingSchedulePanel appointments={appointments} />
           </div>
         </div>
       </div>

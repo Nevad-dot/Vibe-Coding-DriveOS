@@ -5,7 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, CheckCircle2 } from "lucide-react";
 import { RestockOrderModal } from "./RestockOrderModal";
 
-export const InventoryHeroHeader: React.FC = () => {
+interface InventoryHeroHeaderProps {
+  onAddRestock?: (data: { brand: string; model: string; quantity: number; branch: string; priority: string }) => void;
+}
+
+export const InventoryHeroHeader: React.FC<InventoryHeroHeaderProps> = ({ onAddRestock }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -41,7 +45,7 @@ export const InventoryHeroHeader: React.FC = () => {
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={() => setIsModalOpen(true)}
             type="button"
-            className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white font-medium text-[13.5px] inline-flex items-center justify-center gap-2 transition-all hover:opacity-95 shadow-sm whitespace-nowrap cursor-pointer select-none"
+            className="px-6 py-2.5 rounded-full bg-green-gradient-pill text-white font-medium text-[13.5px] inline-flex items-center justify-center gap-2 transition-all hover:opacity-95 shadow-sm whitespace-nowrap cursor-pointer select-none"
           >
             <Plus className="w-4 h-4 shrink-0" strokeWidth={1.5} />
             <span>Restock Order</span>
@@ -49,11 +53,14 @@ export const InventoryHeroHeader: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Interactive Restock Order Modal with Portal Overlay */}
+      {/* Interactive Restock Order Modal */}
       <RestockOrderModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={(data) => {
+          if (onAddRestock) {
+            onAddRestock(data);
+          }
           setToastMessage(`Restock order ${data.quantity} unit ${data.brand} ${data.model} ke ${data.branch} berhasil diajukan!`);
           setTimeout(() => setToastMessage(null), 3500);
         }}

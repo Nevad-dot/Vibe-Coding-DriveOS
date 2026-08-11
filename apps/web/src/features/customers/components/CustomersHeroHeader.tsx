@@ -5,7 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send, CheckCircle2 } from "lucide-react";
 import { SendCampaignModal } from "./SendCampaignModal";
 
-export const CustomersHeroHeader: React.FC = () => {
+interface CustomersHeroHeaderProps {
+  onAddCampaign?: (camp: { name: string; segment: string; channel: string; subject: string }) => void;
+}
+
+export const CustomersHeroHeader: React.FC<CustomersHeroHeaderProps> = ({ onAddCampaign }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -23,13 +27,19 @@ export const CustomersHeroHeader: React.FC = () => {
           </span>
 
           <h1 className="text-[28px] md:text-[34px] font-display tracking-tight leading-snug">
-            <span className="font-semibold text-textGray-display">Siapa yang </span>
+            <span className="font-semibold text-textGray-display">
+              Siapa yang{" "}
+            </span>
             <span className="font-bold text-green-gradient">membeli</span>
-            <span className="font-semibold text-textGray-display"> — dan kenapa.</span>
+            <span className="font-semibold text-textGray-display">
+              {" "}
+              — dan kenapa.
+            </span>
           </h1>
 
           <p className="text-[14px] md:text-[15px] text-textGray-tertiary font-normal">
-            214 pelanggan aktif · CSAT 4,6 / 5 · segmen 35–44 menyumbang 47% revenue.
+            214 pelanggan aktif · CSAT 4,6 / 5 · segmen 35–44 menyumbang 47%
+            revenue.
           </p>
         </div>
 

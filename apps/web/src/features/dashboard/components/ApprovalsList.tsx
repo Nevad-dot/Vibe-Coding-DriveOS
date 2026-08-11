@@ -1,37 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import { ApprovalsReviewModal } from "./ApprovalsReviewModal";
-
-const INITIAL_APPROVALS = [
-  {
-    title: "Diskon 8% · Mercedes S-Class",
-    meta: "Rendra · Jakarta Pusat · 12m",
-    amount: "Rp 2,4 M",
-  },
-  {
-    title: "Fleet contract · Kirana Logistik",
-    meta: "Diva · Corporate · 1h",
-    amount: "18 unit",
-  },
-  {
-    title: "Trade-in · BMW X5 2022",
-    meta: "Ilham · Bandung · 2h",
-    amount: "Rp 890 jt",
-  },
-  {
-    title: "Waive fee · Ferrari 296",
-    meta: "Nadia · Service · 3h",
-    amount: "Rp 12 jt",
-  },
-];
+import { approvalsService, ApprovalRecord } from "@/shared/lib/supabase/approvalsService";
 
 export const ApprovalsList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [pendingCount, setPendingCount] = useState(6);
+  const [approvals, setApprovals] = useState<ApprovalRecord[]>([]);
+  const [pendingCount, setPendingCount] = useState(4);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    approvalsService.getAll().then((data) => {
+      setApprovals(data);
+      const pending = data.filter((item) => item.status === "Pending").length;
+      setPendingCount(pending);
+    });
+  }, []);
+
+  const handleApproveAllSuccess = async () => {
+    await approvalsService.approveAll();
+    setPendingCount(0);
+    setApprovals((prev) => prev.map((item) => ({ ...item, status: "Approved" as const })));
+    setToastMessage("Seluruh pengajuan approval telah berhasil disetujui di database!");
+    setTimeout(() => setToastMessage(null), 3500);
+  };
 
   return (
     <>
@@ -66,8 +61,8 @@ export const ApprovalsList: React.FC = () => {
 
         {/* Approvals Items */}
         <div className="flex flex-col divide-y divide-surfaceLight-border">
-          {INITIAL_APPROVALS.map((item, idx) => (
-            <div key={idx} className="py-3.5 flex items-center justify-between gap-4 first:pt-0 last:pb-0">
+          {approvals.map((item) => (
+            <div key={item.id} className="py-3.5 flex items-center justify-between gap-4 first:pt-0 last:pb-0">
               <div>
                 <h4 className="text-[14px] font-semibold text-textGray-display mb-0.5">
                   {item.title}
@@ -86,11 +81,7 @@ export const ApprovalsList: React.FC = () => {
       <ApprovalsReviewModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onApproveAllSuccess={() => {
-          setPendingCount(0);
-          setToastMessage("Seluruh 6 pengajuan approval telah berhasil disetujui!");
-          setTimeout(() => setToastMessage(null), 3500);
-        }}
+        onApproveAllSuccess={handleApproveAllSuccess}
       />
 
       {/* Toast Alert Notification */}

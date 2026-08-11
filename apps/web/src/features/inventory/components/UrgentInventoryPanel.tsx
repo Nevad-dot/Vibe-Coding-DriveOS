@@ -1,47 +1,14 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { RestockOrderRecord } from "@/shared/lib/supabase/inventoryService";
 
-const CRITICAL_ITEMS = [
-  {
-    model: "BMW Seri 5 520i M Sport",
-    vin: "VIN · WBA5130091",
-    status: "Restock",
-    statusColor: "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white shadow-xs",
-    stock: "1 unit (Tersisa)",
-  },
-  {
-    model: "Mercedes-Benz E 200 Avantgarde",
-    vin: "VIN · W1K2130421",
-    status: "Monitor",
-    statusColor: "bg-amber-500/15 text-amber-600 border border-amber-500/30",
-    stock: "2 unit",
-  },
-  {
-    model: "Ferrari 296 GTB Hybrid",
-    vin: "VIN · ZFF9220018",
-    status: "Alokasi",
-    statusColor: "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white shadow-xs",
-    stock: "0 unit (Indent 4 bln)",
-  },
-  {
-    model: "Audi Q5 Sportback 45 TFSI",
-    vin: "VIN · WAUZZZ8R19",
-    status: "OK",
-    statusColor: "bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white shadow-xs",
-    stock: "8 unit",
-  },
-  {
-    model: "Porsche Cayenne Coupe 2023",
-    vin: "VIN · WP1ZZZ9228",
-    status: "Diskon",
-    statusColor: "bg-blue-500/15 text-blue-600 border border-blue-500/30",
-    stock: "3 unit (>90 hari)",
-  },
-];
+interface UrgentInventoryPanelProps {
+  restockOrders?: RestockOrderRecord[];
+}
 
-export const UrgentInventoryPanel: React.FC = () => {
+export const UrgentInventoryPanel: React.FC<UrgentInventoryPanelProps> = ({ restockOrders = [] }) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96, y: 22 }}
@@ -50,33 +17,49 @@ export const UrgentInventoryPanel: React.FC = () => {
       className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col h-full shadow-xs"
     >
       {/* Header */}
-      <div className="mb-5">
-        <span className="text-[11px] font-medium text-textGray-muted uppercase tracking-[0.08em] block mb-1">
-          KRITIS
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <span className="text-[11px] font-medium text-textGray-muted uppercase tracking-[0.08em] block mb-1">
+            DATABASE RESTOCK ORDERS
+          </span>
+          <h3 className="text-[18px] font-display font-semibold text-textGray-display">
+            Pengajuan Restock ({restockOrders.length})
+          </h3>
+        </div>
+        <span className="text-[11.5px] font-medium text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
+          Live Database
         </span>
-        <h3 className="text-[18px] font-display font-semibold text-textGray-display">
-          Butuh perhatian segera
-        </h3>
       </div>
 
-      {/* Critical Items List */}
-      <div className="flex-1 flex flex-col justify-between divide-y divide-surfaceLight-border">
-        {CRITICAL_ITEMS.map((item, idx) => (
-          <div key={idx} className="py-3.5 flex items-center justify-between gap-4 first:pt-0 last:pb-0">
-            <div>
-              <h4 className="text-[14px] font-semibold text-textGray-display mb-0.5 leading-snug">
-                {item.model}
-              </h4>
-              <span className="text-[12px] text-textGray-tertiary font-normal">
-                {item.vin} · {item.stock}
-              </span>
-            </div>
-
-            <span className={`px-3 py-1 rounded-full text-[11.5px] font-semibold ${item.statusColor}`}>
-              {item.status}
-            </span>
-          </div>
-        ))}
+      {/* Items */}
+      <div className="flex flex-col divide-y divide-surfaceLight-border">
+        <AnimatePresence initial={false}>
+          {restockOrders.map((item) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="py-3.5 flex items-center justify-between gap-4 first:pt-0 last:pb-0"
+            >
+              <div>
+                <h4 className="text-[14px] font-semibold text-textGray-display mb-0.5">
+                  {item.brand} {item.model}
+                </h4>
+                <span className="text-[12px] text-textGray-tertiary font-normal">
+                  {item.branch || "Jakarta Pusat"} · {item.priority}
+                </span>
+              </div>
+              <div className="flex items-center gap-3 shrink-0">
+                <span className="text-[13px] font-semibold text-textGray-display">
+                  {typeof item.quantity === "number" ? `${item.quantity} unit` : item.quantity}
+                </span>
+                <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-green-gradient-pill text-white shadow-2xs">
+                  {item.status || "Pending"}
+                </span>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     </motion.div>
   );

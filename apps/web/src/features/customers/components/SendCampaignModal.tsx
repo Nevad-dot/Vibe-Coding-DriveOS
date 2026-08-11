@@ -3,7 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, CheckCircle2, ChevronDown, Users, Target, Megaphone } from "lucide-react";
+import {
+  X,
+  Send,
+  CheckCircle2,
+  ChevronDown,
+  Users,
+  Target,
+  Megaphone,
+} from "lucide-react";
 
 interface SendCampaignModalProps {
   isOpen: boolean;
@@ -25,7 +33,10 @@ const CHANNELS = [
   { label: "Push Notification", value: "push" },
 ];
 
-export const SendCampaignModal: React.FC<SendCampaignModalProps> = ({ isOpen, onClose }) => {
+export const SendCampaignModal: React.FC<SendCampaignModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const [mounted, setMounted] = useState(false);
   const [campaignName, setCampaignName] = useState("");
   const [segment, setSegment] = useState("all");
@@ -64,7 +75,8 @@ export const SendCampaignModal: React.FC<SendCampaignModalProps> = ({ isOpen, on
 
   if (!mounted) return null;
 
-  const selectedSegmentLabel = SEGMENTS.find((s) => s.value === segment)?.label || "";
+  const selectedSegmentLabel =
+    SEGMENTS.find((s) => s.value === segment)?.label || "";
 
   return createPortal(
     <AnimatePresence>
@@ -101,7 +113,11 @@ export const SendCampaignModal: React.FC<SendCampaignModalProps> = ({ isOpen, on
                   Kampanye Terkirim!
                 </h4>
                 <p className="text-[13px] text-textGray-tertiary max-w-[340px]">
-                  Kampanye <span className="font-semibold text-textGray-display">&quot;{campaignName || "Untitled"}&quot;</span> berhasil dikirim ke {selectedSegmentLabel}.
+                  Kampanye{" "}
+                  <span className="font-semibold text-textGray-display">
+                    &quot;{campaignName || "Untitled"}&quot;
+                  </span>{" "}
+                  berhasil dikirim ke {selectedSegmentLabel}.
                 </p>
               </motion.div>
             ) : (
@@ -130,7 +146,10 @@ export const SendCampaignModal: React.FC<SendCampaignModalProps> = ({ isOpen, on
                   {/* Campaign Name */}
                   <div className="flex flex-col gap-1.5">
                     <label className="text-[12px] font-medium text-textGray-primary flex items-center gap-1">
-                      <Megaphone className="w-3.5 h-3.5 text-[#4B8E55]" strokeWidth={1.5} />
+                      <Megaphone
+                        className="w-3.5 h-3.5 text-[#4B8E55]"
+                        strokeWidth={1.5}
+                      />
                       Nama Kampanye <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -147,7 +166,10 @@ export const SendCampaignModal: React.FC<SendCampaignModalProps> = ({ isOpen, on
                   <div className="grid grid-cols-2 gap-3">
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[12px] font-medium text-textGray-primary flex items-center gap-1">
-                        <Users className="w-3.5 h-3.5 text-[#4B8E55]" strokeWidth={1.5} />
+                        <Users
+                          className="w-3.5 h-3.5 text-[#4B8E55]"
+                          strokeWidth={1.5}
+                        />
                         Segmen Target
                       </label>
                       <div className="relative">
@@ -157,16 +179,24 @@ export const SendCampaignModal: React.FC<SendCampaignModalProps> = ({ isOpen, on
                           className="w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[13.5px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer"
                         >
                           {SEGMENTS.map((s) => (
-                            <option key={s.value} value={s.value}>{s.label}</option>
+                            <option key={s.value} value={s.value}>
+                              {s.label}
+                            </option>
                           ))}
                         </select>
-                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textGray-tertiary pointer-events-none" strokeWidth={1.5} />
+                        <ChevronDown
+                          className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textGray-tertiary pointer-events-none"
+                          strokeWidth={1.5}
+                        />
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[12px] font-medium text-textGray-primary flex items-center gap-1">
-                        <Target className="w-3.5 h-3.5 text-[#4B8E55]" strokeWidth={1.5} />
+                        <Target
+                          className="w-3.5 h-3.5 text-[#4B8E55]"
+                          strokeWidth={1.5}
+                        />
                         Channel Pengiriman
                       </label>
                       <div className="relative">
@@ -176,10 +206,15 @@ export const SendCampaignModal: React.FC<SendCampaignModalProps> = ({ isOpen, on
                           className="w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[13.5px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer"
                         >
                           {CHANNELS.map((c) => (
-                            <option key={c.value} value={c.value}>{c.label}</option>
+                            <option key={c.value} value={c.value}>
+                              {c.label}
+                            </option>
                           ))}
                         </select>
-                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textGray-tertiary pointer-events-none" strokeWidth={1.5} />
+                        <ChevronDown
+                          className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-textGray-tertiary pointer-events-none"
+                          strokeWidth={1.5}
+                        />
                       </div>
                     </div>
                   </div>
@@ -237,7 +272,7 @@ export const SendCampaignModal: React.FC<SendCampaignModalProps> = ({ isOpen, on
         </div>
       )}
     </AnimatePresence>,
-    document.body
+    document.body,
   );
 };
 

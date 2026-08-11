@@ -5,7 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Wrench, CheckCircle2 } from "lucide-react";
 import { ScheduleServiceModal } from "./ScheduleServiceModal";
 
-export const ServiceHeroHeader: React.FC = () => {
+interface ServiceHeroHeaderProps {
+  onAddService?: (data: { vehicle: string; customer: string; serviceType: string; bay: string; date: string; time: string }) => void;
+}
+
+export const ServiceHeroHeader: React.FC<ServiceHeroHeaderProps> = ({ onAddService }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -54,6 +58,9 @@ export const ServiceHeroHeader: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={(data) => {
+          if (onAddService) {
+            onAddService(data);
+          }
           setToastMessage(`Servis untuk ${data.vehicle} (${data.serviceType}) berhasil dijadwalkan di ${data.bay}!`);
           setTimeout(() => setToastMessage(null), 3500);
         }}

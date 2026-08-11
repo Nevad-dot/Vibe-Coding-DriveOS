@@ -1,31 +1,47 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import GalleryHeroHeader from "@/features/gallery/components/GalleryHeroHeader";
 import FeaturedVehicleStage from "@/features/gallery/components/FeaturedVehicleStage";
 import VehicleGalleryGrid from "@/features/gallery/components/VehicleGalleryGrid";
-
-export const metadata = {
-  title: "DriveOS — Premium Vehicle Gallery",
-  description: "Premium Vehicle Gallery — 360° showroom viewer & vehicle presentation suite.",
-};
+import { vehiclesService, VehicleRecord } from "@/shared/lib/supabase/vehiclesService";
 
 export default function GalleryPage() {
+  const [vehicles, setVehicles] = useState<VehicleRecord[]>([]);
+
+  useEffect(() => {
+    vehiclesService.getAll().then((data) => setVehicles(data));
+  }, []);
+
+  const handleAddVehicle = async (data: { vehicleName: string; brand: string; price: string; units: number; branch: string; has360: boolean }) => {
+    const created = await vehiclesService.create({
+      name: data.vehicleName,
+      brand: data.brand,
+      price: data.price,
+      units: data.units,
+      branch: data.branch,
+      has360: data.has360,
+    });
+    setVehicles((prev) => [created, ...prev]);
+  };
+
   return (
     <div className="w-full flex flex-col">
-      {/* Top Header Banner: Pure White background with horizontal divider line */}
+      {/* Top Header Banner */}
       <div className="bg-surfaceLight-card border-b border-surfaceLight-border px-6 md:px-8 py-6 md:py-7 w-full">
         <div className="max-w-[1440px] mx-auto">
-          <GalleryHeroHeader />
+          <GalleryHeroHeader onAddVehicle={handleAddVehicle} />
         </div>
       </div>
 
-      {/* Main Gallery Canvas: Slightly tinted gray background with featured stage and vehicle grid */}
+      {/* Main Gallery Canvas */}
       <div className="bg-surfaceLight-pearl px-6 md:px-8 py-6 md:py-8 w-full min-h-[calc(100vh-200px)]">
         <div className="max-w-[1440px] mx-auto flex flex-col gap-8">
           {/* 1. Featured Vehicle Stage (Centerpiece) */}
           <FeaturedVehicleStage />
 
-          {/* 2. 6 Vehicle Showcase Cards (2x3 Grid) */}
-          <VehicleGalleryGrid />
+          {/* 2. Persistent Vehicle Showcase Grid (Bentuk Fisik Data) */}
+          <VehicleGalleryGrid vehicles={vehicles} />
         </div>
       </div>
     </div>

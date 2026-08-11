@@ -1,123 +1,86 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { RotateCw, ChevronRight } from "lucide-react";
 import { VehicleDetailModal } from "./VehicleDetailModal";
 import { Viewer360Modal } from "./Viewer360Modal";
+import { vehiclesService, VehicleRecord } from "@/shared/lib/supabase/vehiclesService";
 
-const GALLERY_ITEMS = [
-  {
-    name: "Porsche 911 GT3",
-    price: "Rp 5,8 M",
-    units: "3 unit",
-    has360: true,
-    image: "/images/gallery/porsche_gt3.png",
-  },
-  {
-    name: "BMW M5 Competition",
-    price: "Rp 3,4 M",
-    units: "5 unit",
-    has360: false,
-    image: "/images/gallery/bmw_m5.png",
-  },
-  {
-    name: "Mercedes-AMG GT",
-    price: "Rp 4,9 M",
-    units: "2 unit",
-    has360: false,
-    image: "/images/gallery/mercedes_amg_gt.png",
-  },
-  {
-    name: "Audi RS e-tron GT",
-    price: "Rp 4,1 M",
-    units: "4 unit",
-    has360: false,
-    image: "/images/gallery/audi_etron.png",
-  },
-  {
-    name: "Ferrari 296 GTB",
-    price: "Rp 9,6 M",
-    units: "1 unit",
-    has360: false,
-    image: "/images/gallery/ferrari_296.png",
-  },
-  {
-    name: "Tesla Model S Plaid",
-    price: "Rp 2,8 M",
-    units: "7 unit",
-    has360: false,
-    image: "/images/gallery/tesla_model_s.png",
-  },
-];
+interface VehicleGalleryGridProps {
+  vehicles?: VehicleRecord[];
+}
 
-export const VehicleGalleryGrid: React.FC = () => {
-  const [selectedVehicle, setSelectedVehicle] = useState<typeof GALLERY_ITEMS[0] | null>(null);
-  const [viewer360Vehicle, setViewer360Vehicle] = useState<string | null>(null);
+export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles: customVehicles }) => {
+  const [items, setItems] = useState<VehicleRecord[]>([]);
+  const [selectedVehicle, setSelectedVehicle] = useState<any>(null);
+  const [viewer360Vehicle, setViewer360Vehicle] = useState<any>(null);
+
+  useEffect(() => {
+    if (customVehicles && customVehicles.length > 0) {
+      setItems(customVehicles);
+    } else {
+      vehiclesService.getAll().then((data) => setItems(data));
+    }
+  }, [customVehicles]);
 
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {GALLERY_ITEMS.map((item, idx) => (
+        {items.map((item) => (
           <div
-            key={idx}
-            onClick={() => setSelectedVehicle(item)}
-            className="bg-surfaceLight-card border border-surfaceLight-border rounded-[24px] overflow-hidden shadow-xs hover:border-brand/40 transition-all duration-200 hover:-translate-y-1 transform-gpu flex flex-col cursor-pointer group"
+            key={item.id}
+            className="bg-surfaceLight-card border border-surfaceLight-border rounded-2xl overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all duration-300"
           >
-            {/* Full Bleed Studio Image Container */}
-            <div className="relative h-[220px] w-full bg-gray-100 dark:bg-gray-800/40 overflow-hidden">
-              <Image
-                src={item.image}
-                alt={item.name}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover transition-transform duration-300 group-hover:scale-105 transform-gpu"
-              />
+            {/* Vehicle Image Container */}
+            <div className="relative w-full h-[210px] bg-gradient-to-b from-surfaceLight-pearl to-surfaceLight-card overflow-hidden flex items-center justify-center p-4">
+              <div className="relative w-full h-full transform group-hover:scale-105 transition-transform duration-500">
+                <Image
+                  src={item.image_url || "/images/gallery/porsche_gt3.png"}
+                  alt={item.name}
+                  fill
+                  className="object-contain drop-shadow-md"
+                  unoptimized
+                />
+              </div>
 
-              {/* Top-Right Units Pill Badge */}
-              <span className="absolute top-4 right-4 px-3 py-1 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[12px] font-medium text-textGray-primary shadow-xs z-10">
-                {item.units}
-              </span>
-
-              {/* Bottom-Left 360° Badge */}
               {item.has360 && (
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setViewer360Vehicle(item.name);
-                  }}
-                  className="absolute bottom-3 left-4 px-2.5 py-1 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[11px] font-medium text-textGray-primary hover:border-brand shadow-xs z-10 inline-flex items-center gap-1 cursor-pointer transition-colors"
+                  onClick={() => setViewer360Vehicle(item)}
+                  className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border text-[11px] font-semibold text-brand flex items-center gap-1.5 shadow-xs backdrop-blur-xs hover:bg-surfaceLight-card cursor-pointer"
                 >
-                  <RotateCw className="w-3 h-3 text-brand" />
-                  <span>360°</span>
+                  <RotateCw className="w-3 h-3 text-[#4B8E55]" />
+                  <span>360° View</span>
                 </button>
               )}
             </div>
 
-            {/* Card Body */}
-            <div className="p-6 flex flex-col gap-1.5">
-              <span className="text-[11px] font-medium text-textGray-muted uppercase tracking-[0.08em] block mb-1">
-                AVAILABLE
-              </span>
-
-              <h3 className="text-[19px] font-display font-semibold text-textGray-display mb-3 leading-snug">
-                {item.name}
-              </h3>
-
-              {/* Bottom Row */}
+            {/* Content & Action Bar */}
+            <div className="p-5 flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                <span className="text-[16px] font-normal text-textGray-primary">{item.price}</span>
+                <div>
+                  <h3 className="text-[17px] font-semibold text-textGray-display group-hover:text-brand transition-colors">
+                    {item.name}
+                  </h3>
+                  <span className="text-[12px] text-textGray-tertiary font-normal">
+                    {item.brand} · {item.branch || "Jakarta Pusat"}
+                  </span>
+                </div>
+                <span className="text-[16px] font-bold text-textGray-display">{item.price}</span>
+              </div>
+
+              <div className="pt-3 border-t border-surfaceLight-border flex items-center justify-between">
+                <span className="text-[12px] text-textGray-tertiary font-medium">
+                  {typeof item.units === "number" ? `${item.units} unit` : item.units} tersedia
+                </span>
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedVehicle(item);
-                  }}
-                  className="text-[13px] font-medium text-brand hover:underline inline-flex items-center gap-1 cursor-pointer"
+                  onClick={() => setSelectedVehicle(item)}
+                  className="text-[13px] font-semibold text-brand hover:underline inline-flex items-center gap-1 cursor-pointer"
                 >
-                  <span>Detail</span>
-                  <ChevronRight className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  <span>Detail Spesifikasi</span>
+                  <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -125,19 +88,29 @@ export const VehicleGalleryGrid: React.FC = () => {
         ))}
       </div>
 
-      {/* Vehicle Detail Specs Modal */}
-      <VehicleDetailModal
-        isOpen={selectedVehicle !== null}
-        onClose={() => setSelectedVehicle(null)}
-        vehicle={selectedVehicle}
-      />
+      {/* Vehicle Specification Detail Modal */}
+      {selectedVehicle && (
+        <VehicleDetailModal
+          isOpen={Boolean(selectedVehicle)}
+          onClose={() => setSelectedVehicle(null)}
+          vehicle={{
+            name: selectedVehicle.name,
+            price: selectedVehicle.price,
+            units: typeof selectedVehicle.units === "number" ? `${selectedVehicle.units} unit` : selectedVehicle.units,
+            image: selectedVehicle.image_url || "/images/gallery/porsche_gt3.png",
+            brand: selectedVehicle.brand,
+          }}
+        />
+      )}
 
-      {/* 360 Viewer Modal */}
-      <Viewer360Modal
-        isOpen={viewer360Vehicle !== null}
-        onClose={() => setViewer360Vehicle(null)}
-        vehicleName={viewer360Vehicle || undefined}
-      />
+      {/* 360 Degree Viewer Modal */}
+      {viewer360Vehicle && (
+        <Viewer360Modal
+          isOpen={Boolean(viewer360Vehicle)}
+          onClose={() => setViewer360Vehicle(null)}
+          vehicleName={viewer360Vehicle.name}
+        />
+      )}
     </>
   );
 };

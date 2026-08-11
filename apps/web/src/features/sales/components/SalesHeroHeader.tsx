@@ -2,15 +2,18 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, Plus, Download, CheckCircle2 } from "lucide-react";
+import { Plus, Download, CheckCircle2 } from "lucide-react";
 import { NewDealModal } from "./NewDealModal";
 
-export const SalesHeroHeader: React.FC = () => {
+interface SalesHeroHeaderProps {
+  onAddDeal?: (data: { customerName: string; vehicleModel: string; dealValue: string; stage: string; consultant: string }) => void;
+}
+
+export const SalesHeroHeader: React.FC<SalesHeroHeaderProps> = ({ onAddDeal }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const handleExportCsv = () => {
-    // Generate CSV Content
     const csvRows = [
       ["Deal ID", "Pelanggan", "Model Kendaraan", "Nilai Deal", "Stage", "Sales Consultant"],
       ["DEAL-1092", "PT Anugerah Trans", "Fleet Porsche 911 (5 Unit)", "Rp 18.200.000.000", "SPK Signed", "Rendra Prasetya"],
@@ -29,7 +32,6 @@ export const SalesHeroHeader: React.FC = () => {
     link.click();
     document.body.removeChild(link);
 
-    // Show Toast Feedback
     setToastMessage("Report Sales Pipeline (.CSV) berhasil di-download!");
     setTimeout(() => setToastMessage(null), 3200);
   };
@@ -58,44 +60,44 @@ export const SalesHeroHeader: React.FC = () => {
           </p>
         </div>
 
-        {/* Action Buttons Stack */}
-        <div className="flex items-center gap-3 shrink-0 pt-1 md:pt-0">
-          {/* Export CSV Button */}
+        {/* Action Button Group */}
+        <div className="flex items-center gap-3 pt-1 md:pt-0 shrink-0">
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={handleExportCsv}
             type="button"
-            className="px-4 py-2.5 rounded-full border border-surfaceLight-border bg-surfaceLight-card text-textGray-display font-medium text-[13.5px] inline-flex items-center gap-1.5 hover:bg-surfaceLight-pearl transition-colors shadow-xs cursor-pointer select-none"
+            className="px-5 py-2.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-textGray-display font-medium text-[13.5px] inline-flex items-center justify-center gap-2 hover:bg-surfaceLight-pearl transition-all shadow-2xs whitespace-nowrap cursor-pointer select-none"
           >
-            <Download className="w-3.5 h-3.5 text-textGray-tertiary" strokeWidth={1.5} />
+            <Download className="w-4 h-4 text-textGray-tertiary shrink-0" strokeWidth={1.5} />
             <span>Export CSV</span>
-            <ChevronRight className="w-4 h-4 text-textGray-tertiary" strokeWidth={1.5} />
           </motion.button>
 
-          {/* New Deal Button */}
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={() => setIsModalOpen(true)}
             type="button"
-            className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white font-medium text-[13.5px] inline-flex items-center justify-center gap-2 transition-all hover:opacity-95 shadow-sm whitespace-nowrap cursor-pointer select-none"
+            className="px-6 py-2.5 rounded-full bg-green-gradient-pill text-white font-medium text-[13.5px] inline-flex items-center justify-center gap-2 transition-all hover:opacity-95 shadow-sm whitespace-nowrap cursor-pointer select-none"
           >
             <Plus className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-            <span>New Deal</span>
+            <span>Deal Baru</span>
           </motion.button>
         </div>
       </motion.div>
 
-      {/* Interactive New Deal Modal */}
+      {/* New Deal Registration Modal */}
       <NewDealModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSuccess={() => {
-          setToastMessage("Deal baru berhasil ditambahkan ke pipeline!");
-          setTimeout(() => setToastMessage(null), 3200);
+        onSuccess={(data) => {
+          if (onAddDeal) {
+            onAddDeal(data);
+          }
+          setToastMessage(`Deal baru ${data.customerName} (${data.dealValue}) berhasil ditambahkan!`);
+          setTimeout(() => setToastMessage(null), 3500);
         }}
       />
 
