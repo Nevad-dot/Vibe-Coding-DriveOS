@@ -106,6 +106,7 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
           isOpen={Boolean(viewer360Vehicle)}
           onClose={() => setViewer360Vehicle(null)}
           vehicleName={viewer360Vehicle.name}
+          imageUrl={viewer360Vehicle.image_url}
         />
       )}
     </>

@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { RotateCw, ChevronRight, Car, ChevronDown } from "lucide-react";
+import { RotateCw, ChevronRight, Car, ChevronDown, TrendingUp } from "lucide-react";
 import { Viewer360Modal } from "./Viewer360Modal";
+import { VehiclePipelineModal } from "./VehiclePipelineModal";
 
 const FEATURED_VEHICLES = [
   {
@@ -55,6 +55,7 @@ const FEATURED_VEHICLES = [
 export const FeaturedVehicleStage: React.FC = () => {
   const [selectedVehicle, setSelectedVehicle] = useState(FEATURED_VEHICLES[0]);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [isPipelineOpen, setIsPipelineOpen] = useState(false);
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
 
   return (
@@ -82,7 +83,7 @@ export const FeaturedVehicleStage: React.FC = () => {
           {selectedVehicle.details}
         </p>
 
-        {/* Interactive Action Buttons (Main CTA + Other Vehicles Dropdown + Pipeline Link) */}
+        {/* Interactive Action Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-3 mb-8 relative">
           {/* Main 360° Viewer Button */}
           <motion.button
@@ -148,16 +149,21 @@ export const FeaturedVehicleStage: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          <Link
-            href="/sales"
-            className="text-[13.5px] font-medium text-textGray-secondary hover:text-textGray-display inline-flex items-center gap-1 transition-colors cursor-pointer select-none ml-1"
+          {/* Lihat Pipeline (Opens Vehicle Pipeline Pop-up Modal, NO page redirect) */}
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => setIsPipelineOpen(true)}
+            type="button"
+            className="text-[13.5px] font-semibold text-brand hover:underline inline-flex items-center gap-1.5 cursor-pointer select-none ml-1 px-4 py-2 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border shadow-2xs"
           >
-            <span>Lihat pipeline</span>
+            <TrendingUp className="w-4 h-4 text-[#4B8E55]" />
+            <span>Lihat Pipeline {selectedVehicle.name.split(" ")[0]}</span>
             <ChevronRight className="w-4 h-4 text-textGray-tertiary" strokeWidth={1.5} />
-          </Link>
+          </motion.button>
         </div>
 
-        {/* Studio Featured Image Presentation Box (Clean Full Frame, NO bottom-right pill) */}
+        {/* Studio Featured Image Presentation Box */}
         <div
           onClick={() => setIsViewerOpen(true)}
           className="relative w-full max-w-[840px] h-[360px] md:h-[450px] rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-800/40 border border-surfaceLight-border shadow-md cursor-pointer group"
@@ -176,6 +182,14 @@ export const FeaturedVehicleStage: React.FC = () => {
       <Viewer360Modal
         isOpen={isViewerOpen}
         onClose={() => setIsViewerOpen(false)}
+        vehicleName={selectedVehicle.name}
+        imageUrl={selectedVehicle.image}
+      />
+
+      {/* Dedicated Vehicle Pipeline Popup Modal */}
+      <VehiclePipelineModal
+        isOpen={isPipelineOpen}
+        onClose={() => setIsPipelineOpen(false)}
         vehicleName={selectedVehicle.name}
       />
     </>

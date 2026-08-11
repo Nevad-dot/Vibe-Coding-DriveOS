@@ -10,6 +10,8 @@ interface Viewer360ModalProps {
   isOpen: boolean;
   onClose: () => void;
   vehicleName?: string;
+  brand?: string;
+  imageUrl?: string;
 }
 
 const COLORS = [
@@ -19,10 +21,20 @@ const COLORS = [
   { name: "Jet Black Metallic", hex: "#18181B", border: "#3F3F46" },
 ];
 
+const VEHICLE_SPECS: Record<string, { engine: string; hp: string; accel: string; image: string }> = {
+  "Porsche 911 GT3": { engine: "4.0L Flat-6", hp: "510 HP", accel: "3.4 Detik", image: "/images/gallery/porsche_gt3.png" },
+  "BMW M5 Competition": { engine: "4.4L V8 TwinTurbo", hp: "625 HP", accel: "3.3 Detik", image: "/images/gallery/bmw_m5.png" },
+  "Mercedes-AMG GT": { engine: "4.0L V8 Biturbo", hp: "585 HP", accel: "3.2 Detik", image: "/images/gallery/mercedes_amg_gt.png" },
+  "Audi RS e-tron GT": { engine: "Dual EV Motors", hp: "646 HP", accel: "3.3 Detik", image: "/images/gallery/audi_etron.png" },
+  "Ferrari 296 GTB": { engine: "3.0L V6 Hybrid", hp: "830 HP", accel: "2.9 Detik", image: "/images/gallery/ferrari_296.png" },
+  "Tesla Model S Plaid": { engine: "Tri-Motor AWD EV", hp: "1,020 HP", accel: "2.1 Detik", image: "/images/gallery/tesla_model_s.png" },
+};
+
 export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
   isOpen,
   onClose,
   vehicleName = "Porsche 911 GT3",
+  imageUrl,
 }) => {
   const [mounted, setMounted] = useState(false);
   const [rotationAngle, setRotationAngle] = useState(0);
@@ -52,20 +64,29 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
 
   if (!mounted) return null;
 
+  const spec = VEHICLE_SPECS[vehicleName] || {
+    engine: "4.0L High-Performance",
+    hp: "520 HP",
+    accel: "3.2 Detik",
+    image: imageUrl || "/images/gallery/porsche_gt3.png",
+  };
+
+  const activeImage = imageUrl || spec.image;
+
   return createPortal(
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          {/* Full Screen Dark Backdrop Overlay */}
+          {/* Full Screen Solid Dark Backdrop Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/75 backdrop-blur-xs"
+            className="fixed inset-0 bg-black/80"
           />
 
-          {/* Modal Container */}
+          {/* Modal Container: SOLID OPAQUE SURFACE (No glass transparency) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -93,9 +114,9 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
               </button>
             </div>
 
-            {/* 360 View Stage with Animated Glow Effects */}
+            {/* 360 View Stage */}
             <div className="relative w-full h-[300px] md:h-[380px] rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border overflow-hidden flex items-center justify-center p-4">
-              {/* Headlights Brand Beam Animation */}
+              {/* Headlights Beam Animation */}
               <AnimatePresence>
                 {headlightsOn && (
                   <motion.div
@@ -103,12 +124,12 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="absolute inset-0 bg-gradient-to-r from-[#4B8E55]/15 via-[#6BA374]/20 to-transparent blur-md pointer-events-none z-10"
+                    className="absolute inset-0 bg-gradient-to-r from-[#4B8E55]/20 via-[#6BA374]/25 to-transparent pointer-events-none z-10"
                   />
                 )}
               </AnimatePresence>
 
-              {/* Rotatable Vehicle Image with Door Open Scale Pulse */}
+              {/* Dynamic Rotatable Vehicle Image */}
               <motion.div
                 animate={{
                   rotateY: rotationAngle,
@@ -118,21 +139,22 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                 className="relative w-full h-full max-w-[640px] max-h-[340px]"
               >
                 <Image
-                  src="/images/gallery/porsche_gt3.png"
+                  src={activeImage}
                   alt={vehicleName}
                   fill
                   className="object-contain transform-gpu p-2"
                   priority
+                  unoptimized
                 />
               </motion.div>
 
               {/* Angle Indicator Badge */}
-              <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[12px] font-medium text-textGray-display shadow-xs flex items-center gap-1.5 z-20">
+              <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[12px] font-semibold text-textGray-display shadow-xs flex items-center gap-1.5 z-20">
                 <RotateCw className="w-4 h-4 shrink-0 stroke-[1.75] text-[#4B8E55]" />
                 <span>Angle: {rotationAngle}°</span>
               </div>
 
-              {/* Animated Controls Toolbar with Bold Crisp Icons */}
+              {/* Controls Toolbar */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-surfaceLight-card border border-surfaceLight-border shadow-lg z-20">
                 {/* Rotate 90° */}
                 <motion.button
@@ -147,7 +169,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                   <span>Putar 90°</span>
                 </motion.button>
 
-                {/* Headlights Toggle (Brand Green System with Bold Icon) */}
+                {/* Headlights Toggle */}
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.94 }}
@@ -164,7 +186,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                   <span>{headlightsOn ? "Lampu Nyala" : "Nyalakan Lampu"}</span>
                 </motion.button>
 
-                {/* Doors Toggle (Brand Green System with Bold Icon) */}
+                {/* Doors Toggle */}
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.94 }}
@@ -183,7 +205,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
               </div>
             </div>
 
-            {/* Bottom Panel: Exterior Color Picker & Specs */}
+            {/* Bottom Panel: Dynamic Exterior Color Picker & Specs */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center pt-1">
               {/* Color Selector */}
               <div className="flex flex-col gap-2">
@@ -215,16 +237,16 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
               {/* Specs Badge Grid */}
               <div className="grid grid-cols-3 gap-2 text-center">
                 <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl">
-                  <span className="text-[10.5px] text-textGray-tertiary block font-medium">MESIN</span>
-                  <span className="text-[13px] font-bold text-textGray-display">4.0L Flat-6</span>
+                  <span className="text-[10.5px] text-textGray-tertiary block font-medium uppercase">MESIN</span>
+                  <span className="text-[13px] font-bold text-textGray-display">{spec.engine}</span>
                 </div>
                 <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl">
-                  <span className="text-[10.5px] text-textGray-tertiary block font-medium">TENAGA</span>
-                  <span className="text-[13px] font-bold text-brand">510 HP</span>
+                  <span className="text-[10.5px] text-textGray-tertiary block font-medium uppercase">TENAGA</span>
+                  <span className="text-[13px] font-bold text-brand">{spec.hp}</span>
                 </div>
                 <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl">
-                  <span className="text-[10.5px] text-textGray-tertiary block font-medium">0–100 KM/H</span>
-                  <span className="text-[13px] font-bold text-textGray-display">3.4 Detik</span>
+                  <span className="text-[10.5px] text-textGray-tertiary block font-medium uppercase">0–100 KM/H</span>
+                  <span className="text-[13px] font-bold text-textGray-display">{spec.accel}</span>
                 </div>
               </div>
             </div>
