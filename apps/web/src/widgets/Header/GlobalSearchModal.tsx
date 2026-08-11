@@ -87,7 +87,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-start justify-center pt-20 p-4">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           {/* Full Screen Dark Backdrop Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -97,11 +97,11 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
             className="fixed inset-0 bg-black/75 backdrop-blur-xs"
           />
 
-          {/* Search Command Palette Container */}
+          {/* Search Command Palette Container Centered in Viewport */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -16 }}
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.94 }}
             transition={{ type: "spring", stiffness: 420, damping: 28 }}
             className="relative w-full max-w-[640px] bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl overflow-hidden z-10 flex flex-col"
           >
