@@ -102,4 +102,48 @@ export const campaignsService = {
     }
     return newRecord;
   },
+
+  async update(id: string, updates: Partial<Omit<CampaignRecord, "id">>): Promise<boolean> {
+    if (isSupabaseConfigured) {
+      try {
+        await supabase
+          .from("campaigns")
+          .update({
+            ...(updates.name && { name: updates.name }),
+            ...(updates.segment && { segment: updates.segment }),
+            ...(updates.channel && { channel: updates.channel }),
+            ...(updates.subject && { subject: updates.subject }),
+            ...(updates.message && { message: updates.message }),
+            ...(updates.status && { status: updates.status }),
+          })
+          .eq("id", id);
+      } catch (e) {
+        console.warn("Supabase update failed:", e);
+      }
+    }
+
+    if (typeof window !== "undefined") {
+      const existing = await this.getAll();
+      const updated = existing.map((item) => (item.id === id ? { ...item, ...updates } : item));
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
+    }
+    return true;
+  },
+
+  async delete(id: string): Promise<boolean> {
+    if (isSupabaseConfigured) {
+      try {
+        await supabase.from("campaigns").delete().eq("id", id);
+      } catch (e) {
+        console.warn("Supabase delete failed:", e);
+      }
+    }
+
+    if (typeof window !== "undefined") {
+      const existing = await this.getAll();
+      const updated = existing.filter((item) => item.id !== id);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
+    }
+    return true;
+  },
 };

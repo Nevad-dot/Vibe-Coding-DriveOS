@@ -78,6 +78,43 @@ export const approvalsService = {
     return INITIAL_APPROVALS;
   },
 
+  async updateStatus(id: string, status: "Approved" | "Rejected"): Promise<boolean> {
+    if (isSupabaseConfigured) {
+      try {
+        await supabase
+          .from("executive_approvals")
+          .update({ status, reviewed_at: new Date().toISOString() })
+          .eq("id", id);
+      } catch (e) {
+        console.warn("Supabase updateStatus failed:", e);
+      }
+    }
+
+    if (typeof window !== "undefined") {
+      const existing = await this.getAll();
+      const updated = existing.map((item) => (item.id === id ? { ...item, status } : item));
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
+    }
+    return true;
+  },
+
+  async delete(id: string): Promise<boolean> {
+    if (isSupabaseConfigured) {
+      try {
+        await supabase.from("executive_approvals").delete().eq("id", id);
+      } catch (e) {
+        console.warn("Supabase delete failed:", e);
+      }
+    }
+
+    if (typeof window !== "undefined") {
+      const existing = await this.getAll();
+      const updated = existing.filter((item) => item.id !== id);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
+    }
+    return true;
+  },
+
   async approveAll(): Promise<void> {
     if (isSupabaseConfigured) {
       try {

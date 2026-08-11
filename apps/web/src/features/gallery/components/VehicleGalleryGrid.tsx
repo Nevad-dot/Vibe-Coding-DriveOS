@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { RotateCw, ChevronRight } from "lucide-react";
+import { RotateCw, ChevronRight, Trash2 } from "lucide-react";
 import { VehicleDetailModal } from "./VehicleDetailModal";
 import { Viewer360Modal } from "./Viewer360Modal";
 import { vehiclesService, VehicleRecord } from "@/shared/lib/supabase/vehiclesService";
+import { formatCurrencyValue } from "@/shared/lib/settingsStore";
 
 interface VehicleGalleryGridProps {
   vehicles?: VehicleRecord[];
@@ -15,6 +16,7 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
   const [items, setItems] = useState<VehicleRecord[]>([]);
   const [selectedVehicle, setSelectedVehicle] = useState<any>(null);
   const [viewer360Vehicle, setViewer360Vehicle] = useState<any>(null);
+  const [, setRefreshTick] = useState(0);
 
   useEffect(() => {
     if (customVehicles && customVehicles.length > 0) {
@@ -22,7 +24,21 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
     } else {
       vehiclesService.getAll().then((data) => setItems(data));
     }
+
+    const handleSettingsChange = () => {
+      setRefreshTick((prev) => prev + 1);
+    };
+    window.addEventListener("driveos-settings-changed", handleSettingsChange);
+    return () => window.removeEventListener("driveos-settings-changed", handleSettingsChange);
   }, [customVehicles]);
+
+  const handleDeleteVehicle = async (id: string, name: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (confirm(`Hapus unit ${name} dari database?`)) {
+      await vehiclesService.delete(id);
+      setItems((prev) => prev.filter((v) => v.id !== id));
+    }
+  };
 
   return (
     <>
@@ -30,7 +46,7 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
         {items.map((item) => (
           <div
             key={item.id}
-            className="bg-surfaceLight-card border border-surfaceLight-border rounded-2xl overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all duration-300"
+            className="bg-surfaceLight-card border border-surfaceLight-border rounded-2xl overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all duration-300 relative"
           >
             {/* Full Frame Studio Image Container */}
             <div className="relative w-full h-[240px] overflow-hidden rounded-t-2xl bg-gradient-to-b from-surfaceLight-pearl to-surfaceLight-card">
@@ -42,7 +58,7 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
                 unoptimized
               />
 
-              {/* 360° View Button on EVERY vehicle card section */}
+              {/* 360° View Button */}
               <button
                 type="button"
                 onClick={() => setViewer360Vehicle(item)}
@@ -50,6 +66,16 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
               >
                 <RotateCw className="w-3.5 h-3.5 text-[#4B8E55]" />
                 <span>360° View</span>
+              </button>
+
+              {/* Quick Delete DB Button */}
+              <button
+                type="button"
+                title="Hapus dari Database"
+                onClick={(e) => handleDeleteVehicle(item.id, item.name, e)}
+                className="absolute top-3 left-3 w-8 h-8 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border text-red-500 hover:bg-red-500 hover:text-white flex items-center justify-center shadow-xs cursor-pointer transition-all opacity-0 group-hover:opacity-100"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
               </button>
             </div>
 
@@ -64,7 +90,7 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
                     {item.brand} · {item.branch || "Jakarta Pusat"}
                   </span>
                 </div>
-                <span className="text-[16px] font-bold text-textGray-display">{item.price}</span>
+                <span className="text-[16px] font-bold text-textGray-display">{formatCurrencyValue(item.price)}</span>
               </div>
 
               <div className="pt-3 border-t border-surfaceLight-border flex items-center justify-between">

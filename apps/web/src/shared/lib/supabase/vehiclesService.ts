@@ -32,7 +32,7 @@ const INITIAL_VEHICLES: VehicleRecord[] = [
     price: "Rp 3,4 M",
     units: 5,
     branch: "Jakarta Pusat",
-    has360: false,
+    has360: true,
     image_url: "/images/gallery/bmw_m5.png",
   },
   {
@@ -42,7 +42,7 @@ const INITIAL_VEHICLES: VehicleRecord[] = [
     price: "Rp 4,9 M",
     units: 2,
     branch: "Surabaya",
-    has360: false,
+    has360: true,
     image_url: "/images/gallery/mercedes_amg_gt.png",
   },
   {
@@ -52,7 +52,7 @@ const INITIAL_VEHICLES: VehicleRecord[] = [
     price: "Rp 4,1 M",
     units: 4,
     branch: "Bandung",
-    has360: false,
+    has360: true,
     image_url: "/images/gallery/audi_etron.png",
   },
   {
@@ -62,7 +62,7 @@ const INITIAL_VEHICLES: VehicleRecord[] = [
     price: "Rp 9,6 M",
     units: 1,
     branch: "Jakarta Selatan",
-    has360: false,
+    has360: true,
     image_url: "/images/gallery/ferrari_296.png",
   },
   {
@@ -72,7 +72,7 @@ const INITIAL_VEHICLES: VehicleRecord[] = [
     price: "Rp 2,8 M",
     units: 7,
     branch: "Jakarta Pusat",
-    has360: false,
+    has360: true,
     image_url: "/images/gallery/tesla_model_s.png",
   },
 ];
@@ -165,5 +165,49 @@ export const vehiclesService = {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
     }
     return newRecord;
+  },
+
+  async update(id: string, updates: Partial<Omit<VehicleRecord, "id">>): Promise<boolean> {
+    if (isSupabaseConfigured) {
+      try {
+        await supabase
+          .from("vehicles")
+          .update({
+            ...(updates.name && { name: updates.name }),
+            ...(updates.brand && { brand: updates.brand }),
+            ...(updates.price && { price: updates.price }),
+            ...(updates.units !== undefined && { units: typeof updates.units === "number" ? updates.units : parseInt(String(updates.units)) || 1 }),
+            ...(updates.branch && { branch: updates.branch }),
+            ...(updates.image_url && { image_url: updates.image_url }),
+          })
+          .eq("id", id);
+      } catch (e) {
+        console.warn("Supabase update failed:", e);
+      }
+    }
+
+    if (typeof window !== "undefined") {
+      const existing = await this.getAll();
+      const updated = existing.map((v) => (v.id === id ? { ...v, ...updates } : v));
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
+    }
+    return true;
+  },
+
+  async delete(id: string): Promise<boolean> {
+    if (isSupabaseConfigured) {
+      try {
+        await supabase.from("vehicles").delete().eq("id", id);
+      } catch (e) {
+        console.warn("Supabase delete failed:", e);
+      }
+    }
+
+    if (typeof window !== "undefined") {
+      const existing = await this.getAll();
+      const updated = existing.filter((v) => v.id !== id);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
+    }
+    return true;
   },
 };

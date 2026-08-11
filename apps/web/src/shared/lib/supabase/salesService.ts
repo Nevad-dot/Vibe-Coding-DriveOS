@@ -13,9 +13,9 @@ export interface DealRecord {
 export interface SalesChartBar {
   label: string;
   subtitle?: string;
-  val: number; // Unit count
-  revenueText: string; // e.g. "Rp 42,8 M"
-  heightPercent: number; // 0..100
+  val: number;
+  revenueText: string;
+  heightPercent: number;
 }
 
 const LOCAL_STORAGE_KEY = "driveos_sales_deals_db_v1";
@@ -146,13 +146,55 @@ export const salesService = {
     return newRecord;
   },
 
+  async update(id: string, updates: Partial<Omit<DealRecord, "id">>): Promise<boolean> {
+    if (isSupabaseConfigured) {
+      try {
+        await supabase
+          .from("sales_deals")
+          .update({
+            ...(updates.customerName && { customer_name: updates.customerName }),
+            ...(updates.vehicleModel && { vehicle_model: updates.vehicleModel }),
+            ...(updates.dealValue && { deal_value: updates.dealValue }),
+            ...(updates.stage && { stage: updates.stage }),
+            ...(updates.consultant && { consultant: updates.consultant }),
+          })
+          .eq("id", id);
+      } catch (e) {
+        console.warn("Supabase update failed:", e);
+      }
+    }
+
+    if (typeof window !== "undefined") {
+      const existing = await this.getAll();
+      const updated = existing.map((d) => (d.id === id ? { ...d, ...updates } : d));
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
+    }
+    return true;
+  },
+
+  async delete(id: string): Promise<boolean> {
+    if (isSupabaseConfigured) {
+      try {
+        await supabase.from("sales_deals").delete().eq("id", id);
+      } catch (e) {
+        console.warn("Supabase delete failed:", e);
+      }
+    }
+
+    if (typeof window !== "undefined") {
+      const existing = await this.getAll();
+      const updated = existing.filter((d) => d.id !== id);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
+    }
+    return true;
+  },
+
   async getSalesTrendData(period: "Bulanan" | "Kuartal"): Promise<SalesChartBar[]> {
     const allDeals = await this.getAll();
     const extraDealsCount = Math.max(0, allDeals.length - INITIAL_DEALS.length);
 
     if (period === "Bulanan") {
       const monthly = BASE_MONTHLY_DATA.map((item, idx) => {
-        // Add extra created deals to current month (August/Jul)
         const isCurrentMonth = idx === 6 || idx === 7;
         const extraUnits = isCurrentMonth ? extraDealsCount * 2 : 0;
         const extraRev = isCurrentMonth ? extraDealsCount * 3.5 : 0;
@@ -176,7 +218,6 @@ export const salesService = {
         heightPercent: Math.round((m.val / maxVal) * 94),
       }));
     } else {
-      // Kuartal Breakdown (Q1, Q2, Q3, Q4)
       const q1Units = BASE_MONTHLY_DATA[0].units + BASE_MONTHLY_DATA[1].units + BASE_MONTHLY_DATA[2].units;
       const q1Rev = (BASE_MONTHLY_DATA[0].rev + BASE_MONTHLY_DATA[1].rev + BASE_MONTHLY_DATA[2].rev).toFixed(1);
 
