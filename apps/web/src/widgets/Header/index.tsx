@@ -19,6 +19,8 @@ import {
 import { applyDriveOSTheme, getSavedThemeMode, ThemeMode } from "@/shared/lib/theme";
 import { GlobalSearchModal } from "./GlobalSearchModal";
 import { NotificationsDrawer } from "./NotificationsDrawer";
+import { UserProfileModal } from "./UserProfileModal";
+import { UserSettingsModal } from "./UserSettingsModal";
 
 export const Header: React.FC = () => {
   const router = useRouter();
@@ -34,6 +36,8 @@ export const Header: React.FC = () => {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [hasUnreadNotifs, setHasUnreadNotifs] = useState(true);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -114,12 +118,16 @@ export const Header: React.FC = () => {
     }
   }, []);
 
-  // Keyboard shortcut listener to close logout modal or profile dropdown on ESC
+  // Keyboard shortcut listener to close modals on ESC
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         if (showLogoutModal) {
           setShowLogoutModal(false);
+        } else if (isProfileModalOpen) {
+          setIsProfileModalOpen(false);
+        } else if (isSettingsModalOpen) {
+          setIsSettingsModalOpen(false);
         } else if (isProfileOpen) {
           setIsProfileOpen(false);
         } else if (isNotificationsOpen) {
@@ -129,7 +137,7 @@ export const Header: React.FC = () => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [showLogoutModal, isProfileOpen, isNotificationsOpen]);
+  }, [showLogoutModal, isProfileModalOpen, isSettingsModalOpen, isProfileOpen, isNotificationsOpen]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -267,14 +275,20 @@ export const Header: React.FC = () => {
                 {/* Navigation Options */}
                 <div className="py-1.5 border-b border-surfaceLight-border flex flex-col gap-0.5">
                   <button
-                    onClick={() => setIsProfileOpen(false)}
+                    onClick={() => {
+                      setIsProfileOpen(false);
+                      setIsProfileModalOpen(true);
+                    }}
                     className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-textGray-primary hover:bg-surfaceLight-pearl transition-colors font-normal w-full text-left cursor-pointer"
                   >
                     <User className="w-[16px] h-[16px] text-textGray-tertiary" strokeWidth={1.5} />
                     <span>Profile</span>
                   </button>
                   <button
-                    onClick={() => setIsProfileOpen(false)}
+                    onClick={() => {
+                      setIsProfileOpen(false);
+                      setIsSettingsModalOpen(true);
+                    }}
                     className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-textGray-primary hover:bg-surfaceLight-pearl transition-colors font-normal w-full text-left cursor-pointer"
                   >
                     <Settings className="w-[16px] h-[16px] text-textGray-tertiary" strokeWidth={1.5} />
@@ -417,6 +431,28 @@ export const Header: React.FC = () => {
         </AnimatePresence>,
         document.body
       )}
+
+      {/* Executive User Profile Modal */}
+      <UserProfileModal
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+        onUpdateProfile={(newName, newEmail) => {
+          setUserName(newName);
+          setUserEmail(newEmail);
+          const parts = newName.trim().split(" ");
+          if (parts.length >= 2) {
+            setUserInitials((parts[0][0] + parts[1][0]).toUpperCase());
+          } else if (parts[0].length > 0) {
+            setUserInitials(parts[0].slice(0, 2).toUpperCase());
+          }
+        }}
+      />
+
+      {/* System Settings Modal */}
+      <UserSettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+      />
     </>
   );
 };
