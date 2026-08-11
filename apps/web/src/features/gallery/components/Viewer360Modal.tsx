@@ -34,6 +34,18 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   const handleRotate = () => {
     setRotationAngle((prev) => (prev + 90) % 360);
   };

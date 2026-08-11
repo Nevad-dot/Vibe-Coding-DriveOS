@@ -24,6 +24,18 @@ export const VehicleTelematicsModal: React.FC<VehicleTelematicsModalProps> = ({ 
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!mounted || !unit) return null;
 
   return createPortal(

@@ -27,6 +27,18 @@ export const ContactDriverModal: React.FC<ContactDriverModalProps> = ({ isOpen, 
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        handleClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   // Timer for active call mode
   useEffect(() => {
     let timer: NodeJS.Timeout;

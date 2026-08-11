@@ -38,6 +38,18 @@ export const SendCampaignModal: React.FC<SendCampaignModalProps> = ({ isOpen, on
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSent(true);

@@ -113,7 +113,6 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   const activeSession =
     sessions.find((s) => s.id === activeSessionId) || sessions[0];
 
-  // ChatGPT-style auto-scroll to bottom of message stream
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({
@@ -122,6 +121,18 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
       });
     }
   }, [activeSession?.messages, isThinking]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   // Create New Chat Session
   const createNewSession = () => {

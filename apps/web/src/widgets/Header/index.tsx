@@ -114,6 +114,23 @@ export const Header: React.FC = () => {
     }
   }, []);
 
+  // Keyboard shortcut listener to close logout modal or profile dropdown on ESC
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (showLogoutModal) {
+          setShowLogoutModal(false);
+        } else if (isProfileOpen) {
+          setIsProfileOpen(false);
+        } else if (isNotificationsOpen) {
+          setIsNotificationsOpen(false);
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showLogoutModal, isProfileOpen, isNotificationsOpen]);
+
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
