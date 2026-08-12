@@ -37,14 +37,14 @@ export const HeroGreeting: React.FC = () => {
       </span>
 
       {/* Main Headline with Dynamic First Name & Green Gradient Accent */}
-      <h1 className="text-[28px] md:text-[34px] font-display tracking-tight leading-snug">
+      <h1 className="text-[22px] sm:text-[28px] md:text-[34px] font-display tracking-tight leading-snug">
         <span className="font-semibold text-textGray-display">Good morning, {userName}. </span>
         <span className="font-normal text-textGray-tertiary">Bisnis Anda hari ini — </span>
         <span className="font-bold text-green-gradient">di atas rencana.</span>
       </h1>
 
       {/* Subtitle */}
-      <p className="text-[14px] md:text-[15px] text-textGray-tertiary font-normal">
+      <p className="text-[13px] sm:text-[14px] md:text-[15px] text-textGray-tertiary font-normal">
         Revenue MTD Rp 42,8 M · 128 unit terjual · 6 approval menunggu keputusan Anda.
       </p>
 

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutGrid,
   TrendingUp,
@@ -16,6 +16,7 @@ import {
   Sparkles,
   ChevronLeft,
   ChevronRight,
+  X,
 } from "lucide-react";
 
 // Custom smooth rounded Dollar Icon matching 1.5px stroke width
@@ -51,30 +52,36 @@ const NAV_ITEMS = [
   { label: "Reports", href: "/reports", icon: FileText },
 ];
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen = false, onMobileClose }) => {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
   const handleOpenAiModal = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
+    if (onMobileClose) onMobileClose();
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("open-ai-modal"));
     }
   };
 
-  return (
-    <aside
-      className={`bg-surfaceLight-card border-r border-surfaceLight-border flex flex-col justify-between transition-all duration-200 z-30 shrink-0 transform-gpu ${
-        collapsed ? "w-[72px]" : "w-[230px]"
-      }`}
-    >
+  const renderNavContent = (isMobileDrawer = false) => (
+    <div className="flex flex-col justify-between h-full w-full">
       {/* Top Section: Logo & Nav Links */}
       <div className="flex flex-col flex-1 overflow-y-auto">
         {/* Brand Header */}
-        <div className={`h-[64px] flex items-center border-b border-surfaceLight-border shrink-0 ${collapsed ? "justify-center px-2" : "px-5"}`}>
+        <div
+          className={`h-[64px] flex items-center border-b border-surfaceLight-border shrink-0 justify-between ${
+            !isMobileDrawer && collapsed ? "px-2 justify-center" : "px-5"
+          }`}
+        >
           <Link href="/overview" className="flex items-center gap-1.5 overflow-hidden">
-            {collapsed ? (
+            {!isMobileDrawer && collapsed ? (
               <span className="text-[19px] font-display font-semibold text-textGray-display select-none">
                 D<span className="text-brand">O</span>
               </span>
@@ -84,9 +91,19 @@ export const Sidebar: React.FC = () => {
               </span>
             )}
           </Link>
+
+          {isMobileDrawer && onMobileClose && (
+            <button
+              type="button"
+              onClick={onMobileClose}
+              className="p-1.5 rounded-xl text-textGray-tertiary hover:text-textGray-display hover:bg-surfaceLight-pearl transition-colors"
+            >
+              <X className="w-5 h-5" strokeWidth={1.5} />
+            </button>
+          )}
         </div>
 
-        {/* Navigation Items with Framer Motion Sliding Indicator */}
+        {/* Navigation Items */}
         <nav className="p-2.5 flex flex-col gap-1 relative">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
@@ -96,82 +113,126 @@ export const Sidebar: React.FC = () => {
               <Link
                 key={item.label}
                 href={item.href}
+                onClick={isMobileDrawer ? onMobileClose : undefined}
                 className={`relative flex items-center rounded-xl text-[13.5px] transition-colors duration-150 select-none ${
-                  collapsed ? "justify-center p-2.5" : "gap-3 px-3 py-2 pl-4"
+                  !isMobileDrawer && collapsed ? "justify-center p-2.5" : "gap-3 px-3 py-2 pl-4"
                 } ${
                   isActive
                     ? "text-textGray-display font-medium"
                     : "text-textGray-secondary hover:text-textGray-primary hover:bg-surfaceLight-pearl/60 font-normal"
                 }`}
-                title={collapsed ? item.label : undefined}
+                title={!isMobileDrawer && collapsed ? item.label : undefined}
               >
                 {/* Sliding Framer Motion Active Background & Green Indicator Bar */}
                 {isActive && (
                   <>
                     <motion.div
-                      layoutId="activeSidebarPill"
-                      transition={{ type: "spring", stiffness: 420, damping: 30 }}
-                      className="absolute inset-0 bg-surfaceLight-pearl rounded-xl -z-10"
+                      layoutId={isMobileDrawer ? "activeNavBgMobile" : "activeNavBgDesktop"}
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      className="absolute inset-0 bg-surfaceLight-pearl rounded-xl -z-10 shadow-xs"
                     />
-
                     <motion.div
-                      layoutId="activeSidebarGreenBar"
-                      transition={{ type: "spring", stiffness: 420, damping: 30 }}
-                      className="absolute left-1.5 top-2.5 bottom-2.5 w-[3px] bg-brand rounded-full z-10"
+                      layoutId={isMobileDrawer ? "activeNavIndicatorMobile" : "activeNavIndicatorDesktop"}
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      className="absolute left-0 top-2 bottom-2 w-1 bg-brand rounded-r-full"
                     />
                   </>
                 )}
 
                 <Icon
-                  className={`w-[18px] h-[18px] shrink-0 z-10 ${isActive ? "text-brand" : "text-textGray-tertiary"}`}
+                  className={`w-[18px] h-[18px] shrink-0 transition-colors ${
+                    isActive ? "text-brand" : "text-textGray-tertiary"
+                  }`}
                   strokeWidth={1.5}
                 />
-                {!collapsed && <span className="z-10">{item.label}</span>}
+                {(isMobileDrawer || !collapsed) && (
+                  <span className="truncate">{item.label}</span>
+                )}
               </Link>
             );
           })}
         </nav>
       </div>
 
-      {/* Bottom Section: AI Card & Collapse Toggle */}
+      {/* Bottom Section: AI Assistant CTA & Collapse Toggle */}
       <div className="p-2.5 border-t border-surfaceLight-border flex flex-col gap-2 shrink-0">
-        {!collapsed && (
-          <div className="bg-surfaceLight-pearl border border-surfaceLight-border rounded-xl p-3 flex flex-col gap-2">
-            <div className="flex items-center gap-1.5 text-[11px] font-medium text-[#4B8E55] uppercase tracking-wider">
-              <Sparkles className="w-[14px] h-[14px] text-[#4B8E55]" strokeWidth={1.5} />
-              <span>AI ASSISTANT</span>
-            </div>
-            <p className="text-[12px] text-textGray-tertiary leading-snug font-normal">
-              Tanya apa saja tentang bisnis Anda.
-            </p>
-            <button
-              type="button"
-              onClick={handleOpenAiModal}
-              className="mt-1 w-full bg-gradient-to-r from-[#33613A] via-[#4B8E55] to-[#6BA374] text-white text-[13px] font-medium py-2 px-4 rounded-xl transition-opacity hover:opacity-90 shadow-sm cursor-pointer"
-            >
-              Buka
-            </button>
-          </div>
-        )}
-
-        <button
+        {/* AI Assistant Button */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={handleOpenAiModal}
           type="button"
-          onClick={() => setCollapsed(!collapsed)}
-          className={`flex items-center rounded-lg text-[13px] font-normal text-textGray-tertiary hover:text-textGray-primary hover:bg-surfaceLight-pearl transition-all duration-150 w-full select-none ${
-            collapsed ? "justify-center p-2.5" : "gap-2 px-3 py-2"
+          className={`w-full py-2.5 px-3 rounded-xl bg-green-gradient-pill text-white flex items-center transition-all cursor-pointer shadow-sm hover:opacity-95 ${
+            !isMobileDrawer && collapsed ? "justify-center" : "justify-between"
           }`}
         >
-          {collapsed ? (
-            <ChevronRight className="w-[18px] h-[18px]" strokeWidth={1.5} />
-          ) : (
-            <>
-              <ChevronLeft className="w-[18px] h-[18px]" strokeWidth={1.5} />
-              <span>Collapse</span>
-            </>
-          )}
-        </button>
+          <div className="flex items-center gap-2.5 overflow-hidden">
+            <Sparkles className="w-4 h-4 shrink-0 text-white animate-pulse" strokeWidth={1.75} />
+            {(isMobileDrawer || !collapsed) && (
+              <span className="text-[13px] font-medium tracking-tight truncate">AI Assistant</span>
+            )}
+          </div>
+        </motion.button>
+
+        {/* Sidebar Collapse Toggle Button (Desktop only) */}
+        {!isMobileDrawer && (
+          <button
+            type="button"
+            onClick={() => setCollapsed(!collapsed)}
+            className={`w-full py-2 px-3 rounded-xl text-textGray-tertiary hover:text-textGray-primary hover:bg-surfaceLight-pearl transition-colors flex items-center text-[12px] font-medium cursor-pointer ${
+              collapsed ? "justify-center" : "justify-between"
+            }`}
+          >
+            {!collapsed && <span>Collapse</span>}
+            {collapsed ? (
+              <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
+            ) : (
+              <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
+            )}
+          </button>
+        )}
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop & Tablet Sidebar (lg:flex, hidden on mobile screens) */}
+      <aside
+        className={`hidden lg:flex bg-surfaceLight-card border-r border-surfaceLight-border flex-col justify-between transition-all duration-200 z-30 shrink-0 transform-gpu ${
+          collapsed ? "w-[72px]" : "w-[230px]"
+        }`}
+      >
+        {renderNavContent(false)}
+      </aside>
+
+      {/* Mobile Slide-Over Drawer Navigation (<1024px) */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <div className="lg:hidden fixed inset-0 z-[100] flex">
+            {/* Backdrop Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={onMobileClose}
+              className="fixed inset-0 bg-black/60 backdrop-blur-xs"
+            />
+
+            {/* Floating Drawer Container */}
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              className="relative w-[280px] max-w-[80vw] bg-surfaceLight-card border-r border-surfaceLight-border h-full shadow-2xl z-10 flex flex-col"
+            >
+              {renderNavContent(true)}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

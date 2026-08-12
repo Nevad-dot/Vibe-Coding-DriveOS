@@ -15,6 +15,7 @@ import {
   LogOut,
   X,
   AlertCircle,
+  Menu,
 } from "lucide-react";
 import { applyDriveOSTheme, getSavedThemeMode, ThemeMode } from "@/shared/lib/theme";
 import { GlobalSearchModal } from "./GlobalSearchModal";
@@ -22,7 +23,11 @@ import { NotificationsDrawer } from "./NotificationsDrawer";
 import { UserProfileModal } from "./UserProfileModal";
 import { UserSettingsModal } from "./UserSettingsModal";
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  onToggleMobileMenu?: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -186,11 +191,23 @@ export const Header: React.FC = () => {
   return (
     <>
       <header className="h-[64px] bg-surfaceLight-card border-b border-surfaceLight-border px-6 flex items-center justify-between shrink-0 z-20 relative">
-        {/* Left Dynamic Breadcrumb */}
-        <div className="flex items-center gap-2 text-[13px] font-normal text-textGray-tertiary">
-          <span>DriveOS</span>
-          <span>/</span>
-          <span className="text-textGray-primary font-medium">{pageTitle}</span>
+        {/* Left Side: Mobile Hamburger + Dynamic Breadcrumb */}
+        <div className="flex items-center gap-2.5 text-[13px] font-normal text-textGray-tertiary">
+          {onToggleMobileMenu && (
+            <button
+              type="button"
+              onClick={onToggleMobileMenu}
+              className="lg:hidden p-1.5 rounded-xl text-textGray-tertiary hover:text-textGray-display hover:bg-surfaceLight-pearl transition-colors shrink-0 cursor-pointer"
+              title="Open Mobile Navigation"
+            >
+              <Menu className="w-5 h-5" strokeWidth={1.5} />
+            </button>
+          )}
+          <div className="flex items-center gap-2">
+            <span>DriveOS</span>
+            <span>/</span>
+            <span className="text-textGray-primary font-medium">{pageTitle}</span>
+          </div>
         </div>
 
         {/* Right Tools & Profile */}
