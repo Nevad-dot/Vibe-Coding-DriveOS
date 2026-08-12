@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { RotateCw, ChevronRight, Car, ChevronDown, TrendingUp } from "lucide-react";
+import { RotateCw, Car, ChevronDown, TrendingUp } from "lucide-react";
 import { Viewer360Modal } from "./Viewer360Modal";
 import { VehiclePipelineModal } from "./VehiclePipelineModal";
 
@@ -58,70 +58,86 @@ export const FeaturedVehicleStage: React.FC = () => {
   const [isPipelineOpen, setIsPipelineOpen] = useState(false);
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
 
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest("#featured-vehicle-dropdown-container")) {
+        setIsSelectorOpen(false);
+      }
+    };
+    if (isSelectorOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSelectorOpen]);
+
   return (
     <>
       <motion.div
         initial={{ opacity: 0, scale: 0.97, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.1 }}
-        className="bg-surfaceLight-card border border-surfaceLight-border rounded-3xl p-5 sm:p-8 md:p-12 flex flex-col items-center text-center shadow-xs overflow-hidden"
+        className="bg-surfaceLight-card border border-surfaceLight-border rounded-3xl p-5 sm:p-8 md:p-10 flex flex-col items-center text-center shadow-xs overflow-visible"
       >
         {/* Featured Badge */}
-        <span className="text-[10px] sm:text-[11px] font-semibold text-brand tracking-[0.08em] uppercase block mb-2">
+        <span className="text-[10.5px] sm:text-[11px] font-semibold text-brand tracking-[0.08em] uppercase block mb-1.5">
           FEATURED SHOWROOM UNIT
         </span>
 
         {/* Dynamic Large Headline */}
-        <h2 className="text-[22px] sm:text-[32px] md:text-[44px] font-display font-semibold tracking-tight text-textGray-display leading-tight mb-2">
+        <h2 className="text-[24px] sm:text-[32px] md:text-[40px] font-display font-bold tracking-tight text-textGray-display leading-tight mb-2">
           {selectedVehicle.name}.
           <br />
-          <span className="text-textGray-secondary font-normal">{selectedVehicle.tagline}</span>
+          <span className="text-textGray-secondary font-normal text-[20px] sm:text-[28px] md:text-[34px]">
+            {selectedVehicle.tagline}
+          </span>
         </h2>
 
         {/* Subtitle Details */}
-        <p className="text-[13px] sm:text-[14px] md:text-[15px] text-textGray-tertiary font-normal mb-5 sm:mb-6">
+        <p className="text-[13px] sm:text-[14px] md:text-[15px] text-textGray-tertiary font-normal mb-5 sm:mb-6 leading-normal">
           {selectedVehicle.details}
         </p>
 
-        {/* Interactive Action Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-8 relative">
+        {/* Interactive Action Buttons Bar */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-3 w-full max-w-[500px] mb-6 sm:mb-8 relative z-20">
           {/* Main 360° Viewer Button */}
           <motion.button
-            whileHover={{ scale: 1.04 }}
+            whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={() => setIsViewerOpen(true)}
             type="button"
-            className="px-6 py-2.5 rounded-full bg-green-gradient-pill text-white font-medium text-[13.5px] inline-flex items-center gap-2 shadow-sm transition-all hover:opacity-95 cursor-pointer select-none"
+            className="px-5 py-2.5 rounded-full bg-green-gradient-pill text-white font-semibold text-[13px] sm:text-[13.5px] inline-flex items-center justify-center gap-2 shadow-sm transition-all hover:opacity-95 cursor-pointer select-none whitespace-nowrap"
           >
-            <RotateCw className="w-4 h-4" strokeWidth={1.5} />
+            <RotateCw className="w-4 h-4 text-white shrink-0" strokeWidth={1.5} />
             <span>Buka 360° Viewer</span>
           </motion.button>
 
-          {/* Tombol Other (Pilih Mobil Lain) Dropdown Selector */}
-          <div className="relative">
+          {/* Tombol Mobil Lain Dropdown Selector */}
+          <div id="featured-vehicle-dropdown-container" className="relative">
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => setIsSelectorOpen(!isSelectorOpen)}
               type="button"
-              className="px-5 py-2.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-textGray-display font-medium text-[13.5px] inline-flex items-center gap-2 shadow-2xs hover:bg-surfaceLight-pearl transition-colors cursor-pointer select-none"
+              className="w-full px-5 py-2.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-textGray-display font-semibold text-[13px] sm:text-[13.5px] inline-flex items-center justify-center gap-2 shadow-2xs hover:bg-surfaceLight-pearl transition-colors cursor-pointer select-none whitespace-nowrap"
             >
-              <Car className="w-4 h-4 text-[#4B8E55]" strokeWidth={1.5} />
+              <Car className="w-4 h-4 text-[#4B8E55] shrink-0" strokeWidth={1.5} />
               <span>Mobil Lain</span>
-              <ChevronDown className={`w-3.5 h-3.5 text-textGray-tertiary transition-transform ${isSelectorOpen ? "rotate-180" : ""}`} />
+              <ChevronDown className={`w-3.5 h-3.5 text-textGray-tertiary transition-transform shrink-0 ${isSelectorOpen ? "rotate-180" : ""}`} />
             </motion.button>
 
             {/* Dropdown Menu */}
             <AnimatePresence>
               {isSelectorOpen && (
                 <motion.div
-                  initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                  key="featured-dropdown-menu"
+                  initial={{ opacity: 0, y: 6, scale: 0.96 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                  className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-30 w-[240px] bg-surfaceLight-card border border-surfaceLight-border rounded-2xl shadow-xl p-2 flex flex-col gap-1"
+                  exit={{ opacity: 0, y: 6, scale: 0.96 }}
+                  className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-50 w-[230px] max-w-[calc(100vw-32px)] bg-surfaceLight-card border border-surfaceLight-border rounded-2xl shadow-2xl p-2 flex flex-col gap-1"
                 >
-                  <span className="px-3 py-1.5 text-[10.5px] font-semibold text-textGray-muted uppercase tracking-wider block">
+                  <span className="px-3 py-1.5 text-[10px] font-semibold text-textGray-muted uppercase tracking-wider block text-left">
                     PILIH UNIT FEATURED 360°
                   </span>
                   {FEATURED_VEHICLES.map((v) => (
@@ -132,15 +148,15 @@ export const FeaturedVehicleStage: React.FC = () => {
                         setSelectedVehicle(v);
                         setIsSelectorOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-xl text-[13px] font-medium transition-colors flex items-center justify-between cursor-pointer ${
+                      className={`w-full text-left px-3 py-2 rounded-xl text-[12.5px] font-medium transition-colors flex items-center justify-between cursor-pointer ${
                         selectedVehicle.id === v.id
                           ? "bg-[#4B8E55]/10 text-brand font-semibold"
                           : "text-textGray-display hover:bg-surfaceLight-pearl"
                       }`}
                     >
-                      <span>{v.name}</span>
+                      <span className="truncate pr-2">{v.name}</span>
                       {selectedVehicle.id === v.id && (
-                        <span className="w-2 h-2 rounded-full bg-[#4B8E55]" />
+                        <span className="w-2 h-2 rounded-full bg-[#4B8E55] shrink-0" />
                       )}
                     </button>
                   ))}
@@ -149,36 +165,33 @@ export const FeaturedVehicleStage: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          {/* Lihat Pipeline (Opens Vehicle Pipeline Pop-up Modal, NO page redirect) */}
+          {/* Lihat Pipeline Pop-up Button */}
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => setIsPipelineOpen(true)}
             type="button"
-            className="text-[13.5px] font-semibold text-brand hover:underline inline-flex items-center gap-1.5 cursor-pointer select-none ml-1 px-4 py-2 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border shadow-2xs"
+            className="px-5 py-2.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-brand font-semibold text-[13px] sm:text-[13.5px] inline-flex items-center justify-center gap-1.5 shadow-2xs hover:bg-surfaceLight-card transition-colors cursor-pointer select-none whitespace-nowrap"
           >
-            <TrendingUp className="w-4 h-4 text-[#4B8E55]" />
-            <span>Lihat Pipeline {selectedVehicle.name.split(" ")[0]}</span>
-            <ChevronRight className="w-4 h-4 text-textGray-tertiary" strokeWidth={1.5} />
+            <TrendingUp className="w-4 h-4 text-[#4B8E55] shrink-0" strokeWidth={1.5} />
+            <span>Lihat Pipeline</span>
           </motion.button>
         </div>
 
-        {/* Studio Featured Image Presentation Box */}
-        <div
-          onClick={() => setIsViewerOpen(true)}
-          className="relative w-full max-w-[840px] h-[360px] md:h-[450px] rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-800/40 border border-surfaceLight-border shadow-md cursor-pointer group"
-        >
+        {/* Large Vehicle Spotlight Image Showcase */}
+        <div className="relative w-full max-w-[720px] aspect-[16/9] sm:aspect-[21/9] rounded-2xl overflow-hidden bg-surfaceLight-pearl border border-surfaceLight-border flex items-center justify-center shadow-inner group">
           <Image
             src={selectedVehicle.image}
-            alt={`${selectedVehicle.name} Studio Presentation`}
+            alt={selectedVehicle.name}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, 720px"
+            className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
             priority
           />
         </div>
       </motion.div>
 
-      {/* Interactive 360 Viewer Modal */}
+      {/* Interactive Modals */}
       <Viewer360Modal
         isOpen={isViewerOpen}
         onClose={() => setIsViewerOpen(false)}
@@ -186,7 +199,6 @@ export const FeaturedVehicleStage: React.FC = () => {
         imageUrl={selectedVehicle.image}
       />
 
-      {/* Dedicated Vehicle Pipeline Popup Modal */}
       <VehiclePipelineModal
         isOpen={isPipelineOpen}
         onClose={() => setIsPipelineOpen(false)}

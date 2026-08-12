@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, TrendingUp, Users, DollarSign, CheckCircle2, ArrowRight } from "lucide-react";
+import { X, TrendingUp } from "lucide-react";
 
 interface VehiclePipelineModalProps {
   isOpen: boolean;
@@ -108,32 +108,37 @@ export const VehiclePipelineModal: React.FC<VehiclePipelineModalProps> = ({
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <motion.div
+          key="vehicle-pipeline-modal-root"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4"
+        >
           {/* Full Screen Dark Backdrop Overlay */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
             onClick={onClose}
             className="fixed inset-0 bg-black/75 backdrop-blur-xs"
           />
 
           {/* Modal Container */}
           <motion.div
+            key="vehicle-pipeline-modal-card"
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[660px] max-h-[90vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-6 md:p-8 flex flex-col gap-6"
+            className="relative w-full max-w-[620px] max-h-[88vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-5 sm:p-7 flex flex-col gap-5"
           >
             {/* Header */}
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-[11px] font-semibold text-brand uppercase tracking-wider block mb-1 flex items-center gap-1.5">
+            <div className="flex items-center justify-between gap-3 pb-2 border-b border-surfaceLight-border">
+              <div className="min-w-0 flex-1">
+                <span className="text-[11px] font-semibold text-brand uppercase tracking-wider block mb-0.5 flex items-center gap-1.5">
                   <TrendingUp className="w-3.5 h-3.5 text-[#4B8E55]" />
                   PIPELINE & SALES INTELLIGENCE
                 </span>
-                <h3 className="text-[22px] font-display font-bold text-textGray-display leading-tight">
+                <h3 className="text-[18px] sm:text-[20px] font-display font-bold text-textGray-display leading-tight truncate">
                   Pipeline {vehicleName}
                 </h3>
               </div>
@@ -141,25 +146,25 @@ export const VehiclePipelineModal: React.FC<VehiclePipelineModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-textGray-tertiary hover:text-textGray-display hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-textGray-tertiary hover:text-textGray-display hover:bg-surfaceLight-pearl transition-colors cursor-pointer shrink-0"
               >
                 <X className="w-5 h-5" strokeWidth={1.5} />
               </button>
             </div>
 
             {/* Metrics Header Grid */}
-            <div className="grid grid-cols-3 gap-3 text-center">
-              <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-3.5 rounded-2xl flex flex-col gap-0.5">
-                <span className="text-[11px] text-textGray-tertiary font-medium uppercase">TOTAL PIPELINE</span>
-                <span className="text-[16px] font-bold text-brand">{pipelineInfo.totalValue}</span>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-center">
+              <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-3 sm:p-3.5 rounded-2xl flex flex-col gap-0.5 items-center justify-center">
+                <span className="text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider">TOTAL PIPELINE</span>
+                <span className="text-[15px] sm:text-[16px] font-bold text-brand">{pipelineInfo.totalValue}</span>
               </div>
-              <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-3.5 rounded-2xl flex flex-col gap-0.5">
-                <span className="text-[11px] text-textGray-tertiary font-medium uppercase">PROSPEK AKTIF</span>
-                <span className="text-[16px] font-bold text-textGray-display">{pipelineInfo.activeLeads} Lead</span>
+              <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-3 sm:p-3.5 rounded-2xl flex flex-col gap-0.5 items-center justify-center">
+                <span className="text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider">PROSPEK AKTIF</span>
+                <span className="text-[15px] sm:text-[16px] font-bold text-textGray-display">{pipelineInfo.activeLeads} Lead</span>
               </div>
-              <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-3.5 rounded-2xl flex flex-col gap-0.5">
-                <span className="text-[11px] text-textGray-tertiary font-medium uppercase">DEAL SPK</span>
-                <span className="text-[16px] font-bold text-emerald-600">{pipelineInfo.spkCount} Unit</span>
+              <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-3 sm:p-3.5 rounded-2xl flex flex-col gap-0.5 items-center justify-center">
+                <span className="text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider">DEAL SPK</span>
+                <span className="text-[15px] sm:text-[16px] font-bold text-emerald-600">{pipelineInfo.spkCount} Unit</span>
               </div>
             </div>
 
@@ -169,26 +174,26 @@ export const VehiclePipelineModal: React.FC<VehiclePipelineModalProps> = ({
                 ACTIVE DEALS & PROSPECTS FOR THIS MODEL ({pipelineInfo.deals.length})
               </span>
 
-              <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto pr-1">
+              <div className="flex flex-col gap-2.5 max-h-[300px] overflow-y-auto pr-1">
                 {pipelineInfo.deals.map((deal) => (
                   <div
                     key={deal.id}
-                    className="p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex items-center justify-between gap-4 shadow-2xs hover:border-[#4B8E55]/40 transition-all"
+                    className="p-3.5 sm:p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 shadow-2xs hover:border-[#4B8E55]/40 transition-all"
                   >
-                    <div className="flex flex-col gap-0.5 min-w-0">
-                      <span className="text-[14px] font-bold text-textGray-display truncate">
+                    <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+                      <span className="text-[13.5px] sm:text-[14px] font-bold text-textGray-display leading-snug break-words">
                         {deal.customer}
                       </span>
-                      <span className="text-[12px] text-textGray-tertiary">
+                      <span className="text-[12px] text-textGray-tertiary font-normal">
                         {deal.stage} · {deal.consultant}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-3 shrink-0">
-                      <span className="text-[14px] font-bold text-textGray-display">
+                    <div className="flex items-center justify-between sm:justify-end gap-2.5 shrink-0">
+                      <span className="text-[13.5px] font-bold text-textGray-display whitespace-nowrap">
                         {deal.value}
                       </span>
-                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
                     </div>
                   </div>
                 ))}
@@ -196,17 +201,17 @@ export const VehiclePipelineModal: React.FC<VehiclePipelineModalProps> = ({
             </div>
 
             {/* Footer Close Button */}
-            <div className="pt-2 border-t border-surfaceLight-border flex justify-end">
+            <div className="pt-3 border-t border-surfaceLight-border flex justify-end">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-2.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-textGray-display hover:bg-surfaceLight-pearl text-[13px] font-semibold transition-colors cursor-pointer shadow-2xs"
+                className="px-6 py-2.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-textGray-display hover:bg-surfaceLight-pearl text-[13px] font-semibold transition-colors cursor-pointer shadow-2xs whitespace-nowrap"
               >
                 Tutup Pipeline
               </button>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       )}
     </AnimatePresence>,
     document.body
