@@ -227,11 +227,11 @@ export const ApprovalsReviewModal: React.FC<ApprovalsReviewModalProps> = ({
                     {approvedIds.length} dari {items.length} disetujui
                   </span>
 
-                  <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                  <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
                     <button
                       type="button"
                       onClick={onClose}
-                      className="flex-1 sm:flex-none px-4 py-2 rounded-full border border-surfaceLight-border text-[13px] font-semibold text-textGray-primary hover:bg-surfaceLight-pearl transition-colors cursor-pointer text-center"
+                      className="px-4 py-2 rounded-full border border-surfaceLight-border text-[12.5px] sm:text-[13px] font-semibold text-textGray-primary hover:bg-surfaceLight-pearl transition-colors cursor-pointer text-center whitespace-nowrap shrink-0"
                     >
                       Tutup
                     </button>
@@ -240,10 +240,10 @@ export const ApprovalsReviewModal: React.FC<ApprovalsReviewModalProps> = ({
                       type="button"
                       onClick={handleApproveAll}
                       disabled={isApprovingAll}
-                      className="flex-1 sm:flex-none px-5 py-2 rounded-full bg-green-gradient-pill text-white text-[13px] font-semibold shadow-sm hover:opacity-95 transition-opacity cursor-pointer inline-flex items-center justify-center gap-2"
+                      className="px-4 sm:px-5 py-2 rounded-full bg-green-gradient-pill text-white text-[12px] sm:text-[13px] font-semibold shadow-sm hover:opacity-95 transition-opacity cursor-pointer inline-flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap shrink-0"
                     >
-                      <ThumbsUp className="w-4 h-4" />
-                      <span>{isApprovingAll ? "Memproses..." : `Setujui Semua (${items.length})`}</span>
+                      <ThumbsUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                      <span className="whitespace-nowrap">{isApprovingAll ? "Memproses..." : `Setujui Semua (${items.length})`}</span>
                     </button>
                   </div>
                 </div>
