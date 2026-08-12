@@ -79,15 +79,15 @@ export const ApprovalsReviewModal: React.FC<ApprovalsReviewModalProps> = ({
 }) => {
   const [mounted, setMounted] = useState(false);
   const [items] = useState<ApprovalItem[]>(INITIAL_ITEMS);
+  const [approvedIds, setApprovedIds] = useState<string[]>([]);
+  const [isApprovingAll, setIsApprovingAll] = useState(false);
+  const [allApprovedToast, setAllApprovedToast] = useState(false);
 
   React.useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) return null;
-  const [approvedIds, setApprovedIds] = useState<string[]>([]);
-  const [isApprovingAll, setIsApprovingAll] = useState(false);
-  const [allApprovedToast, setAllApprovedToast] = useState(false);
 
   const handleToggleApprove = (id: string) => {
     if (approvedIds.includes(id)) {
