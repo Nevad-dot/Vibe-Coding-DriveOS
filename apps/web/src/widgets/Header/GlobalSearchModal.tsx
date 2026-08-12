@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, Car, Users, TrendingUp, ArrowRight, ShieldCheck, Sparkles, Wrench, DollarSign, FileText, Package } from "lucide-react";
+import { Search, X, Car, Users, TrendingUp, ArrowRight, ShieldCheck, DollarSign, FileText, Package, Wrench } from "lucide-react";
 
 interface GlobalSearchModalProps {
   isOpen: boolean;
@@ -79,9 +79,16 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
           item.keywords.toLowerCase().includes(query.toLowerCase())
       );
 
-  const handleSelect = (path: string) => {
-    router.push(path);
+  const handleSelect = (item: typeof SEARCH_DATABASE[0]) => {
     onClose();
+    router.push(item.path);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("driveos-search-select", {
+          detail: { id: item.id, type: item.type, title: item.title, path: item.path },
+        })
+      );
+    }
   };
 
   return createPortal(
@@ -148,7 +155,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
                       <button
                         key={item.id}
                         type="button"
-                        onClick={() => handleSelect(item.path)}
+                        onClick={() => handleSelect(item)}
                         className="flex items-center justify-between p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border hover:border-[#4B8E55] transition-all group cursor-pointer text-left w-full shadow-2xs"
                       >
                         <div className="flex items-center gap-3.5 min-w-0">
