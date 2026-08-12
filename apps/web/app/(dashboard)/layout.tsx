@@ -24,7 +24,7 @@ export default function DashboardLayout({
   }, []);
 
   return (
-    <div className="flex h-screen w-full bg-surfaceLight-pearl text-textGray-primary overflow-hidden font-sans relative">
+    <div className="flex h-screen w-full max-w-full bg-surfaceLight-pearl text-textGray-primary overflow-hidden font-sans relative">
       {/* High-Performance Radial Gradient Background Accents */}
       <div
         className="absolute -top-24 -right-24 w-[600px] h-[600px] pointer-events-none z-0 opacity-80"
@@ -46,11 +46,11 @@ export default function DashboardLayout({
       />
 
       {/* Main Workspace Column */}
-      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden z-10 relative">
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden z-10 relative max-w-full">
         <Header onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
 
-        {/* Scrollable Content Viewport */}
-        <main className="flex-1 overflow-y-auto bg-surfaceLight-pearl/80 w-full">
+        {/* Scrollable Content Viewport with strict overflow-x-hidden */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-surfaceLight-pearl/80 w-full max-w-full">
           {children}
         </main>
       </div>

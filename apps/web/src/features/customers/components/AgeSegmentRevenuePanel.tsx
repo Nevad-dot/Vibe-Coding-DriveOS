@@ -147,16 +147,16 @@ export const AgeSegmentRevenuePanel: React.FC = () => {
         </div>
       </div>
 
-      {/* Relevant Sub-content: Customer Intelligence Metadata Grid (Fills bottom void perfectly) */}
-      <div className="mt-4 pt-4 border-t border-surfaceLight-border grid grid-cols-3 gap-2">
+      {/* Relevant Sub-content: Customer Intelligence Metadata Grid */}
+      <div className="mt-4 pt-4 border-t border-surfaceLight-border grid grid-cols-1 sm:grid-cols-3 gap-2">
         {DEMOGRAPHIC_STATS.map((stat, i) => {
           const Icon = stat.icon;
           return (
             <div
               key={i}
-              className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl flex flex-col gap-1"
+              className="bg-surfaceLight-pearl border border-surfaceLight-border p-2.5 rounded-xl flex flex-col gap-1 min-w-0"
             >
-              <div className="flex items-center gap-1.5 text-textGray-tertiary">
+              <div className="flex items-center gap-1.5 text-textGray-tertiary min-w-0">
                 <Icon className="w-3.5 h-3.5 text-brand shrink-0" strokeWidth={1.5} />
                 <span className="text-[10.5px] font-medium text-textGray-muted truncate">
                   {stat.label}

@@ -12,21 +12,21 @@ export const metadata = {
 
 export default function FleetPage() {
   return (
-    <div className="w-full flex flex-col">
-      {/* Top Header Banner: Pure White background with horizontal divider line */}
-      <div className="bg-surfaceLight-card border-b border-surfaceLight-border px-6 md:px-8 py-6 md:py-7 w-full">
+    <div className="w-full max-w-full flex flex-col min-h-screen">
+      {/* Top Header Banner */}
+      <div className="bg-surfaceLight-card border-b border-surfaceLight-border px-[20px] md:px-8 py-5 md:py-7 w-full">
         <div className="max-w-[1440px] mx-auto">
           <FleetHeroHeader />
         </div>
       </div>
 
-      {/* Main Fleet Canvas: Slightly tinted gray background with metrics, panels, and fleet directory table */}
-      <div className="bg-surfaceLight-pearl px-6 md:px-8 py-6 md:py-8 w-full pb-16">
+      {/* Main Fleet Canvas */}
+      <div className="bg-surfaceLight-pearl px-[20px] md:px-8 py-5 md:py-8 w-full pb-16">
         <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
           {/* 1. Top Fleet KPI Metrics Grid */}
           <FleetMetricsGrid />
 
-          {/* 2. Middle Section: Live Delivery & Branch Utilization (Equal Height) */}
+          {/* 2. Middle Section: Live Delivery & Branch Utilization */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
             <LiveDeliveryPanel />
             <BranchUtilizationPanel />

@@ -53,21 +53,21 @@ export default function CustomersPage() {
   };
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full max-w-full flex flex-col min-h-screen">
       {/* Top Header Banner */}
-      <div className="bg-surfaceLight-card border-b border-surfaceLight-border px-6 md:px-8 py-6 md:py-7 w-full">
+      <div className="bg-surfaceLight-card border-b border-surfaceLight-border px-[20px] md:px-8 py-5 md:py-7 w-full">
         <div className="max-w-[1440px] mx-auto">
           <CustomersHeroHeader onAddCampaign={handleAddCampaign} />
         </div>
       </div>
 
       {/* Main Customers Canvas */}
-      <div className="bg-surfaceLight-pearl px-6 md:px-8 py-6 md:py-8 w-full min-h-[calc(100vh-200px)]">
+      <div className="bg-surfaceLight-pearl px-[20px] md:px-8 py-5 md:py-8 w-full min-h-[calc(100vh-200px)]">
         <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
           {/* 1. CRM Metrics Grid */}
           <CustomersMetricsGrid />
 
-          {/* 2. Persistent Campaigns Database Panel ("Bentuk Fisik Data") */}
+          {/* 2. Persistent Campaigns Database Panel */}
           <CampaignsHistoryPanel
             campaigns={campaigns}
             onDeleteCampaign={handleDeleteCampaign}

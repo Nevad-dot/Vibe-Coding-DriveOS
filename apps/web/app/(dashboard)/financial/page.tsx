@@ -8,16 +8,16 @@ import BrandPerformancePanel from "@/features/financial/components/BrandPerforma
 
 export default function FinancialPage() {
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full max-w-full flex flex-col min-h-screen">
       {/* Top Header Banner */}
-      <div className="bg-surfaceLight-card border-b border-surfaceLight-border px-6 md:px-8 py-6 md:py-7 w-full">
+      <div className="bg-surfaceLight-card border-b border-surfaceLight-border px-[20px] md:px-8 py-5 md:py-7 w-full">
         <div className="max-w-[1440px] mx-auto">
           <FinancialHeroHeader />
         </div>
       </div>
 
       {/* Main Financial Canvas */}
-      <div className="bg-surfaceLight-pearl px-6 md:px-8 py-6 md:py-8 w-full pb-16">
+      <div className="bg-surfaceLight-pearl px-[20px] md:px-8 py-5 md:py-8 w-full pb-16">
         <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
           {/* 1. Top Financial KPI Metrics Grid */}
           <FinancialMetricsGrid />

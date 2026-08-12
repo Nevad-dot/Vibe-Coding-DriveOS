@@ -64,22 +64,22 @@ export const FeaturedVehicleStage: React.FC = () => {
         initial={{ opacity: 0, scale: 0.97, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.1 }}
-        className="bg-surfaceLight-card border border-surfaceLight-border rounded-3xl p-8 md:p-12 flex flex-col items-center text-center shadow-xs overflow-hidden"
+        className="bg-surfaceLight-card border border-surfaceLight-border rounded-3xl p-5 sm:p-8 md:p-12 flex flex-col items-center text-center shadow-xs overflow-hidden"
       >
         {/* Featured Badge */}
-        <span className="text-[11px] font-semibold text-brand tracking-[0.08em] uppercase block mb-2">
+        <span className="text-[10px] sm:text-[11px] font-semibold text-brand tracking-[0.08em] uppercase block mb-2">
           FEATURED SHOWROOM UNIT
         </span>
 
         {/* Dynamic Large Headline */}
-        <h2 className="text-[32px] md:text-[44px] font-display font-semibold tracking-tight text-textGray-display leading-tight mb-2">
+        <h2 className="text-[22px] sm:text-[32px] md:text-[44px] font-display font-semibold tracking-tight text-textGray-display leading-tight mb-2">
           {selectedVehicle.name}.
           <br />
           <span className="text-textGray-secondary font-normal">{selectedVehicle.tagline}</span>
         </h2>
 
         {/* Subtitle Details */}
-        <p className="text-[14px] md:text-[15px] text-textGray-tertiary font-normal mb-6">
+        <p className="text-[13px] sm:text-[14px] md:text-[15px] text-textGray-tertiary font-normal mb-5 sm:mb-6">
           {selectedVehicle.details}
         </p>
 
