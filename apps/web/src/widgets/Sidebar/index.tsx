@@ -209,18 +209,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen = false, onMobileCl
       {/* Mobile Slide-Over Drawer Navigation (<1024px) */}
       <AnimatePresence>
         {mobileOpen && (
-          <div className="lg:hidden fixed inset-0 z-[100] flex">
+          <motion.div
+            key="mobile-sidebar-drawer-root"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="lg:hidden fixed inset-0 z-[100] flex"
+          >
             {/* Backdrop Overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+            <div
               onClick={onMobileClose}
               className="fixed inset-0 bg-black/60 backdrop-blur-xs"
             />
 
             {/* Floating Drawer Container */}
             <motion.div
+              key="mobile-sidebar-drawer-card"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
@@ -229,7 +233,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen = false, onMobileCl
             >
               {renderNavContent(true)}
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>

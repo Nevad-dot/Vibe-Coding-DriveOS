@@ -389,15 +389,19 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
       {/* Formal Log Out Confirmation Modal (createPortal with z-[100]) */}
       {showLogoutModal && createPortal(
         <AnimatePresence>
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+          <motion.div
+            key="logout-modal-root"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          >
+            <div
               onClick={handleCancelLogout}
               className="fixed inset-0 bg-black/75 backdrop-blur-xs"
             />
             <motion.div
+              key="logout-modal-card"
               initial={{ opacity: 0, scale: 0.88, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 12 }}
@@ -446,7 +450,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
                 </button>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         </AnimatePresence>,
         document.body
       )}
