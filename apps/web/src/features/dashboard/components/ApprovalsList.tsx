@@ -66,14 +66,14 @@ export const ApprovalsList: React.FC = () => {
         {/* Approvals Items */}
         <div className="flex flex-col divide-y divide-surfaceLight-border">
           {approvals.map((item) => (
-            <div key={item.id} className="py-3.5 flex items-center justify-between gap-4 first:pt-0 last:pb-0">
-              <div>
-                <h4 className="text-[14px] font-semibold text-textGray-display mb-0.5">
+            <div key={item.id} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 first:pt-0 last:pb-0">
+              <div className="flex flex-col min-w-0">
+                <h4 className="text-[14px] font-semibold text-textGray-display mb-0.5 leading-snug">
                   {item.title}
                 </h4>
                 <span className="text-[12px] text-textGray-tertiary font-normal">{item.meta}</span>
               </div>
-              <div className="text-[14px] font-semibold text-textGray-display shrink-0">
+              <div className="text-[13.5px] font-semibold text-brand shrink-0">
                 {item.amount}
               </div>
             </div>
