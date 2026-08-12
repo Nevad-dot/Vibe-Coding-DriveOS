@@ -94,7 +94,7 @@ export const SalesTrendChart: React.FC = () => {
           onMouseLeave={() => setHoveredIdx(null)}
           className="flex items-end justify-between gap-2.5 sm:gap-3 h-[210px] min-w-[540px] sm:min-w-0 px-1"
         >
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {bars.map((bar, idx) => {
               const isSelected = hoveredIdx === idx;
 
