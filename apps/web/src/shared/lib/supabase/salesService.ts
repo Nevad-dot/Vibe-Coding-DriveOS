@@ -91,7 +91,8 @@ export const salesService = {
       const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (stored) {
         try {
-          return JSON.parse(stored);
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
         } catch {}
       }
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(INITIAL_DEALS));

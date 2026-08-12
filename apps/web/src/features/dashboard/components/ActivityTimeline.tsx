@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 
 const ACTIVITIES = [
   {
@@ -33,12 +32,7 @@ const ACTIVITIES = [
 
 export const ActivityTimeline: React.FC = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.96, y: 22 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.3 }}
-      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col shadow-xs"
-    >
+    <div className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col shadow-xs opacity-100">
       {/* Header */}
       <div className="mb-4">
         <span className="text-[11px] font-medium text-textGray-muted uppercase tracking-[0.08em] block mb-1">
@@ -49,7 +43,7 @@ export const ActivityTimeline: React.FC = () => {
         </h3>
       </div>
 
-      {/* Activity Timeline List with generous airy spacing */}
+      {/* Activity Timeline List */}
       <div className="flex flex-col gap-5 pt-1">
         {ACTIVITIES.map((activity, idx) => (
           <div key={idx} className="relative flex items-start gap-3.5">
@@ -73,7 +67,7 @@ export const ActivityTimeline: React.FC = () => {
           </div>
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 };
 

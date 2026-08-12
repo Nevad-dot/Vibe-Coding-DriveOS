@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import HeroGreeting from "@/features/dashboard/components/HeroGreeting";
 import MetricsGrid from "@/features/dashboard/components/MetricsGrid";
@@ -6,22 +8,17 @@ import AiInsightPanel from "@/features/dashboard/components/AiInsightPanel";
 import ApprovalsList from "@/features/dashboard/components/ApprovalsList";
 import ActivityTimeline from "@/features/dashboard/components/ActivityTimeline";
 
-export const metadata = {
-  title: "DriveOS — Overview Dashboard",
-  description: "Automotive Intelligence Dashboard — Real-time revenue, inventory, and operations.",
-};
-
 export default function OverviewPage() {
   return (
-    <div className="w-full flex flex-col">
-      {/* Top Header Banner: Pure White background with horizontal divider line */}
+    <div className="w-full flex flex-col min-h-screen">
+      {/* Top Header Banner */}
       <div className="bg-surfaceLight-card border-b border-surfaceLight-border px-6 md:px-8 py-6 md:py-7 w-full">
         <div className="max-w-[1440px] mx-auto">
           <HeroGreeting />
         </div>
       </div>
 
-      {/* Main Dashboard Content: Slightly tinted gray background with all cards */}
+      {/* Main Dashboard Content */}
       <div className="bg-surfaceLight-pearl px-6 md:px-8 py-6 md:py-8 w-full min-h-[calc(100vh-200px)]">
         <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
           {/* 1. KPI Metrics Grid */}

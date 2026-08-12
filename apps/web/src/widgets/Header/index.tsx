@@ -199,13 +199,13 @@ export const Header: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsSearchOpen(true)}
-            className="relative flex items-center w-[260px] h-[36px] bg-surfaceLight-pearl border border-surfaceLight-border rounded-full px-3.5 transition-all hover:border-[#4B8E55] text-left cursor-pointer group select-none shadow-xs"
+            className="relative flex items-center justify-center sm:justify-start w-9 sm:w-[260px] h-[36px] bg-surfaceLight-pearl border border-surfaceLight-border rounded-full sm:px-3.5 transition-all hover:border-[#4B8E55] text-left cursor-pointer group select-none shadow-xs shrink-0"
           >
-            <Search className="w-[15px] h-[15px] text-textGray-tertiary shrink-0 mr-2.5 transition-colors group-hover:text-brand" strokeWidth={1.5} />
-            <span className="w-full bg-transparent text-[13px] text-textGray-placeholder font-normal pr-2 truncate">
+            <Search className="w-[15px] h-[15px] text-textGray-tertiary shrink-0 sm:mr-2.5 transition-colors group-hover:text-brand" strokeWidth={1.5} />
+            <span className="hidden sm:inline-block w-full bg-transparent text-[13px] text-textGray-placeholder font-normal pr-2 truncate">
               Cari kendaraan, pelanggan...
             </span>
-            <kbd className="shrink-0 text-[10px] font-medium text-textGray-tertiary bg-surfaceLight-card border border-surfaceLight-border px-1.5 py-0.5 rounded-md shadow-xs select-none leading-none">
+            <kbd className="hidden sm:inline-block shrink-0 text-[10px] font-medium text-textGray-tertiary bg-surfaceLight-card border border-surfaceLight-border px-1.5 py-0.5 rounded-md shadow-xs select-none leading-none">
               ⌘K
             </kbd>
           </button>

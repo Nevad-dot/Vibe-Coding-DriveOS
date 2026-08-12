@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 
 const INSIGHTS = [
@@ -27,12 +26,7 @@ const INSIGHTS = [
 
 export const AiInsightPanel: React.FC = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.96, y: 22 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.2 }}
-      className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col h-full shadow-xs"
-    >
+    <div className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col h-full shadow-xs opacity-100">
       {/* Header */}
       <div className="flex items-center gap-2 mb-5">
         <Sparkles className="w-4 h-4 text-brand" strokeWidth={1.5} />
@@ -57,7 +51,7 @@ export const AiInsightPanel: React.FC = () => {
           </div>
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 };
 

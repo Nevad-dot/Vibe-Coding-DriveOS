@@ -6,17 +6,26 @@ import { CheckCircle2 } from "lucide-react";
 import { ApprovalsReviewModal } from "./ApprovalsReviewModal";
 import { approvalsService, ApprovalRecord } from "@/shared/lib/supabase/approvalsService";
 
+const INITIAL_APPROVALS: ApprovalRecord[] = [
+  { id: "app-1", title: "Diskon Khusus SPK Porsche GT3 RS", meta: "Pemohon: Rendra · Jakarta Pusat", amount: "Rp 150 Jt", status: "Pending" },
+  { id: "app-2", title: "Pengajuan Restock 5 Unit Taycan Turbo S", meta: "Pemohon: Budi · Surabaya Main", amount: "Rp 14,2 M", status: "Pending" },
+  { id: "app-3", title: "Klaim Garansi Workshop & Overhaul Mesin", meta: "Pemohon: Servis Divisi · Bandung", amount: "Rp 85 Jt", status: "Pending" },
+  { id: "app-4", title: "Insentif Penjualan Q3 Konsultan Top", meta: "Pemohon: HRD & Commercial", amount: "Rp 45 Jt", status: "Pending" },
+];
+
 export const ApprovalsList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [approvals, setApprovals] = useState<ApprovalRecord[]>([]);
+  const [approvals, setApprovals] = useState<ApprovalRecord[]>(INITIAL_APPROVALS);
   const [pendingCount, setPendingCount] = useState(4);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
     approvalsService.getAll().then((data) => {
-      setApprovals(data);
-      const pending = data.filter((item) => item.status === "Pending").length;
-      setPendingCount(pending);
+      if (data && data.length > 0) {
+        setApprovals(data);
+        const pending = data.filter((item) => item.status === "Pending").length;
+        setPendingCount(pending);
+      }
     });
   }, []);
 
@@ -30,12 +39,7 @@ export const ApprovalsList: React.FC = () => {
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96, y: 22 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.25 }}
-        className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col h-full shadow-xs"
-      >
+      <div className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col h-full shadow-xs opacity-100">
         {/* Header & CTA */}
         <div className="flex items-center justify-between gap-4 mb-5">
           <div>
@@ -75,7 +79,7 @@ export const ApprovalsList: React.FC = () => {
             </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* Approvals Review Modal */}
       <ApprovalsReviewModal
