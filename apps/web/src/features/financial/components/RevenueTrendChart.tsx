@@ -108,7 +108,7 @@ export const RevenueTrendChart: React.FC = () => {
       {/* Bar Chart Area */}
       <div
         onMouseLeave={() => setHoveredIdx(null)}
-        className="flex items-end justify-between gap-1.5 md:gap-2 h-[210px] pt-4 px-1"
+        className="flex items-end justify-between gap-1.5 sm:gap-2 h-[200px] sm:h-[210px] pt-4 px-1 overflow-x-auto no-scrollbar min-w-0 pb-1"
       >
         <AnimatePresence mode="wait">
           {bars.map((bar, idx) => {
@@ -119,7 +119,7 @@ export const RevenueTrendChart: React.FC = () => {
               <div
                 key={bar.label}
                 onMouseEnter={() => setHoveredIdx(idx)}
-                className="flex-1 flex flex-col items-center gap-2 h-full justify-end cursor-pointer group relative"
+                className="flex-1 min-w-[20px] sm:min-w-0 flex flex-col items-center gap-1.5 sm:gap-2 h-full justify-end cursor-pointer group relative"
               >
                 {/* Hover Floating Tooltip */}
                 <div

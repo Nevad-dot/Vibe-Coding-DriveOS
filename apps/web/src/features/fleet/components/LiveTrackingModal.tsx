@@ -47,23 +47,28 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <motion.div
+          key="live-tracking-modal-root"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+        >
           {/* Full Screen Dark Backdrop Overlay */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
             onClick={onClose}
             className="fixed inset-0 bg-black/75 backdrop-blur-xs"
           />
 
           {/* Modal Container */}
           <motion.div
+            key="live-tracking-modal-card"
             initial={{ opacity: 0, scale: 0.95, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[840px] max-h-[92vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-6 md:p-8 flex flex-col gap-5"
+            className="relative w-full max-w-[840px] max-h-[90vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-5 sm:p-7 flex flex-col gap-5"
           >
             {/* Header */}
             <div className="flex items-center justify-between">
@@ -72,7 +77,7 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
                   <Radio className="w-3.5 h-3.5 text-emerald-500 animate-pulse" />
                   REAL-TIME FLEET TELEMATICS
                 </span>
-                <h3 className="text-[22px] font-display font-bold text-textGray-display leading-tight">
+                <h3 className="text-[18px] font-display font-semibold text-textGray-display leading-tight">
                   Live GPS Tracking & Diagnostic
                 </h3>
               </div>
@@ -171,7 +176,7 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
               </div>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       )}
     </AnimatePresence>,
     document.body
