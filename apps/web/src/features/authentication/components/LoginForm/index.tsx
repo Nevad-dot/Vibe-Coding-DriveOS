@@ -53,13 +53,6 @@ export const LoginForm: React.FC = () => {
       transition={{ type: "spring", stiffness: 360, damping: 26 }}
       className="w-full max-w-[400px] mx-auto px-4 py-4 flex flex-col justify-center my-auto"
     >
-      {/* Mobile Brand Logo Header */}
-      <div className="lg:hidden flex items-center justify-center gap-1.5 mb-6">
-        <span className="text-[28px] font-display font-bold tracking-tight text-textGray-display select-none">
-          Drive<span className="text-green-gradient">OS</span>
-        </span>
-      </div>
-
       {/* Header Info */}
       <div className="mb-6 text-center lg:text-left">
         <span className="text-[13px] font-sans font-medium text-textGray-secondary block mb-0.5">
@@ -141,13 +134,13 @@ export const LoginForm: React.FC = () => {
 
       {/* Footer Copy & Register Link */}
       <div className="mt-6 text-center flex flex-col gap-1.5">
-        <p className="text-[13px] text-textGray-secondary">
+        <p className="text-[12.5px] text-textGray-secondary">
           Don't have an account?{" "}
           <Link href="/register" className="font-semibold text-brand hover:underline transition-all">
             Register
           </Link>
         </p>
-        <p className="text-[12px] text-textGray-muted leading-relaxed">
+        <p className="text-[11.5px] text-textGray-muted leading-relaxed">
           Dengan lanjut, Anda menyetujui{" "}
           <a href="#" className="hover:underline transition-all font-medium text-textGray-tertiary">
             Terms & Privacy DriveOS
