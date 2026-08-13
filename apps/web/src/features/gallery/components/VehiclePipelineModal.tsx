@@ -129,16 +129,16 @@ export const VehiclePipelineModal: React.FC<VehiclePipelineModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[620px] max-h-[88vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-5 sm:p-7 flex flex-col gap-5"
+            className="relative w-full max-w-[620px] max-h-[90vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-4 sm:p-7 flex flex-col gap-4"
           >
             {/* Header */}
             <div className="flex items-center justify-between gap-3 pb-2 border-b border-surfaceLight-border">
               <div className="min-w-0 flex-1">
-                <span className="text-[11px] font-semibold text-brand uppercase tracking-wider block mb-0.5 flex items-center gap-1.5">
+                <span className="text-[10px] sm:text-[11px] font-semibold text-brand uppercase tracking-wider block mb-0.5 flex items-center gap-1.5">
                   <TrendingUp className="w-3.5 h-3.5 text-[#4B8E55]" />
                   PIPELINE & SALES INTELLIGENCE
                 </span>
-                <h3 className="text-[18px] sm:text-[20px] font-display font-bold text-textGray-display leading-tight truncate">
+                <h3 className="text-[17px] sm:text-[20px] font-display font-bold text-textGray-display leading-tight truncate">
                   Pipeline {vehicleName}
                 </h3>
               </div>
@@ -152,45 +152,45 @@ export const VehiclePipelineModal: React.FC<VehiclePipelineModalProps> = ({
               </button>
             </div>
 
-            {/* Metrics Header Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-center">
-              <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-3 sm:p-3.5 rounded-2xl flex flex-col gap-0.5 items-center justify-center">
-                <span className="text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider">TOTAL PIPELINE</span>
-                <span className="text-[15px] sm:text-[16px] font-bold text-brand">{pipelineInfo.totalValue}</span>
+            {/* Metrics Header Horizontal 3-Column Grid */}
+            <div className="grid grid-cols-3 gap-1.5 sm:gap-3 text-center bg-surfaceLight-pearl border border-surfaceLight-border p-2 sm:p-3 rounded-2xl">
+              <div className="flex flex-col gap-0.5 items-center justify-center min-w-0">
+                <span className="text-[9px] sm:text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider truncate w-full">TOTAL PIPELINE</span>
+                <span className="text-[13px] sm:text-[16px] font-bold text-brand truncate w-full">{pipelineInfo.totalValue}</span>
               </div>
-              <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-3 sm:p-3.5 rounded-2xl flex flex-col gap-0.5 items-center justify-center">
-                <span className="text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider">PROSPEK AKTIF</span>
-                <span className="text-[15px] sm:text-[16px] font-bold text-textGray-display">{pipelineInfo.activeLeads} Lead</span>
+              <div className="flex flex-col gap-0.5 items-center justify-center min-w-0 border-x border-surfaceLight-border px-1">
+                <span className="text-[9px] sm:text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider truncate w-full">PROSPEK AKTIF</span>
+                <span className="text-[13px] sm:text-[16px] font-bold text-textGray-display truncate w-full">{pipelineInfo.activeLeads} Lead</span>
               </div>
-              <div className="bg-surfaceLight-pearl border border-surfaceLight-border p-3 sm:p-3.5 rounded-2xl flex flex-col gap-0.5 items-center justify-center">
-                <span className="text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider">DEAL SPK</span>
-                <span className="text-[15px] sm:text-[16px] font-bold text-emerald-600">{pipelineInfo.spkCount} Unit</span>
+              <div className="flex flex-col gap-0.5 items-center justify-center min-w-0">
+                <span className="text-[9px] sm:text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider truncate w-full">DEAL SPK</span>
+                <span className="text-[13px] sm:text-[16px] font-bold text-emerald-600 truncate w-full">{pipelineInfo.spkCount} Unit</span>
               </div>
             </div>
 
             {/* Deals Breakdown List */}
-            <div className="flex flex-col gap-2.5">
-              <span className="text-[11px] font-semibold text-textGray-muted uppercase tracking-wider block">
+            <div className="flex flex-col gap-2">
+              <span className="text-[10.5px] sm:text-[11px] font-semibold text-textGray-muted uppercase tracking-wider block">
                 ACTIVE DEALS & PROSPECTS FOR THIS MODEL ({pipelineInfo.deals.length})
               </span>
 
-              <div className="flex flex-col gap-2.5 max-h-[300px] overflow-y-auto pr-1">
+              <div className="flex flex-col gap-2 max-h-[320px] overflow-y-auto pr-0.5">
                 {pipelineInfo.deals.map((deal) => (
                   <div
                     key={deal.id}
-                    className="p-3.5 sm:p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 shadow-2xs hover:border-[#4B8E55]/40 transition-all"
+                    className="p-3 sm:p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex items-center justify-between gap-3 shadow-2xs hover:border-[#4B8E55]/40 transition-all"
                   >
                     <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                      <span className="text-[13.5px] sm:text-[14px] font-bold text-textGray-display leading-snug break-words">
+                      <span className="text-[13px] sm:text-[14px] font-bold text-textGray-display leading-snug truncate">
                         {deal.customer}
                       </span>
-                      <span className="text-[12px] text-textGray-tertiary font-normal">
+                      <span className="text-[11.5px] sm:text-[12px] text-textGray-tertiary font-normal truncate">
                         {deal.stage} · {deal.consultant}
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between sm:justify-end gap-2.5 shrink-0">
-                      <span className="text-[13.5px] font-bold text-textGray-display whitespace-nowrap">
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-[13px] sm:text-[14px] font-bold text-textGray-display whitespace-nowrap">
                         {deal.value}
                       </span>
                       <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
@@ -201,11 +201,11 @@ export const VehiclePipelineModal: React.FC<VehiclePipelineModalProps> = ({
             </div>
 
             {/* Footer Close Button */}
-            <div className="pt-3 border-t border-surfaceLight-border flex justify-end">
+            <div className="pt-2 border-t border-surfaceLight-border flex justify-end">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-2.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-textGray-display hover:bg-surfaceLight-pearl text-[13px] font-semibold transition-colors cursor-pointer shadow-2xs whitespace-nowrap"
+                className="px-5 py-2 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-textGray-display hover:bg-surfaceLight-pearl text-[12.5px] sm:text-[13px] font-semibold transition-colors cursor-pointer shadow-2xs whitespace-nowrap"
               >
                 Tutup Pipeline
               </button>

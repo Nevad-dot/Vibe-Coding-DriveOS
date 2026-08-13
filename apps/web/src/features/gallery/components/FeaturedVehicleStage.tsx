@@ -99,35 +99,35 @@ export const FeaturedVehicleStage: React.FC = () => {
           {selectedVehicle.details}
         </p>
 
-        {/* Interactive Action Buttons Bar */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-3 w-full max-w-[500px] mb-6 sm:mb-8 relative z-20">
+        {/* Clean CTA Buttons Bar */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-3 w-full max-w-[460px] mb-6 sm:mb-8 relative z-20">
           {/* Main 360° Viewer Button */}
           <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => setIsViewerOpen(true)}
             type="button"
-            className="px-5 py-2.5 rounded-full bg-green-gradient-pill text-white font-semibold text-[13px] sm:text-[13.5px] inline-flex items-center justify-center gap-2 shadow-sm transition-all hover:opacity-95 cursor-pointer select-none whitespace-nowrap"
+            className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-green-gradient-pill text-white font-semibold text-[13.5px] inline-flex items-center justify-center gap-2 shadow-sm transition-all hover:opacity-95 cursor-pointer select-none whitespace-nowrap"
           >
             <RotateCw className="w-4 h-4 text-white shrink-0" strokeWidth={1.5} />
             <span>Buka 360° Viewer</span>
           </motion.button>
 
           {/* Tombol Mobil Lain Dropdown Selector */}
-          <div id="featured-vehicle-dropdown-container" className="relative">
+          <div id="featured-vehicle-dropdown-container" className="relative w-full sm:w-auto">
             <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setIsSelectorOpen(!isSelectorOpen)}
               type="button"
-              className="w-full px-5 py-2.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-textGray-display font-semibold text-[13px] sm:text-[13.5px] inline-flex items-center justify-center gap-2 shadow-2xs hover:bg-surfaceLight-pearl transition-colors cursor-pointer select-none whitespace-nowrap"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-textGray-display font-semibold text-[13.5px] inline-flex items-center justify-center gap-2 shadow-2xs hover:bg-surfaceLight-pearl transition-colors cursor-pointer select-none whitespace-nowrap"
             >
               <Car className="w-4 h-4 text-[#4B8E55] shrink-0" strokeWidth={1.5} />
               <span>Mobil Lain</span>
               <ChevronDown className={`w-3.5 h-3.5 text-textGray-tertiary transition-transform shrink-0 ${isSelectorOpen ? "rotate-180" : ""}`} />
             </motion.button>
 
-            {/* Dropdown Menu */}
+            {/* Dropdown Menu - Perfectly aligned to button bounds on mobile */}
             <AnimatePresence>
               {isSelectorOpen && (
                 <motion.div
@@ -135,7 +135,7 @@ export const FeaturedVehicleStage: React.FC = () => {
                   initial={{ opacity: 0, y: 6, scale: 0.96 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 6, scale: 0.96 }}
-                  className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-50 w-[230px] max-w-[calc(100vw-32px)] bg-surfaceLight-card border border-surfaceLight-border rounded-2xl shadow-2xl p-2 flex flex-col gap-1"
+                  className="absolute top-full mt-2 left-0 right-0 sm:left-1/2 sm:-translate-x-1/2 z-50 w-full sm:w-[230px] bg-surfaceLight-card border border-surfaceLight-border rounded-2xl shadow-2xl p-2 flex flex-col gap-1"
                 >
                   <span className="px-3 py-1.5 text-[10px] font-semibold text-textGray-muted uppercase tracking-wider block text-left">
                     PILIH UNIT FEATURED 360°
@@ -165,13 +165,13 @@ export const FeaturedVehicleStage: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          {/* Lihat Pipeline Pop-up Button */}
+          {/* Lihat Pipeline Button */}
           <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => setIsPipelineOpen(true)}
             type="button"
-            className="px-5 py-2.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-brand font-semibold text-[13px] sm:text-[13.5px] inline-flex items-center justify-center gap-1.5 shadow-2xs hover:bg-surfaceLight-card transition-colors cursor-pointer select-none whitespace-nowrap"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-brand font-semibold text-[13.5px] inline-flex items-center justify-center gap-1.5 shadow-2xs hover:bg-surfaceLight-card transition-colors cursor-pointer select-none whitespace-nowrap"
           >
             <TrendingUp className="w-4 h-4 text-[#4B8E55] shrink-0" strokeWidth={1.5} />
             <span>Lihat Pipeline</span>

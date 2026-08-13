@@ -140,15 +140,15 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[720px] max-h-[90vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-5 sm:p-7 flex flex-col gap-5"
+            className="relative w-full max-w-[720px] max-h-[90vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-4 sm:p-7 flex flex-col gap-4"
           >
             {/* Header Controls */}
             <div className="flex items-center justify-between gap-3 pb-2 border-b border-surfaceLight-border">
               <div className="min-w-0 flex-1">
-                <span className="text-[11px] font-semibold text-brand uppercase tracking-wider block mb-0.5">
+                <span className="text-[10px] sm:text-[11px] font-semibold text-brand uppercase tracking-wider block mb-0.5 truncate">
                   INTERACTIVE 360° SHOWROOM VIEWER
                 </span>
-                <h3 className="text-[18px] sm:text-[22px] font-display font-bold text-textGray-display leading-tight truncate">
+                <h3 className="text-[17px] sm:text-[22px] font-display font-bold text-textGray-display leading-tight truncate">
                   {vehicleName}
                 </h3>
               </div>
@@ -163,7 +163,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
             </div>
 
             {/* 360° Viewer Image Showcase Stage */}
-            <div className="relative w-full bg-surfaceLight-pearl border border-surfaceLight-border rounded-2xl p-4 flex flex-col items-center justify-center overflow-hidden">
+            <div className="relative w-full bg-surfaceLight-pearl border border-surfaceLight-border rounded-2xl p-3 flex flex-col items-center justify-center overflow-hidden">
               {/* Headlight Effect Glow */}
               <AnimatePresence>
                 {headlightsOn && (
@@ -184,7 +184,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                   scale: doorsOpen ? 1.04 : 1,
                 }}
                 transition={{ type: "spring", stiffness: 220, damping: 24 }}
-                className="relative w-full aspect-[16/10] sm:aspect-[16/9] max-h-[280px]"
+                className="relative w-full aspect-[16/10] sm:aspect-[16/9] max-h-[260px]"
               >
                 <Image
                   src={activeImage}
@@ -197,21 +197,21 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
               </motion.div>
 
               {/* Angle Indicator Badge */}
-              <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[11.5px] font-semibold text-textGray-display shadow-xs flex items-center gap-1.5 z-20">
-                <RotateCw className="w-3.5 h-3.5 shrink-0 stroke-[1.75] text-[#4B8E55]" />
+              <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[11px] font-semibold text-textGray-display shadow-xs flex items-center gap-1.5 z-20">
+                <RotateCw className="w-3.5 h-3.5 shrink-0 text-[#4B8E55]" />
                 <span>Angle: {rotationAngle}°</span>
               </div>
             </div>
 
-            {/* Controls Toolbar (Positioned below image cleanly) */}
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 py-1">
+            {/* Controls Toolbar */}
+            <div className="flex flex-wrap items-center justify-center gap-2 py-0.5">
               {/* Rotate 90° */}
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.94 }}
                 type="button"
                 onClick={handleRotate}
-                className="px-4 py-2 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[12.5px] font-semibold hover:border-[#4B8E55] transition-colors cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shadow-2xs"
+                className="px-3.5 py-1.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[12px] font-semibold hover:border-[#4B8E55] transition-colors cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shadow-2xs"
               >
                 <RotateCw className="w-3.5 h-3.5 shrink-0 text-[#4B8E55]" />
                 <span>Putar 90°</span>
@@ -223,7 +223,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                 whileTap={{ scale: 0.94 }}
                 type="button"
                 onClick={() => setHeadlightsOn(!headlightsOn)}
-                className={`px-4 py-2 rounded-full text-[12.5px] font-semibold transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shadow-2xs ${
+                className={`px-3.5 py-1.5 rounded-full text-[12px] font-semibold transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shadow-2xs ${
                   headlightsOn
                     ? "bg-[#4B8E55] text-white border border-[#4B8E55]"
                     : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-[#4B8E55]"
@@ -239,7 +239,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                 whileTap={{ scale: 0.94 }}
                 type="button"
                 onClick={() => setDoorsOpen(!doorsOpen)}
-                className={`px-4 py-2 rounded-full text-[12.5px] font-semibold transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shadow-2xs ${
+                className={`px-3.5 py-1.5 rounded-full text-[12px] font-semibold transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shadow-2xs ${
                   doorsOpen
                     ? "bg-[#4B8E55] text-white border border-[#4B8E55]"
                     : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-[#4B8E55]"
@@ -251,12 +251,12 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
             </div>
 
             {/* Exterior Color Selector */}
-            <div className="flex flex-col gap-2">
-              <span className="text-[12.5px] font-medium text-textGray-secondary">
+            <div className="flex items-center justify-between gap-2 px-1">
+              <span className="text-[12px] font-medium text-textGray-secondary truncate">
                 Warna Eksterior: <strong className="text-textGray-display font-semibold">{selectedColor.name}</strong>
               </span>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5 shrink-0">
                 {COLOR_OPTIONS.map((color) => {
                   const isSelected = selectedColor.name === color.name;
                   return (
@@ -264,7 +264,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                       key={color.name}
                       type="button"
                       onClick={() => setSelectedColor(color)}
-                      className={`w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer border ${
+                      className={`w-7 h-7 rounded-full flex items-center justify-center transition-all cursor-pointer border ${
                         isSelected
                           ? "border-[#4B8E55] scale-110 shadow-sm ring-2 ring-[#4B8E55]/30"
                           : "border-surfaceLight-border hover:scale-105"
@@ -273,7 +273,7 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
                     >
                       {isSelected && (
                         <Check
-                          className={`w-4 h-4 ${color.hex === "#F8F9FA" ? "text-black" : "text-white"}`}
+                          className={`w-3.5 h-3.5 ${color.hex === "#F8F9FA" ? "text-black" : "text-white"}`}
                           strokeWidth={2.5}
                         />
                       )}
@@ -283,21 +283,21 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
               </div>
             </div>
 
-            {/* Vehicle Specs Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-center">
-              <div className="p-3 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-0.5 items-center justify-center">
-                <span className="text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider">MESIN</span>
-                <span className="text-[14px] font-bold text-textGray-display">{spec.engine}</span>
+            {/* Vehicle Specs Horizontal 3-Column Grid */}
+            <div className="grid grid-cols-3 gap-1.5 sm:gap-2.5 text-center bg-surfaceLight-pearl border border-surfaceLight-border p-2 sm:p-2.5 rounded-2xl">
+              <div className="flex flex-col gap-0.5 items-center justify-center min-w-0">
+                <span className="text-[9px] sm:text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider truncate w-full">MESIN</span>
+                <span className="text-[12px] sm:text-[13.5px] font-bold text-textGray-display truncate w-full">{spec.engine}</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-0.5 items-center justify-center">
-                <span className="text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider">TENAGA</span>
-                <span className="text-[14px] font-bold text-brand">{spec.hp}</span>
+              <div className="flex flex-col gap-0.5 items-center justify-center min-w-0 border-x border-surfaceLight-border px-1">
+                <span className="text-[9px] sm:text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider truncate w-full">TENAGA</span>
+                <span className="text-[12px] sm:text-[13.5px] font-bold text-brand truncate w-full">{spec.hp}</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-0.5 items-center justify-center">
-                <span className="text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider">0–100 KM/H</span>
-                <span className="text-[14px] font-bold text-textGray-display">{spec.accel}</span>
+              <div className="flex flex-col gap-0.5 items-center justify-center min-w-0">
+                <span className="text-[9px] sm:text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider truncate w-full">0–100 KM/H</span>
+                <span className="text-[12px] sm:text-[13.5px] font-bold text-textGray-display truncate w-full">{spec.accel}</span>
               </div>
             </div>
           </motion.div>

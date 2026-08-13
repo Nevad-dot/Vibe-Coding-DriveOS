@@ -73,15 +73,15 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[560px] max-h-[88vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-5 sm:p-7 flex flex-col gap-4"
+            className="relative w-full max-w-[540px] max-h-[90vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-4 sm:p-7 flex flex-col gap-3.5"
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between gap-3 pb-2 border-b border-surfaceLight-border">
               <div className="min-w-0 flex-1">
-                <span className="text-[11px] font-semibold text-brand uppercase tracking-wider block mb-0.5">
+                <span className="text-[10px] sm:text-[11px] font-semibold text-brand uppercase tracking-wider block mb-0.5">
                   SPESIFIKASI SHOWROOM
                 </span>
-                <h3 className="text-[18px] sm:text-[20px] font-display font-bold text-textGray-display leading-tight truncate">
+                <h3 className="text-[17px] sm:text-[20px] font-display font-bold text-textGray-display leading-tight truncate">
                   {vehicle.name}
                 </h3>
               </div>
@@ -96,7 +96,7 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
             </div>
 
             {/* Vehicle Studio Image */}
-            <div className="relative w-full aspect-[16/10] max-h-[220px] rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border overflow-hidden flex items-center justify-center p-3">
+            <div className="relative w-full aspect-[16/10] max-h-[210px] rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border overflow-hidden flex items-center justify-center p-2.5">
               <Image
                 src={vehicle.image}
                 alt={vehicle.name}
@@ -104,7 +104,7 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
                 className="object-contain p-2"
                 priority
               />
-              <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[11.5px] font-semibold text-textGray-display shadow-xs z-10 whitespace-nowrap">
+              <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-surfaceLight-card border border-surfaceLight-border text-[11px] sm:text-[11.5px] font-semibold text-textGray-display shadow-xs z-10 whitespace-nowrap">
                 {vehicle.units} Tersedia
               </span>
             </div>
@@ -125,53 +125,53 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
             ) : (
               <>
                 {/* Price & Location Metadata Box */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-3.5 sm:p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border">
+                <div className="flex items-center justify-between gap-2 p-3 sm:p-4 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border">
                   <div>
-                    <span className="text-[10.5px] text-textGray-tertiary font-semibold block uppercase tracking-wide">HARGA OTR SHOWROOM</span>
-                    <span className="text-[20px] sm:text-[22px] font-bold text-brand">{vehicle.price}</span>
+                    <span className="text-[10px] text-textGray-tertiary font-semibold block uppercase tracking-wide">HARGA OTR SHOWROOM</span>
+                    <span className="text-[18px] sm:text-[22px] font-bold text-brand">{vehicle.price}</span>
                   </div>
 
-                  <div className="sm:text-right">
-                    <span className="text-[10.5px] text-textGray-tertiary font-semibold block uppercase tracking-wide flex items-center sm:justify-end gap-1">
+                  <div className="text-right">
+                    <span className="text-[10px] text-textGray-tertiary font-semibold block uppercase tracking-wide flex items-center justify-end gap-1">
                       <MapPin className="w-3 h-3 text-brand" /> CABANG LOKASI
                     </span>
-                    <span className="text-[13px] sm:text-[13.5px] font-semibold text-textGray-display">Jakarta Pusat & Selatan</span>
+                    <span className="text-[12.5px] sm:text-[13.5px] font-semibold text-textGray-display">Jakarta Pusat & Selatan</span>
                   </div>
                 </div>
 
-                {/* Specs Highlights Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-center">
-                  <div className="p-3 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-0.5 items-center justify-center">
-                    <div className="flex items-center gap-1 text-textGray-tertiary text-[10px] font-semibold uppercase tracking-wide">
-                      <Gauge className="w-3.5 h-3.5 text-brand" />
+                {/* Specs Highlights Compact 3-Column Horizontal Grid */}
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-2.5 text-center bg-surfaceLight-pearl border border-surfaceLight-border p-2 sm:p-2.5 rounded-2xl">
+                  <div className="flex flex-col gap-0.5 items-center justify-center min-w-0">
+                    <div className="flex items-center gap-1 text-textGray-tertiary text-[9px] sm:text-[10px] font-semibold uppercase tracking-wide truncate">
+                      <Gauge className="w-3 h-3 text-brand shrink-0" />
                       <span>PERFORMA</span>
                     </div>
-                    <span className="text-[13px.5] font-bold text-textGray-display">High Output</span>
+                    <span className="text-[12px] sm:text-[13.5px] font-bold text-textGray-display truncate w-full">High Output</span>
                   </div>
 
-                  <div className="p-3 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-0.5 items-center justify-center">
-                    <div className="flex items-center gap-1 text-textGray-tertiary text-[10px] font-semibold uppercase tracking-wide">
-                      <ShieldCheck className="w-3.5 h-3.5 text-brand" />
+                  <div className="flex flex-col gap-0.5 items-center justify-center min-w-0 border-x border-surfaceLight-border px-1">
+                    <div className="flex items-center gap-1 text-textGray-tertiary text-[9px] sm:text-[10px] font-semibold uppercase tracking-wide truncate">
+                      <ShieldCheck className="w-3 h-3 text-brand shrink-0" />
                       <span>GARANSI</span>
                     </div>
-                    <span className="text-[13.5px] font-bold text-textGray-display">3 Thn Resmi</span>
+                    <span className="text-[12px] sm:text-[13.5px] font-bold text-textGray-display truncate w-full">3 Thn Resmi</span>
                   </div>
 
-                  <div className="p-3 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-0.5 items-center justify-center">
-                    <div className="flex items-center gap-1 text-textGray-tertiary text-[10px] font-semibold uppercase tracking-wide">
-                      <TrendingUp className="w-3.5 h-3.5 text-brand" />
+                  <div className="flex flex-col gap-0.5 items-center justify-center min-w-0">
+                    <div className="flex items-center gap-1 text-textGray-tertiary text-[9px] sm:text-[10px] font-semibold uppercase tracking-wide truncate">
+                      <TrendingUp className="w-3 h-3 text-brand shrink-0" />
                       <span>MINAT LEAD</span>
                     </div>
-                    <span className="text-[13.5px] font-bold text-brand">18 Hot Lead</span>
+                    <span className="text-[12px] sm:text-[13.5px] font-bold text-brand truncate w-full">18 Hot Lead</span>
                   </div>
                 </div>
 
                 {/* Footer Action Buttons */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 pt-3 border-t border-surfaceLight-border">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pt-2 border-t border-surfaceLight-border">
                   <Link
                     href="/sales"
                     onClick={onClose}
-                    className="px-4 py-2.5 rounded-full border border-surfaceLight-border bg-surfaceLight-card text-textGray-display hover:bg-surfaceLight-pearl text-[13px] font-semibold transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5 shadow-2xs whitespace-nowrap"
+                    className="w-full sm:w-auto px-4 py-2.5 rounded-full border border-surfaceLight-border bg-surfaceLight-card text-textGray-display hover:bg-surfaceLight-pearl text-[12.5px] sm:text-[13px] font-semibold transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5 shadow-2xs whitespace-nowrap"
                   >
                     <TrendingUp className="w-4 h-4 text-[#4B8E55] shrink-0" />
                     <span>Lihat Sales Pipeline</span>
@@ -180,7 +180,7 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
                   <button
                     type="button"
                     onClick={handleOrderUnit}
-                    className="px-6 py-2.5 rounded-full bg-green-gradient-pill text-white text-[13px] font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer inline-flex items-center justify-center gap-1.5 select-none whitespace-nowrap"
+                    className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-green-gradient-pill text-white text-[12.5px] sm:text-[13px] font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer inline-flex items-center justify-center gap-1.5 select-none whitespace-nowrap"
                   >
                     <Sparkles className="w-4 h-4 shrink-0" strokeWidth={1.5} />
                     <span>Pesan Unit Ini</span>
