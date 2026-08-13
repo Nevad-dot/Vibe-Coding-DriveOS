@@ -71,13 +71,13 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
             className="relative w-full max-w-[760px] max-h-[90vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-4 sm:p-7 flex flex-col gap-4"
           >
             {/* Header */}
-            <div className="flex items-center justify-between gap-3 pb-2 border-b border-surfaceLight-border">
+            <div className="flex items-center justify-between gap-2 pb-2 border-b border-surfaceLight-border">
               <div className="min-w-0 flex-1">
-                <span className="text-[10px] sm:text-[11px] font-semibold text-brand uppercase tracking-wider block mb-0.5 flex items-center gap-1.5 truncate">
+                <span className="text-[10px] sm:text-[11px] font-semibold text-brand uppercase tracking-wider block mb-0.5 flex items-center gap-1.5 leading-snug">
                   <Radio className="w-3.5 h-3.5 text-emerald-500 animate-pulse shrink-0" />
                   REAL-TIME FLEET TELEMATICS
                 </span>
-                <h3 className="text-[17px] sm:text-[20px] font-display font-bold text-textGray-display leading-tight truncate">
+                <h3 className="text-[16px] sm:text-[20px] font-display font-bold text-textGray-display leading-tight break-words pr-1">
                   Live GPS Tracking & Diagnostic
                 </h3>
               </div>
@@ -105,19 +105,20 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
             <div className="relative w-full h-[260px] sm:h-[300px] rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border overflow-hidden flex flex-col justify-between p-3 sm:p-4 shadow-inner">
               {/* Top Bar inside Map */}
               <div className="flex flex-wrap items-center justify-between gap-2 z-10">
-                <div className="px-2.5 py-1 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border text-[11px] font-semibold text-textGray-display backdrop-blur-xs shadow-xs flex items-center gap-1.5 whitespace-nowrap">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                <div className="px-2.5 py-1 rounded-full bg-surfaceLight-card/95 border border-surfaceLight-border text-[11px] font-semibold text-textGray-display backdrop-blur-xs shadow-xs flex items-center gap-1.5 whitespace-nowrap">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
                   <span>GPS Active (126 Vehicles)</span>
                 </div>
-                <div className="px-2.5 py-1 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border text-[11px] font-medium text-textGray-primary backdrop-blur-xs whitespace-nowrap">
+                <div className="px-2.5 py-1 rounded-full bg-surfaceLight-card/95 border border-surfaceLight-border text-[11px] font-medium text-textGray-primary backdrop-blur-xs whitespace-nowrap">
                   Updated: Live 1s ago
                 </div>
               </div>
 
-              {/* Map Visual Simulation Overlay */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
-                <div className="w-[340px] h-[340px] rounded-full border border-brand/20 animate-ping" />
-                <div className="absolute w-[200px] h-[200px] rounded-full border border-brand/40" />
+              {/* High Contrast Radar Signal Emitting Rings (Vibrant in Light Mode & Dark Mode) */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-[300px] h-[300px] rounded-full border-2 border-[#4B8E55]/60 bg-[#4B8E55]/10 animate-ping" />
+                <div className="absolute w-[210px] h-[210px] rounded-full border-2 border-[#4B8E55]/70 bg-[#4B8E55]/15 shadow-xs" />
+                <div className="absolute w-[120px] h-[120px] rounded-full border-2 border-[#4B8E55]/90 bg-[#4B8E55]/20" />
               </div>
 
               {/* Center Vehicle Location Badge */}

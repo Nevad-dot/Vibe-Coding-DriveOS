@@ -89,17 +89,17 @@ export const FleetTablePanel: React.FC = () => {
           </span>
         </div>
 
-        {/* 1. Mobile Card List View (sm:hidden - Zero horizontal sliding, max readability) */}
+        {/* 1. Mobile Card List View (sm:hidden - Ultra-polished responsive layout) */}
         <div className="flex flex-col gap-3 sm:hidden">
           {FLEET_UNITS.map((unit, idx) => (
             <div
               key={idx}
-              className="p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-2.5 shadow-2xs"
+              className="p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-3 shadow-2xs"
             >
               {/* Top Row: Plate & Status */}
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center justify-between gap-2 border-b border-surfaceLight-border/70 pb-2.5">
                 <div className="flex flex-col min-w-0">
-                  <span className="font-bold text-textGray-display text-[14px]">
+                  <span className="font-bold text-textGray-display text-[15px]">
                     {unit.plate}
                   </span>
                   <span className="text-[12px] text-textGray-tertiary font-normal truncate">
@@ -111,46 +111,46 @@ export const FleetTablePanel: React.FC = () => {
                 </span>
               </div>
 
-              {/* Details Grid */}
-              <div className="grid grid-cols-2 gap-2 text-[12px] pt-2 border-t border-surfaceLight-border/70">
-                <div>
-                  <span className="text-[10px] uppercase text-textGray-muted block font-semibold">Cabang</span>
-                  <span className="font-semibold text-textGray-display">{unit.branch}</span>
+              {/* Sleek 3-Column Info Grid */}
+              <div className="grid grid-cols-3 gap-2 text-[12px]">
+                <div className="min-w-0">
+                  <span className="text-[9.5px] uppercase text-textGray-muted block font-semibold tracking-wider">Cabang</span>
+                  <span className="font-bold text-textGray-display truncate block">{unit.branch}</span>
                 </div>
-                <div>
-                  <span className="text-[10px] uppercase text-textGray-muted block font-semibold">Odometer</span>
-                  <span className="font-bold text-brand">{unit.odo}</span>
+                <div className="min-w-0 border-x border-surfaceLight-border/70 px-1 text-center">
+                  <span className="text-[9.5px] uppercase text-textGray-muted block font-semibold tracking-wider">Odometer</span>
+                  <span className="font-bold text-brand truncate block">{unit.odo}</span>
                 </div>
-                <div className="col-span-2">
-                  <span className="text-[10px] uppercase text-textGray-muted block font-semibold">Jadwal Servis</span>
-                  <span className="font-medium text-textGray-tertiary">{unit.nextService}</span>
+                <div className="min-w-0 text-right">
+                  <span className="text-[9.5px] uppercase text-textGray-muted block font-semibold tracking-wider">Jadwal Servis</span>
+                  <span className="font-medium text-textGray-tertiary truncate block">{unit.nextService}</span>
                 </div>
               </div>
 
-              {/* Quick Actions Bar */}
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-surfaceLight-border/70">
+              {/* Quick Actions 3-Column Button Grid */}
+              <div className="grid grid-cols-3 gap-2 pt-2.5 border-t border-surfaceLight-border/70">
                 <button
                   type="button"
                   onClick={() => setSelectedDriverUnit(unit)}
-                  className="px-3 py-1.5 rounded-xl border border-surfaceLight-border bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center gap-1.5 shadow-2xs hover:bg-surfaceLight-pearl"
+                  className="py-1.5 px-2 rounded-xl border border-surfaceLight-border bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors"
                 >
-                  <Phone className="w-3.5 h-3.5 text-[#4B8E55]" />
+                  <Phone className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
                   <span>Driver</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsServiceModalOpen(true)}
-                  className="px-3 py-1.5 rounded-xl border border-surfaceLight-border bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center gap-1.5 shadow-2xs hover:bg-surfaceLight-pearl"
+                  className="py-1.5 px-2 rounded-xl border border-surfaceLight-border bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors"
                 >
-                  <Wrench className="w-3.5 h-3.5 text-[#4B8E55]" />
+                  <Wrench className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
                   <span>Servis</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setSelectedTelematicsUnit(unit)}
-                  className="px-3 py-1.5 rounded-xl border border-surfaceLight-border bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center gap-1.5 shadow-2xs hover:bg-surfaceLight-pearl"
+                  className="py-1.5 px-2 rounded-xl border border-surfaceLight-border bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors"
                 >
-                  <Eye className="w-3.5 h-3.5 text-[#4B8E55]" />
+                  <Eye className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
                   <span>Telematika</span>
                 </button>
               </div>
