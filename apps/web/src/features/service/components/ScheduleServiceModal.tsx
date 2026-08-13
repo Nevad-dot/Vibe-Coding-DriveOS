@@ -127,14 +127,14 @@ export const ScheduleServiceModal: React.FC<ScheduleServiceModalProps> = ({
                   </button>
                 </div>
 
-                {/* Form */}
+                {/* Form - Side-by-side 2-column grid layout */}
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
                   {/* Vehicle & Customer */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    <div className="flex flex-col gap-1">
-                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1">
-                        <Car className="w-3.5 h-3.5 text-[#4B8E55]" />
-                        Kendaraan / Plat <span className="text-red-500">*</span>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1 truncate">
+                        <Car className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
+                        <span className="truncate">Kendaraan / Plat</span> <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -142,14 +142,14 @@ export const ScheduleServiceModal: React.FC<ScheduleServiceModalProps> = ({
                         placeholder="Contoh: B 2291 TNG"
                         value={vehicle}
                         onChange={(e) => setVehicle(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] text-textGray-display text-[13px] placeholder:text-textGray-tertiary/60 focus:outline-none focus:border-[#4B8E55] transition-colors"
+                        className="w-full px-3 py-2 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] text-textGray-display text-[13px] placeholder:text-textGray-tertiary/60 focus:outline-none focus:border-[#4B8E55] transition-colors truncate"
                       />
                     </div>
 
-                    <div className="flex flex-col gap-1">
-                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1">
-                        <User className="w-3.5 h-3.5 text-[#4B8E55]" />
-                        Nama Pemilik <span className="text-red-500">*</span>
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1 truncate">
+                        <User className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
+                        <span className="truncate">Nama Pemilik</span> <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -157,23 +157,23 @@ export const ScheduleServiceModal: React.FC<ScheduleServiceModalProps> = ({
                         placeholder="Contoh: Bpk. Hendra"
                         value={customer}
                         onChange={(e) => setCustomer(e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] text-textGray-display text-[13px] placeholder:text-textGray-tertiary/60 focus:outline-none focus:border-[#4B8E55] transition-colors"
+                        className="w-full px-3 py-2 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] text-textGray-display text-[13px] placeholder:text-textGray-tertiary/60 focus:outline-none focus:border-[#4B8E55] transition-colors truncate"
                       />
                     </div>
                   </div>
 
                   {/* Service Type & Bay */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    <div className="flex flex-col gap-1">
-                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1">
-                        <Wrench className="w-3.5 h-3.5 text-[#4B8E55]" />
-                        Jenis Servis
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1 truncate">
+                        <Wrench className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
+                        <span className="truncate">Jenis Servis</span>
                       </label>
                       <div className="relative">
                         <select
                           value={serviceType}
                           onChange={(e) => setServiceType(e.target.value)}
-                          className="w-full appearance-none px-3 py-2 pr-8 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] text-textGray-display text-[13px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer"
+                          className="w-full appearance-none px-3 py-2 pr-7 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] text-textGray-display text-[13px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer truncate"
                         >
                           <option value="Servis Berkala">Servis Berkala</option>
                           <option value="Perbaikan Mesin">Perbaikan Mesin</option>
@@ -181,37 +181,37 @@ export const ScheduleServiceModal: React.FC<ScheduleServiceModalProps> = ({
                           <option value="Spooring & Balancing">Spooring & Balancing</option>
                           <option value="Inspeksi Umum">Inspeksi Umum</option>
                         </select>
-                        <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-textGray-tertiary pointer-events-none" strokeWidth={1.5} />
+                        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-textGray-tertiary pointer-events-none" strokeWidth={1.5} />
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-1">
-                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1">
-                        <Wrench className="w-3.5 h-3.5 text-[#4B8E55]" />
-                        Lokasi Bay Workshop
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1 truncate">
+                        <Wrench className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
+                        <span className="truncate">Lokasi Bay Workshop</span>
                       </label>
                       <div className="relative">
                         <select
                           value={bay}
                           onChange={(e) => setBay(e.target.value)}
-                          className="w-full appearance-none px-3 py-2 pr-8 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] text-textGray-display text-[13px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer"
+                          className="w-full appearance-none px-3 py-2 pr-7 rounded-xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] text-textGray-display text-[13px] focus:outline-none focus:border-[#4B8E55] transition-colors cursor-pointer truncate"
                         >
                           <option value="Bay 01 — Express">Bay 01 — Express</option>
                           <option value="Bay 02 — Heavy Repair">Bay 02 — Heavy Repair</option>
                           <option value="Bay 03 — Inspection">Bay 03 — Inspection</option>
                           <option value="Bay 04 — General">Bay 04 — General</option>
                         </select>
-                        <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-textGray-tertiary pointer-events-none" strokeWidth={1.5} />
+                        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-textGray-tertiary pointer-events-none" strokeWidth={1.5} />
                       </div>
                     </div>
                   </div>
 
                   {/* Date & Time with Inverted Icons in Dark Mode */}
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <div className="flex flex-col gap-1">
-                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1">
-                        <Calendar className="w-3.5 h-3.5 text-[#4B8E55]" />
-                        Tanggal Booking
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1 truncate">
+                        <Calendar className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
+                        <span className="truncate">Tanggal Booking</span>
                       </label>
                       <input
                         type="date"
@@ -221,10 +221,10 @@ export const ScheduleServiceModal: React.FC<ScheduleServiceModalProps> = ({
                       />
                     </div>
 
-                    <div className="flex flex-col gap-1">
-                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-[#4B8E55]" />
-                        Jam Pengerjaan
+                    <div className="flex flex-col gap-1 min-w-0">
+                      <label className="text-[11.5px] font-semibold text-textGray-primary flex items-center gap-1 truncate">
+                        <Clock className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
+                        <span className="truncate">Jam Pengerjaan</span>
                       </label>
                       <input
                         type="time"
@@ -235,19 +235,19 @@ export const ScheduleServiceModal: React.FC<ScheduleServiceModalProps> = ({
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 pt-2.5 border-t border-surfaceLight-border dark:border-[#222F43] mt-1">
+                  {/* Action Buttons - Side-by-side on the right */}
+                  <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-surfaceLight-border dark:border-[#222F43] mt-1">
                     <button
                       type="button"
                       onClick={onClose}
-                      className="px-4 py-2 rounded-full border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card text-textGray-display hover:bg-surfaceLight-pearl text-[12.5px] font-semibold transition-colors cursor-pointer shadow-2xs text-center"
+                      className="px-4 py-2 rounded-full border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card text-textGray-display hover:bg-surfaceLight-pearl text-[12.5px] font-semibold transition-colors cursor-pointer shadow-2xs text-center whitespace-nowrap"
                     >
                       Batal
                     </button>
 
                     <button
                       type="submit"
-                      className="px-5 py-2 rounded-full bg-green-gradient-pill text-white text-[12.5px] font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer inline-flex items-center justify-center gap-1.5 select-none"
+                      className="px-5 py-2 rounded-full bg-green-gradient-pill text-white text-[12.5px] font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer inline-flex items-center justify-center gap-1.5 select-none whitespace-nowrap"
                     >
                       <Wrench className="w-3.5 h-3.5" strokeWidth={1.5} />
                       <span>Simpan Jadwal Servis</span>
