@@ -48,27 +48,27 @@ export const LoginForm: React.FC = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95, y: 16 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 360, damping: 26 }}
-      className="w-full max-w-[420px] mx-auto bg-surfaceLight-card dark:bg-[#16181F] border border-surfaceLight-border dark:border-[#222F43] rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col justify-center my-auto"
+      className="w-full max-w-[400px] mx-auto px-4 py-4 flex flex-col justify-center my-auto"
     >
       {/* Mobile Brand Logo Header */}
       <div className="lg:hidden flex items-center justify-center gap-1.5 mb-6">
-        <span className="text-[26px] font-display font-bold tracking-tight text-textGray-display select-none">
-          Drive<span className="text-[#4B8E55]">OS</span>
+        <span className="text-[28px] font-display font-bold tracking-tight text-textGray-display select-none">
+          Drive<span className="text-green-gradient">OS</span>
         </span>
       </div>
 
       {/* Header Info */}
       <div className="mb-6 text-center lg:text-left">
-        <span className="text-[12.5px] font-sans font-medium text-textGray-secondary block mb-0.5">
+        <span className="text-[13px] font-sans font-medium text-textGray-secondary block mb-0.5">
           Welcome back
         </span>
-        <h2 className="text-[26px] sm:text-[30px] font-display font-bold tracking-tight text-textGray-display mb-1">
+        <h2 className="text-[28px] sm:text-[32px] font-display font-bold tracking-tight text-textGray-display mb-1.5 leading-tight">
           Sign in to <span className="text-green-gradient">DriveOS</span>
         </h2>
-        <p className="text-[12.5px] text-textGray-tertiary leading-relaxed">
+        <p className="text-[13px] text-textGray-tertiary leading-relaxed">
           Pilih metode di bawah. Mode demo — tidak ada data yang dikirim.
         </p>
       </div>
@@ -76,7 +76,7 @@ export const LoginForm: React.FC = () => {
       {/* Social Sign-In Buttons */}
       <div className="flex flex-col gap-3 mb-5">
         {/* Google Button */}
-        <Button onClick={handleSocialLogin} variant="outline-pill" className="w-full relative gap-3 h-[46px] dark:border-[#222F43] dark:bg-[#121826]">
+        <Button onClick={handleSocialLogin} variant="outline-pill" className="w-full relative gap-3 h-[46px] rounded-full dark:border-[#222F43] dark:bg-[#121826]">
           <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -99,7 +99,7 @@ export const LoginForm: React.FC = () => {
         </Button>
 
         {/* Apple Button */}
-        <Button onClick={handleSocialLogin} variant="outline-pill" className="w-full relative gap-3 h-[46px] dark:border-[#222F43] dark:bg-[#121826]">
+        <Button onClick={handleSocialLogin} variant="outline-pill" className="w-full relative gap-3 h-[46px] rounded-full dark:border-[#222F43] dark:bg-[#121826]">
           <svg className="w-5 h-5 shrink-0 fill-current text-textGray-primary" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.2.67-2.92 1.51-.64.73-1.2 1.87-1.05 2.98 1.1.09 2.22-.57 2.98-1.43" />
           </svg>
@@ -123,7 +123,7 @@ export const LoginForm: React.FC = () => {
           value={nama}
           onChange={(e) => setNama(e.target.value)}
           error={errors.nama}
-          className="dark:border-[#222F43] dark:bg-[#121826]"
+          className="rounded-full dark:border-[#222F43] dark:bg-[#121826]"
         />
         <Input
           type="email"
@@ -131,23 +131,23 @@ export const LoginForm: React.FC = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           error={errors.email}
-          className="dark:border-[#222F43] dark:bg-[#121826]"
+          className="rounded-full dark:border-[#222F43] dark:bg-[#121826]"
         />
 
-        <Button type="submit" variant="brand" className="w-full mt-2 h-[46px] bg-green-gradient-pill text-white font-semibold text-[14px] shadow-sm select-none">
+        <Button type="submit" variant="brand" className="w-full mt-2 h-[46px] rounded-full bg-green-gradient-pill text-white font-semibold text-[14px] shadow-sm select-none">
           Continue With Email
         </Button>
       </form>
 
       {/* Footer Copy & Register Link */}
       <div className="mt-6 text-center flex flex-col gap-1.5">
-        <p className="text-[12.5px] text-textGray-secondary">
+        <p className="text-[13px] text-textGray-secondary">
           Don't have an account?{" "}
           <Link href="/register" className="font-semibold text-brand hover:underline transition-all">
             Register
           </Link>
         </p>
-        <p className="text-[11.5px] text-textGray-muted leading-relaxed">
+        <p className="text-[12px] text-textGray-muted leading-relaxed">
           Dengan lanjut, Anda menyetujui{" "}
           <a href="#" className="hover:underline transition-all font-medium text-textGray-tertiary">
             Terms & Privacy DriveOS

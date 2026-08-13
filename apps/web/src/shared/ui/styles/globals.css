@@ -118,6 +118,13 @@ svg {
   background: linear-gradient(135deg, #33613A 0%, #4B8E55 55%, #6BA374 100%);
 }
 
+.text-green-gradient {
+  background: linear-gradient(135deg, #33613A 0%, #4B8E55 55%, #6BA374 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* Fix native date & time input calendar/clock icons in Dark Mode */
 .dark input[type="date"]::-webkit-calendar-picker-indicator,
 .dark input[type="time"]::-webkit-calendar-picker-indicator {
