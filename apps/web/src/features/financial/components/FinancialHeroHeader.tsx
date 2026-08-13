@@ -70,19 +70,19 @@ export const FinancialHeroHeader: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Toast Alert */}
+      {/* Toast Alert Notification - Centered Dead Center on Screen */}
       <AnimatePresence>
         {toastMessage && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-6 right-6 z-50 bg-surfaceLight-card border border-surfaceLight-border shadow-xl rounded-2xl px-4 py-3 flex items-center gap-3 text-[13.5px] font-medium text-textGray-display"
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] max-w-[92vw] sm:max-w-[420px] bg-surfaceLight-card border border-surfaceLight-border dark:border-[#222F43] shadow-2xl rounded-2xl p-3.5 flex items-center gap-3 text-[13px] sm:text-[13.5px] font-semibold text-textGray-display backdrop-blur-xs"
           >
-            <div className="w-7 h-7 rounded-full bg-[#4B8E55]/15 text-[#4B8E55] flex items-center justify-center shrink-0">
-              <CheckCircle2 className="w-4 h-4" strokeWidth={1.5} />
+            <div className="w-8 h-8 rounded-full bg-[#4B8E55]/15 text-[#4B8E55] flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-4 h-4" strokeWidth={2} />
             </div>
-            <span>{toastMessage}</span>
+            <span className="break-words leading-tight">{toastMessage}</span>
           </motion.div>
         )}
       </AnimatePresence>

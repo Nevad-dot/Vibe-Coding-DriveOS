@@ -39,47 +39,52 @@ export const ApprovalsList: React.FC = () => {
 
   return (
     <>
-      <div className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col h-full shadow-xs opacity-100">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 22 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.15 }}
+        className="bg-surfaceLight-card border border-surfaceLight-border dark:border-[#222F43] p-4 sm:p-6 rounded-2xl flex flex-col h-full shadow-xs min-w-0"
+      >
         {/* Header & CTA */}
-        <div className="flex items-center justify-between gap-4 mb-5">
-          <div>
-            <span className="text-[11px] font-medium text-textGray-muted uppercase tracking-[0.08em] block mb-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 border-b border-surfaceLight-border dark:border-[#222F43] pb-3">
+          <div className="min-w-0 flex-1">
+            <span className="text-[10px] sm:text-[11px] font-semibold text-textGray-muted uppercase tracking-[0.08em] block mb-0.5">
               MENUNGGU PERSETUJUAN
             </span>
-            <h3 className="text-[18px] font-display font-semibold text-textGray-display">
+            <h3 className="text-[16px] sm:text-[18px] font-display font-bold text-textGray-display leading-tight break-words">
               {pendingCount > 0 ? `${pendingCount} approval siap ditinjau` : "Semua approval telah disetujui"}
             </h3>
           </div>
 
           <motion.button
-            whileHover={{ scale: 1.04 }}
+            whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={() => setIsModalOpen(true)}
             type="button"
-            className="bg-green-gradient-pill text-white text-[13px] font-semibold px-4 py-2 rounded-full transition-all shadow-sm shrink-0 border border-white/20 cursor-pointer select-none"
+            className="bg-green-gradient-pill text-white text-[12px] font-semibold px-3.5 py-1.5 rounded-full transition-all shadow-2xs shrink-0 cursor-pointer select-none whitespace-nowrap self-start sm:self-auto"
           >
             Review semua
           </motion.button>
         </div>
 
-        {/* Approvals Items */}
-        <div className="flex flex-col divide-y divide-surfaceLight-border">
+        {/* Approvals Items List */}
+        <div className="flex flex-col divide-y divide-surfaceLight-border dark:divide-[#222F43]">
           {approvals.map((item) => (
-            <div key={item.id} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 first:pt-0 last:pb-0">
-              <div className="flex flex-col min-w-0">
-                <h4 className="text-[14px] font-semibold text-textGray-display mb-0.5 leading-snug">
+            <div key={item.id} className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-3 first:pt-1 last:pb-0">
+              <div className="flex flex-col min-w-0 flex-1">
+                <h4 className="text-[13.5px] font-bold text-textGray-display leading-snug break-words">
                   {item.title}
                 </h4>
-                <span className="text-[12px] text-textGray-tertiary font-normal">{item.meta}</span>
+                <span className="text-[11.5px] text-textGray-tertiary font-normal break-words mt-0.5">{item.meta}</span>
               </div>
-              <div className="text-[13.5px] font-semibold text-brand shrink-0">
+              <div className="text-[12.5px] font-bold text-brand whitespace-nowrap shrink-0 self-start sm:self-auto">
                 {item.amount}
               </div>
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Approvals Review Modal */}
       <ApprovalsReviewModal
@@ -88,19 +93,19 @@ export const ApprovalsList: React.FC = () => {
         onApproveAllSuccess={handleApproveAllSuccess}
       />
 
-      {/* Toast Alert Notification */}
+      {/* Dead Center Toast Alert Notification */}
       <AnimatePresence>
         {toastMessage && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-6 right-6 z-50 bg-surfaceLight-card border border-surfaceLight-border shadow-xl rounded-2xl px-4 py-3 flex items-center gap-3 text-[13.5px] font-medium text-textGray-display"
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] max-w-[92vw] sm:max-w-[420px] bg-surfaceLight-card border border-surfaceLight-border dark:border-[#222F43] shadow-2xl rounded-2xl p-3.5 flex items-center gap-3 text-[13px] sm:text-[13.5px] font-semibold text-textGray-display backdrop-blur-xs"
           >
-            <div className="w-7 h-7 rounded-full bg-[#4B8E55]/15 text-[#4B8E55] flex items-center justify-center shrink-0">
-              <CheckCircle2 className="w-4 h-4" strokeWidth={1.5} />
+            <div className="w-8 h-8 rounded-full bg-[#4B8E55]/15 text-[#4B8E55] flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-4 h-4" strokeWidth={2} />
             </div>
-            <span>{toastMessage}</span>
+            <span className="break-words leading-tight">{toastMessage}</span>
           </motion.div>
         )}
       </AnimatePresence>
