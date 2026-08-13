@@ -98,13 +98,30 @@ svg {
   background: rgba(113, 118, 128, 0.4);
 }
 
-/* Brand Green Gradient Helper Utilities */
-.bg-green-gradient-pill {
-  background: linear-gradient(180deg, #539A5D 0%, #4B8E55 50%, #3D7546 100%);
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-.text-green-gradient {
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Brand Green Gradient system derived from #4B8E55 */
+.bg-green-gradient {
   background: linear-gradient(135deg, #33613A 0%, #4B8E55 55%, #6BA374 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+}
+
+.bg-green-gradient-pill {
+  background: linear-gradient(135deg, #33613A 0%, #4B8E55 55%, #6BA374 100%);
+}
+
+/* Fix native date & time input calendar/clock icons in Dark Mode */
+.dark input[type="date"]::-webkit-calendar-picker-indicator,
+.dark input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.9) brightness(1.2);
+  opacity: 0.85;
+  cursor: pointer;
 }
