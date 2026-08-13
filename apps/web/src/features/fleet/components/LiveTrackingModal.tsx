@@ -102,33 +102,32 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
             </div>
 
             {/* Simulated Live GPS Map View */}
-            <div className="relative w-full h-[260px] sm:h-[300px] rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border overflow-hidden flex flex-col justify-between p-3 sm:p-4 shadow-inner">
-              {/* Top Bar inside Map */}
-              <div className="flex flex-wrap items-center justify-between gap-2 z-10">
-                <div className="px-2.5 py-1 rounded-full bg-surfaceLight-card/95 border border-surfaceLight-border text-[11px] font-semibold text-textGray-display backdrop-blur-xs shadow-xs flex items-center gap-1.5 whitespace-nowrap">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+            <div className="relative w-full h-[250px] sm:h-[290px] rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border overflow-hidden flex flex-col justify-between p-3 sm:p-4 shadow-inner">
+              {/* Top Bar inside Map - Always Side-by-Side on 1 Single Row */}
+              <div className="flex items-center justify-between gap-1.5 z-10 w-full">
+                <div className="px-2 py-0.5 rounded-full bg-surfaceLight-card/95 border border-surfaceLight-border text-[10px] sm:text-[11px] font-semibold text-textGray-display backdrop-blur-xs shadow-2xs flex items-center gap-1 whitespace-nowrap">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                   <span>GPS Active (126 Vehicles)</span>
                 </div>
-                <div className="px-2.5 py-1 rounded-full bg-surfaceLight-card/95 border border-surfaceLight-border text-[11px] font-medium text-textGray-primary backdrop-blur-xs whitespace-nowrap">
+                <div className="px-2 py-0.5 rounded-full bg-surfaceLight-card/95 border border-surfaceLight-border text-[10px] sm:text-[11px] font-medium text-textGray-primary backdrop-blur-xs whitespace-nowrap">
                   Updated: Live 1s ago
                 </div>
               </div>
 
-              {/* High Contrast Radar Signal Emitting Rings (Vibrant in Light Mode & Dark Mode) */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-[300px] h-[300px] rounded-full border-2 border-[#4B8E55]/60 bg-[#4B8E55]/10 animate-ping" />
-                <div className="absolute w-[210px] h-[210px] rounded-full border-2 border-[#4B8E55]/70 bg-[#4B8E55]/15 shadow-xs" />
-                <div className="absolute w-[120px] h-[120px] rounded-full border-2 border-[#4B8E55]/90 bg-[#4B8E55]/20" />
+              {/* Subtle Map Radar Rings */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-30">
+                <div className="w-[180px] h-[180px] rounded-full border border-textGray-tertiary animate-ping" />
+                <div className="absolute w-[110px] h-[110px] rounded-full border border-textGray-tertiary" />
               </div>
 
               {/* Center Vehicle Location Badge */}
-              <div className="relative z-10 self-center max-w-[95%] bg-surfaceLight-card/95 border border-[#4B8E55] px-3.5 py-2 rounded-2xl shadow-lg flex items-center gap-2.5 backdrop-blur-xs text-left">
-                <Navigation className="w-4 h-4 text-brand transform rotate-45 animate-bounce shrink-0" />
+              <div className="relative z-10 self-center max-w-[95%] bg-surfaceLight-card/95 border border-surfaceLight-border px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-2 backdrop-blur-xs text-left">
+                <Navigation className="w-3.5 h-3.5 text-brand transform rotate-45 animate-bounce shrink-0" />
                 <div className="min-w-0 flex-1">
-                  <span className="text-[12.5px] sm:text-[13.5px] font-bold text-textGray-display block truncate">
+                  <span className="text-[12px] sm:text-[13px] font-bold text-textGray-display block truncate">
                     {selectedUnit.plate} — {selectedUnit.model}
                   </span>
-                  <span className="text-[11px] sm:text-[11.5px] text-textGray-tertiary block truncate">
+                  <span className="text-[10.5px] sm:text-[11px] text-textGray-tertiary block truncate">
                     {selectedUnit.location} ({selectedUnit.speed})
                   </span>
                 </div>
@@ -141,7 +140,7 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
                     key={unit.plate}
                     type="button"
                     onClick={() => setSelectedUnit(unit)}
-                    className={`px-3 py-1 rounded-full text-[11.5px] font-semibold transition-all cursor-pointer whitespace-nowrap border shrink-0 ${
+                    className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer whitespace-nowrap border shrink-0 ${
                       selectedUnit.plate === unit.plate
                         ? "bg-green-gradient-pill text-white shadow-xs"
                         : "bg-surfaceLight-card border-surfaceLight-border text-textGray-display hover:border-brand"
