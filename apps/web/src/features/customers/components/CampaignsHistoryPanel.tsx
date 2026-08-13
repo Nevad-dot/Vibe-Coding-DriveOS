@@ -51,7 +51,7 @@ export const CampaignsHistoryPanel: React.FC<CampaignsHistoryPanelProps> = ({
           </h3>
         </div>
         <span className="self-start sm:self-auto text-[11px] font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full whitespace-nowrap shrink-0">
-          Live Database Feed
+          Live Database
         </span>
       </div>
 
