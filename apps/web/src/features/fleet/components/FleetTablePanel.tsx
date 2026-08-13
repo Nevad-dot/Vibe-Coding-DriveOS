@@ -127,31 +127,32 @@ export const FleetTablePanel: React.FC = () => {
                 </div>
               </div>
 
-              {/* Quick Actions Flex Button Bar - Fits 100% inside card bounds */}
-              <div className="flex flex-wrap items-center justify-between gap-1.5 pt-2.5 border-t border-surfaceLight-border dark:border-[#222F43] w-full">
+              {/* Quick Actions 3-Column Equal Grid - Fits 100% inside card bounds */}
+              <div className="grid grid-cols-3 gap-1.5 pt-2.5 border-t border-surfaceLight-border dark:border-[#222F43] w-full">
                 <button
                   type="button"
                   onClick={() => setSelectedDriverUnit(unit)}
-                  className="flex-1 min-w-[70px] py-1.5 px-2 rounded-xl border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card text-textGray-display text-[11px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors whitespace-nowrap"
+                  className="py-1.5 px-1 rounded-xl border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card text-textGray-display text-[11px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors whitespace-nowrap min-w-0"
                 >
                   <Phone className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
-                  <span>Driver</span>
+                  <span className="truncate">Driver</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsServiceModalOpen(true)}
-                  className="flex-1 min-w-[70px] py-1.5 px-2 rounded-xl border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card text-textGray-display text-[11px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors whitespace-nowrap"
+                  className="py-1.5 px-1 rounded-xl border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card text-textGray-display text-[11px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors whitespace-nowrap min-w-0"
                 >
                   <Wrench className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
-                  <span>Servis</span>
+                  <span className="truncate">Servis</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setSelectedTelematicsUnit(unit)}
-                  className="flex-1 min-w-[80px] py-1.5 px-2 rounded-xl border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card text-textGray-display text-[11px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors whitespace-nowrap"
+                  className="py-1.5 px-1 rounded-xl border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card text-textGray-display text-[11px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors whitespace-nowrap min-w-0"
+                  title="Lihat Detail Telematika"
                 >
                   <Eye className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
-                  <span>Telematika</span>
+                  <span className="truncate">Detail</span>
                 </button>
               </div>
             </div>
