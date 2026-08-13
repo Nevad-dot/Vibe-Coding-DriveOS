@@ -68,7 +68,7 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[800px] max-h-[90vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-4 sm:p-7 flex flex-col gap-4"
+            className="relative w-full max-w-[760px] max-h-[90vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-4 sm:p-7 flex flex-col gap-4"
           >
             {/* Header */}
             <div className="flex items-center justify-between gap-3 pb-2 border-b border-surfaceLight-border">
@@ -102,7 +102,7 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
             </div>
 
             {/* Simulated Live GPS Map View */}
-            <div className="relative w-full h-[280px] sm:h-[320px] rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border overflow-hidden flex flex-col justify-between p-3 sm:p-4 shadow-inner">
+            <div className="relative w-full h-[260px] sm:h-[300px] rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border overflow-hidden flex flex-col justify-between p-3 sm:p-4 shadow-inner">
               {/* Top Bar inside Map */}
               <div className="flex flex-wrap items-center justify-between gap-2 z-10">
                 <div className="px-2.5 py-1 rounded-full bg-surfaceLight-card/90 border border-surfaceLight-border text-[11px] font-semibold text-textGray-display backdrop-blur-xs shadow-xs flex items-center gap-1.5 whitespace-nowrap">
@@ -116,8 +116,8 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
 
               {/* Map Visual Simulation Overlay */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
-                <div className="w-[360px] h-[360px] rounded-full border border-brand/20 animate-ping" />
-                <div className="absolute w-[220px] h-[220px] rounded-full border border-brand/40" />
+                <div className="w-[340px] h-[340px] rounded-full border border-brand/20 animate-ping" />
+                <div className="absolute w-[200px] h-[200px] rounded-full border border-brand/40" />
               </div>
 
               {/* Center Vehicle Location Badge */}
@@ -127,7 +127,7 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
                   <span className="text-[12.5px] sm:text-[13.5px] font-bold text-textGray-display block truncate">
                     {selectedUnit.plate} — {selectedUnit.model}
                   </span>
-                  <span className="text-[11px] text-textGray-tertiary block truncate">
+                  <span className="text-[11px] sm:text-[11.5px] text-textGray-tertiary block truncate">
                     {selectedUnit.location} ({selectedUnit.speed})
                   </span>
                 </div>
@@ -152,27 +152,27 @@ export const LiveTrackingModal: React.FC<LiveTrackingModalProps> = ({ isOpen, on
               </div>
             </div>
 
-            {/* Selected Unit Telematics Details Compact 3-Column Horizontal Grid */}
-            <div className="grid grid-cols-3 gap-1.5 sm:gap-2.5 text-center bg-surfaceLight-pearl border border-surfaceLight-border p-2 sm:p-3 rounded-2xl">
-              <div className="flex flex-col gap-0.5 items-center justify-center min-w-0">
-                <span className="text-[9px] sm:text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider flex items-center gap-1 truncate">
-                  <Gauge className="w-3 h-3 text-brand shrink-0" /> KECEPATAN
+            {/* Selected Unit Telematics Details Spacious Responsive Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1">
+                <span className="text-[10.5px] font-semibold text-textGray-tertiary uppercase tracking-wider flex items-center gap-1.5">
+                  <Gauge className="w-3.5 h-3.5 text-brand shrink-0" /> KECEPATAN SAAT INI
                 </span>
-                <span className="text-[13px] sm:text-[16px] font-bold text-brand truncate w-full">{selectedUnit.speed}</span>
+                <span className="text-[15px] sm:text-[17px] font-bold text-brand">{selectedUnit.speed}</span>
               </div>
 
-              <div className="flex flex-col gap-0.5 items-center justify-center min-w-0 border-x border-surfaceLight-border px-1">
-                <span className="text-[9px] sm:text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider flex items-center gap-1 truncate">
-                  <MapPin className="w-3 h-3 text-brand shrink-0" /> LOKASI
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1">
+                <span className="text-[10.5px] font-semibold text-textGray-tertiary uppercase tracking-wider flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-brand shrink-0" /> LOKASI TERAKHIR
                 </span>
-                <span className="text-[12px] sm:text-[13.5px] font-bold text-textGray-display truncate w-full">{selectedUnit.location}</span>
+                <span className="text-[13px] sm:text-[14px] font-bold text-textGray-display leading-snug break-words">{selectedUnit.location}</span>
               </div>
 
-              <div className="flex flex-col gap-0.5 items-center justify-center min-w-0">
-                <span className="text-[9px] sm:text-[10px] text-textGray-tertiary font-semibold uppercase tracking-wider flex items-center gap-1 truncate">
-                  <ShieldCheck className="w-3 h-3 text-brand shrink-0" /> TELEMATIKA
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-1">
+                <span className="text-[10.5px] font-semibold text-textGray-tertiary uppercase tracking-wider flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-brand shrink-0" /> STATUS TELEMATIKA
                 </span>
-                <span className="text-[12px] sm:text-[13.5px] font-bold text-emerald-600 truncate w-full">Normal / Safe</span>
+                <span className="text-[13px] sm:text-[14px] font-bold text-emerald-600">Normal / Safe Zone</span>
               </div>
             </div>
           </motion.div>

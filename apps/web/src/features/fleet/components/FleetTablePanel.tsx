@@ -74,24 +74,93 @@ export const FleetTablePanel: React.FC = () => {
         className="bg-surfaceLight-card border border-surfaceLight-border p-4 sm:p-6 rounded-2xl flex flex-col shadow-xs min-w-0"
       >
         {/* Header */}
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-surfaceLight-border pb-3">
-          <div className="min-w-0 flex-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 mb-4 border-b border-surfaceLight-border pb-3">
+          <div className="min-w-0">
             <span className="text-[10px] sm:text-[11px] font-semibold text-textGray-muted uppercase tracking-[0.08em] block mb-0.5">
               ARMADA KENDARAAN
             </span>
-            <h3 className="text-[16px] sm:text-[18px] font-display font-bold text-textGray-display leading-tight truncate">
+            <h3 className="text-[16px] sm:text-[18px] font-display font-bold text-textGray-display leading-tight break-words">
               Daftar Unit Fleet & Status Servis
             </h3>
           </div>
 
-          <span className="text-[11px] sm:text-[12.5px] font-medium text-textGray-tertiary whitespace-nowrap shrink-0">
+          <span className="text-[11.5px] font-medium text-textGray-tertiary self-start sm:self-auto shrink-0">
             Showing 5 of 126 active vehicles
           </span>
         </div>
 
-        {/* Fleet Table Touch Scroll Outer Wrapper */}
-        <div className="w-full overflow-x-auto no-scrollbar pb-2 pt-1">
-          <table className="w-full text-left text-[13px] sm:text-[13.5px] min-w-[620px]">
+        {/* 1. Mobile Card List View (sm:hidden - Zero horizontal sliding, max readability) */}
+        <div className="flex flex-col gap-3 sm:hidden">
+          {FLEET_UNITS.map((unit, idx) => (
+            <div
+              key={idx}
+              className="p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border flex flex-col gap-2.5 shadow-2xs"
+            >
+              {/* Top Row: Plate & Status */}
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex flex-col min-w-0">
+                  <span className="font-bold text-textGray-display text-[14px]">
+                    {unit.plate}
+                  </span>
+                  <span className="text-[12px] text-textGray-tertiary font-normal truncate">
+                    {unit.model}
+                  </span>
+                </div>
+                <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap shrink-0 ${unit.statusColor}`}>
+                  {unit.status}
+                </span>
+              </div>
+
+              {/* Details Grid */}
+              <div className="grid grid-cols-2 gap-2 text-[12px] pt-2 border-t border-surfaceLight-border/70">
+                <div>
+                  <span className="text-[10px] uppercase text-textGray-muted block font-semibold">Cabang</span>
+                  <span className="font-semibold text-textGray-display">{unit.branch}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase text-textGray-muted block font-semibold">Odometer</span>
+                  <span className="font-bold text-brand">{unit.odo}</span>
+                </div>
+                <div className="col-span-2">
+                  <span className="text-[10px] uppercase text-textGray-muted block font-semibold">Jadwal Servis</span>
+                  <span className="font-medium text-textGray-tertiary">{unit.nextService}</span>
+                </div>
+              </div>
+
+              {/* Quick Actions Bar */}
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-surfaceLight-border/70">
+                <button
+                  type="button"
+                  onClick={() => setSelectedDriverUnit(unit)}
+                  className="px-3 py-1.5 rounded-xl border border-surfaceLight-border bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center gap-1.5 shadow-2xs hover:bg-surfaceLight-pearl"
+                >
+                  <Phone className="w-3.5 h-3.5 text-[#4B8E55]" />
+                  <span>Driver</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsServiceModalOpen(true)}
+                  className="px-3 py-1.5 rounded-xl border border-surfaceLight-border bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center gap-1.5 shadow-2xs hover:bg-surfaceLight-pearl"
+                >
+                  <Wrench className="w-3.5 h-3.5 text-[#4B8E55]" />
+                  <span>Servis</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedTelematicsUnit(unit)}
+                  className="px-3 py-1.5 rounded-xl border border-surfaceLight-border bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center gap-1.5 shadow-2xs hover:bg-surfaceLight-pearl"
+                >
+                  <Eye className="w-3.5 h-3.5 text-[#4B8E55]" />
+                  <span>Telematika</span>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 2. Desktop Table View (hidden sm:block) */}
+        <div className="hidden sm:block w-full overflow-x-auto no-scrollbar">
+          <table className="w-full text-left text-[13.5px]">
             <thead>
               <tr className="border-b border-surfaceLight-border text-[11px] font-semibold text-textGray-muted uppercase tracking-wider">
                 <th className="pb-3 font-semibold whitespace-nowrap">Kendaraan & Plat</th>
