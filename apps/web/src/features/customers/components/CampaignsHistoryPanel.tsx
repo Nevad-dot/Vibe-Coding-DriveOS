@@ -40,7 +40,7 @@ export const CampaignsHistoryPanel: React.FC<CampaignsHistoryPanelProps> = ({
       className="bg-surfaceLight-card border border-surfaceLight-border p-4 sm:p-6 rounded-2xl flex flex-col shadow-xs min-w-0"
     >
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-4 border-b border-surfaceLight-border pb-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-4 border-b border-surfaceLight-border pb-3">
         <div className="flex flex-col gap-0.5 min-w-0">
           <span className="text-[10px] sm:text-[11px] font-semibold text-brand uppercase tracking-wider block flex items-center gap-1.5 leading-snug">
             <Megaphone className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
@@ -50,7 +50,7 @@ export const CampaignsHistoryPanel: React.FC<CampaignsHistoryPanelProps> = ({
             Riwayat Kampanye Active & Sent ({campaigns.length})
           </h3>
         </div>
-        <span className="self-start sm:self-auto text-[11px] font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full whitespace-nowrap shrink-0">
+        <span className="inline-flex items-center w-fit text-[11px] font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full whitespace-nowrap shrink-0">
           Live Database
         </span>
       </div>
