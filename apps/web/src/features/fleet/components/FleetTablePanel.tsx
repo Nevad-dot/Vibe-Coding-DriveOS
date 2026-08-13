@@ -71,10 +71,10 @@ export const FleetTablePanel: React.FC = () => {
         initial={{ opacity: 0, scale: 0.96, y: 22 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.25 }}
-        className="bg-surfaceLight-card border border-surfaceLight-border p-4 sm:p-6 rounded-2xl flex flex-col shadow-xs min-w-0"
+        className="bg-surfaceLight-card border border-surfaceLight-border dark:border-[#222F43] p-4 sm:p-6 rounded-2xl flex flex-col shadow-xs min-w-0"
       >
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 mb-4 border-b border-surfaceLight-border/40 pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 mb-4 border-b border-surfaceLight-border dark:border-[#222F43] pb-3">
           <div className="min-w-0">
             <span className="text-[10px] sm:text-[11px] font-semibold text-textGray-muted uppercase tracking-[0.08em] block mb-0.5">
               ARMADA KENDARAAN
@@ -94,10 +94,10 @@ export const FleetTablePanel: React.FC = () => {
           {FLEET_UNITS.map((unit, idx) => (
             <div
               key={idx}
-              className="p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border/40 flex flex-col gap-3 shadow-2xs"
+              className="p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] flex flex-col gap-3 shadow-2xs overflow-hidden"
             >
               {/* Top Row: Plate & Status */}
-              <div className="flex items-center justify-between gap-2 border-b border-surfaceLight-border/30 pb-2.5">
+              <div className="flex items-center justify-between gap-2 border-b border-surfaceLight-border dark:border-[#222F43] pb-2.5">
                 <div className="flex flex-col min-w-0">
                   <span className="font-bold text-textGray-display text-[15px]">
                     {unit.plate}
@@ -117,7 +117,7 @@ export const FleetTablePanel: React.FC = () => {
                   <span className="text-[9.5px] uppercase text-textGray-muted block font-semibold tracking-wider">Cabang</span>
                   <span className="font-bold text-textGray-display truncate block">{unit.branch}</span>
                 </div>
-                <div className="min-w-0 border-x border-surfaceLight-border/30 px-1 text-center">
+                <div className="min-w-0 border-x border-surfaceLight-border dark:border-[#222F43] px-1 text-center">
                   <span className="text-[9.5px] uppercase text-textGray-muted block font-semibold tracking-wider">Odometer</span>
                   <span className="font-bold text-brand truncate block">{unit.odo}</span>
                 </div>
@@ -127,12 +127,12 @@ export const FleetTablePanel: React.FC = () => {
                 </div>
               </div>
 
-              {/* Quick Actions 3-Column Button Grid */}
-              <div className="grid grid-cols-3 gap-2 pt-2.5 border-t border-surfaceLight-border/30">
+              {/* Quick Actions Flex Button Bar - Fits 100% inside card bounds */}
+              <div className="flex flex-wrap items-center justify-between gap-1.5 pt-2.5 border-t border-surfaceLight-border dark:border-[#222F43] w-full">
                 <button
                   type="button"
                   onClick={() => setSelectedDriverUnit(unit)}
-                  className="py-1.5 px-2 rounded-xl border border-surfaceLight-border/40 bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors"
+                  className="flex-1 min-w-[70px] py-1.5 px-2 rounded-xl border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card text-textGray-display text-[11px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors whitespace-nowrap"
                 >
                   <Phone className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
                   <span>Driver</span>
@@ -140,7 +140,7 @@ export const FleetTablePanel: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsServiceModalOpen(true)}
-                  className="py-1.5 px-2 rounded-xl border border-surfaceLight-border/40 bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors"
+                  className="flex-1 min-w-[70px] py-1.5 px-2 rounded-xl border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card text-textGray-display text-[11px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors whitespace-nowrap"
                 >
                   <Wrench className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
                   <span>Servis</span>
@@ -148,7 +148,7 @@ export const FleetTablePanel: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setSelectedTelematicsUnit(unit)}
-                  className="py-1.5 px-2 rounded-xl border border-surfaceLight-border/40 bg-surfaceLight-card text-textGray-display text-[11.5px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors"
+                  className="flex-1 min-w-[80px] py-1.5 px-2 rounded-xl border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card text-textGray-display text-[11px] font-semibold flex items-center justify-center gap-1 shadow-2xs hover:bg-surfaceLight-pearl transition-colors whitespace-nowrap"
                 >
                   <Eye className="w-3.5 h-3.5 text-[#4B8E55] shrink-0" />
                   <span>Telematika</span>
@@ -162,7 +162,7 @@ export const FleetTablePanel: React.FC = () => {
         <div className="hidden sm:block w-full overflow-x-auto no-scrollbar">
           <table className="w-full text-left text-[13.5px]">
             <thead>
-              <tr className="border-b border-surfaceLight-border/40 text-[11px] font-semibold text-textGray-muted uppercase tracking-wider">
+              <tr className="border-b border-surfaceLight-border dark:border-[#222F43] text-[11px] font-semibold text-textGray-muted uppercase tracking-wider">
                 <th className="pb-3 font-semibold whitespace-nowrap">Kendaraan & Plat</th>
                 <th className="pb-3 font-semibold whitespace-nowrap">Cabang</th>
                 <th className="pb-3 font-semibold whitespace-nowrap">Status Operasional</th>
@@ -171,7 +171,7 @@ export const FleetTablePanel: React.FC = () => {
                 <th className="pb-3 font-semibold text-right whitespace-nowrap">Aksi Cepat</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-surfaceLight-border/30">
+            <tbody className="divide-y divide-surfaceLight-border dark:divide-[#222F43]">
               {FLEET_UNITS.map((unit, idx) => (
                 <tr key={idx} className="group hover:bg-surfaceLight-pearl/60 transition-colors">
                   <td className="py-3.5 pr-4">
@@ -209,7 +209,7 @@ export const FleetTablePanel: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setSelectedDriverUnit(unit)}
-                        className="p-1.5 rounded-lg border border-surfaceLight-border/40 text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg border border-surfaceLight-border dark:border-[#222F43] text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
                         title="Hubungi Pengemudi"
                       >
                         <Phone className="w-4 h-4" strokeWidth={1.5} />
@@ -219,7 +219,7 @@ export const FleetTablePanel: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setIsServiceModalOpen(true)}
-                        className="p-1.5 rounded-lg border border-surfaceLight-border/40 text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg border border-surfaceLight-border dark:border-[#222F43] text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
                         title="Jadwalkan Servis"
                       >
                         <Wrench className="w-4 h-4" strokeWidth={1.5} />
@@ -229,7 +229,7 @@ export const FleetTablePanel: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setSelectedTelematicsUnit(unit)}
-                        className="p-1.5 rounded-lg border border-surfaceLight-border/40 text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg border border-surfaceLight-border dark:border-[#222F43] text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
                         title="Lihat Telematika"
                       >
                         <Eye className="w-4 h-4" strokeWidth={1.5} />

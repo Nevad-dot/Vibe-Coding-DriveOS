@@ -62,10 +62,10 @@ export const VehicleTelematicsModal: React.FC<VehicleTelematicsModalProps> = ({ 
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[540px] max-h-[88vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-4 sm:p-7 flex flex-col gap-4"
+            className="relative w-full max-w-[540px] max-h-[88vh] overflow-y-auto bg-surfaceLight-card border border-surfaceLight-border dark:border-[#222F43] rounded-3xl shadow-2xl z-10 p-4 sm:p-7 flex flex-col gap-4"
           >
             {/* Header */}
-            <div className="flex items-center justify-between gap-2 pb-2 border-b border-surfaceLight-border/40">
+            <div className="flex items-center justify-between gap-2 pb-2 border-b border-surfaceLight-border dark:border-[#222F43]">
               <div className="min-w-0 flex-1">
                 <span className="text-[10px] sm:text-[11px] font-semibold text-brand uppercase tracking-wider block mb-0.5 flex items-center gap-1.5 truncate">
                   <Cpu className="w-3.5 h-3.5 text-brand shrink-0" />
@@ -87,28 +87,28 @@ export const VehicleTelematicsModal: React.FC<VehicleTelematicsModalProps> = ({ 
 
             {/* Diagnostic Indicators */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <div className="p-3 sm:p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border/40 flex flex-col gap-1">
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] flex flex-col gap-1">
                 <span className="text-[10px] sm:text-[10.5px] font-semibold text-textGray-tertiary uppercase tracking-wide flex items-center gap-1.5 truncate">
                   <Gauge className="w-3.5 h-3.5 text-brand shrink-0" /> ODOMETER SAAT INI
                 </span>
                 <span className="text-[15px] sm:text-[17px] font-bold text-textGray-display">{unit.odo}</span>
               </div>
 
-              <div className="p-3 sm:p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border/40 flex flex-col gap-1">
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] flex flex-col gap-1">
                 <span className="text-[10px] sm:text-[10.5px] font-semibold text-textGray-tertiary uppercase tracking-wide flex items-center gap-1.5 truncate">
                   <Battery className="w-3.5 h-3.5 text-brand shrink-0" /> BATERAI / AKI
                 </span>
                 <span className="text-[15px] sm:text-[17px] font-bold text-brand">98% Optimal</span>
               </div>
 
-              <div className="p-3 sm:p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border/40 flex flex-col gap-1">
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] flex flex-col gap-1">
                 <span className="text-[10px] sm:text-[10.5px] font-semibold text-textGray-tertiary uppercase tracking-wide flex items-center gap-1.5 truncate">
                   <Flame className="w-3.5 h-3.5 text-brand shrink-0" /> BAHAN BAKAR
                 </span>
                 <span className="text-[15px] sm:text-[17px] font-bold text-textGray-display">74% (~480km)</span>
               </div>
 
-              <div className="p-3 sm:p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border/40 flex flex-col gap-1">
+              <div className="p-3 sm:p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] flex flex-col gap-1">
                 <span className="text-[10px] sm:text-[10.5px] font-semibold text-textGray-tertiary uppercase tracking-wide flex items-center gap-1.5 truncate">
                   <ShieldCheck className="w-3.5 h-3.5 text-brand shrink-0" /> JADWAL SERVIS NEXT
                 </span>
@@ -117,7 +117,7 @@ export const VehicleTelematicsModal: React.FC<VehicleTelematicsModalProps> = ({ 
             </div>
 
             {/* Health Checklist */}
-            <div className="p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border/40 flex flex-col gap-2.5">
+            <div className="p-3.5 rounded-2xl bg-surfaceLight-pearl border border-surfaceLight-border dark:border-[#222F43] flex flex-col gap-2.5">
               <span className="text-[10.5px] font-semibold text-textGray-tertiary uppercase tracking-wider block">
                 STATUS KESEHATAN MESIN & BAN
               </span>
@@ -142,7 +142,7 @@ export const VehicleTelematicsModal: React.FC<VehicleTelematicsModalProps> = ({ 
             </div>
 
             {/* Footer Action */}
-            <div className="flex items-center justify-center sm:justify-end pt-2.5 border-t border-surfaceLight-border/40 w-full">
+            <div className="flex items-center justify-center sm:justify-end pt-2.5 border-t border-surfaceLight-border dark:border-[#222F43] w-full">
               <button
                 type="button"
                 onClick={onClose}
