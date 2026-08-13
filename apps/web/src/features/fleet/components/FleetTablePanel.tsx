@@ -71,35 +71,35 @@ export const FleetTablePanel: React.FC = () => {
         initial={{ opacity: 0, scale: 0.96, y: 22 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 350, damping: 26, delay: 0.25 }}
-        className="bg-surfaceLight-card border border-surfaceLight-border p-6 rounded-2xl flex flex-col shadow-xs"
+        className="bg-surfaceLight-card border border-surfaceLight-border p-4 sm:p-6 rounded-2xl flex flex-col shadow-xs min-w-0"
       >
         {/* Header */}
-        <div className="mb-5 flex items-center justify-between">
-          <div>
-            <span className="text-[11px] font-medium text-textGray-muted uppercase tracking-[0.08em] block mb-1">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-surfaceLight-border pb-3">
+          <div className="min-w-0 flex-1">
+            <span className="text-[10px] sm:text-[11px] font-semibold text-textGray-muted uppercase tracking-[0.08em] block mb-0.5">
               ARMADA KENDARAAN
             </span>
-            <h3 className="text-[18px] font-display font-semibold text-textGray-display">
+            <h3 className="text-[16px] sm:text-[18px] font-display font-bold text-textGray-display leading-tight truncate">
               Daftar Unit Fleet & Status Servis
             </h3>
           </div>
 
-          <span className="text-[13px] text-textGray-tertiary font-normal">
+          <span className="text-[11px] sm:text-[12.5px] font-medium text-textGray-tertiary whitespace-nowrap shrink-0">
             Showing 5 of 126 active vehicles
           </span>
         </div>
 
-        {/* Fleet Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-[13.5px]">
+        {/* Fleet Table Touch Scroll Outer Wrapper */}
+        <div className="w-full overflow-x-auto no-scrollbar pb-2 pt-1">
+          <table className="w-full text-left text-[13px] sm:text-[13.5px] min-w-[620px]">
             <thead>
               <tr className="border-b border-surfaceLight-border text-[11px] font-semibold text-textGray-muted uppercase tracking-wider">
-                <th className="pb-3 font-medium">Kendaraan & Plat</th>
-                <th className="pb-3 font-medium">Cabang</th>
-                <th className="pb-3 font-medium">Status Operasional</th>
-                <th className="pb-3 font-medium">Odometer</th>
-                <th className="pb-3 font-medium">Jadwal Servis</th>
-                <th className="pb-3 font-medium text-right">Aksi Cepat</th>
+                <th className="pb-3 font-semibold whitespace-nowrap">Kendaraan & Plat</th>
+                <th className="pb-3 font-semibold whitespace-nowrap">Cabang</th>
+                <th className="pb-3 font-semibold whitespace-nowrap">Status Operasional</th>
+                <th className="pb-3 font-semibold whitespace-nowrap">Odometer</th>
+                <th className="pb-3 font-semibold whitespace-nowrap">Jadwal Servis</th>
+                <th className="pb-3 font-semibold text-right whitespace-nowrap">Aksi Cepat</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-surfaceLight-border">
@@ -107,40 +107,40 @@ export const FleetTablePanel: React.FC = () => {
                 <tr key={idx} className="group hover:bg-surfaceLight-pearl/60 transition-colors">
                   <td className="py-3.5 pr-4">
                     <div className="flex flex-col">
-                      <span className="font-semibold text-textGray-display leading-snug">
+                      <span className="font-bold text-textGray-display leading-snug whitespace-nowrap">
                         {unit.plate}
                       </span>
-                      <span className="text-[12px] text-textGray-tertiary font-normal">
+                      <span className="text-[12px] text-textGray-tertiary font-normal whitespace-nowrap">
                         {unit.model}
                       </span>
                     </div>
                   </td>
 
-                  <td className="py-3.5 px-2 text-textGray-primary font-normal">
+                  <td className="py-3.5 px-2 text-textGray-primary font-normal whitespace-nowrap">
                     {unit.branch}
                   </td>
 
                   <td className="py-3.5 px-2">
-                    <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${unit.statusColor}`}>
+                    <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap shrink-0 ${unit.statusColor}`}>
                       {unit.status}
                     </span>
                   </td>
 
-                  <td className="py-3.5 px-2 font-semibold text-textGray-display">
+                  <td className="py-3.5 px-2 font-bold text-textGray-display whitespace-nowrap">
                     {unit.odo}
                   </td>
 
-                  <td className="py-3.5 px-2 text-textGray-tertiary font-normal">
+                  <td className="py-3.5 px-2 text-textGray-tertiary font-normal whitespace-nowrap">
                     {unit.nextService}
                   </td>
 
                   <td className="py-3.5 pl-4 text-right">
-                    <div className="flex items-center justify-end gap-1.5">
+                    <div className="flex items-center justify-end gap-1.5 whitespace-nowrap">
                       {/* Phone Icon -> Contact Driver */}
                       <button
                         type="button"
                         onClick={() => setSelectedDriverUnit(unit)}
-                        className="p-2 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
                         title="Hubungi Pengemudi"
                       >
                         <Phone className="w-4 h-4" strokeWidth={1.5} />
@@ -150,7 +150,7 @@ export const FleetTablePanel: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setIsServiceModalOpen(true)}
-                        className="p-2 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
                         title="Jadwalkan Servis"
                       >
                         <Wrench className="w-4 h-4" strokeWidth={1.5} />
@@ -160,7 +160,7 @@ export const FleetTablePanel: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setSelectedTelematicsUnit(unit)}
-                        className="p-2 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg border border-surfaceLight-border text-textGray-secondary hover:text-[#4B8E55] hover:border-[#4B8E55] hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
                         title="Lihat Telematika"
                       >
                         <Eye className="w-4 h-4" strokeWidth={1.5} />
