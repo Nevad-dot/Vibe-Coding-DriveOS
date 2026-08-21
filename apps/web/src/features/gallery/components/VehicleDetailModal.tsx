@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { X, CheckCircle2, Sparkles, MapPin, Gauge, ShieldCheck, TrendingUp } from "lucide-react";
+import { X, CheckCircle2, Sparkles, MapPin, Gauge, ShieldCheck, TrendingUp, ArrowRight } from "lucide-react";
 
 interface VehicleDetailModalProps {
   isOpen: boolean;
@@ -17,9 +17,10 @@ interface VehicleDetailModalProps {
     image: string;
     brand?: string;
   } | null;
+  readOnly?: boolean;
 }
 
-export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, onClose, vehicle }) => {
+export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, onClose, vehicle, readOnly = false }) => {
   const [mounted, setMounted] = useState(false);
   const [isOrdered, setIsOrdered] = useState(false);
 
@@ -159,7 +160,7 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
 
                   <div className="flex flex-col gap-0.5 items-center justify-center min-w-0">
                     <div className="flex items-center gap-1 text-textGray-tertiary text-[9px] sm:text-[10px] font-semibold uppercase tracking-wide truncate">
-                      <TrendingUp className="w-3 h-3 text-brand shrink-0" />
+                      <TrendingUp className="w-3.5 h-3.5 text-brand shrink-0" />
                       <span>MINAT LEAD</span>
                     </div>
                     <span className="text-[12px] sm:text-[13.5px] font-bold text-brand truncate w-full">18 Hot Lead</span>
@@ -167,25 +168,43 @@ export const VehicleDetailModal: React.FC<VehicleDetailModalProps> = ({ isOpen, 
                 </div>
 
                 {/* Footer Action Buttons */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pt-2 border-t border-surfaceLight-border">
-                  <Link
-                    href="/sales"
-                    onClick={onClose}
-                    className="w-full sm:w-auto px-4 py-2.5 rounded-full border border-surfaceLight-border bg-surfaceLight-card text-textGray-display hover:bg-surfaceLight-pearl text-[12.5px] sm:text-[13px] font-semibold transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5 shadow-2xs whitespace-nowrap"
-                  >
-                    <TrendingUp className="w-4 h-4 text-[#4B8E55] shrink-0" />
-                    <span>Lihat Sales Pipeline</span>
-                  </Link>
+                {readOnly ? (
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-surfaceLight-border">
+                    <span className="text-[12px] text-textGray-muted font-medium inline-flex items-center gap-1.5 justify-center sm:justify-start">
+                      <Sparkles className="w-3.5 h-3.5 text-[#4B8E55]" />
+                      <span>Preview Spesifikasi DriveOS</span>
+                    </span>
 
-                  <button
-                    type="button"
-                    onClick={handleOrderUnit}
-                    className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-green-gradient-pill text-white text-[12.5px] sm:text-[13px] font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer inline-flex items-center justify-center gap-1.5 select-none whitespace-nowrap"
-                  >
-                    <Sparkles className="w-4 h-4 shrink-0" strokeWidth={1.5} />
-                    <span>Pesan Unit Ini</span>
-                  </button>
-                </div>
+                    <Link
+                      href="/signup"
+                      onClick={onClose}
+                      className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-green-gradient-pill text-white text-[12.5px] sm:text-[13px] font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer inline-flex items-center justify-center gap-1.5 select-none whitespace-nowrap"
+                    >
+                      <span>Mulai Coba DriveOS</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pt-2 border-t border-surfaceLight-border">
+                    <Link
+                      href="/sales"
+                      onClick={onClose}
+                      className="w-full sm:w-auto px-4 py-2.5 rounded-full border border-surfaceLight-border bg-surfaceLight-card text-textGray-display hover:bg-surfaceLight-pearl text-[12.5px] sm:text-[13px] font-semibold transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5 shadow-2xs whitespace-nowrap"
+                    >
+                      <TrendingUp className="w-4 h-4 text-[#4B8E55] shrink-0" />
+                      <span>Lihat Sales Pipeline</span>
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={handleOrderUnit}
+                      className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-green-gradient-pill text-white text-[12.5px] sm:text-[13px] font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer inline-flex items-center justify-center gap-1.5 select-none whitespace-nowrap"
+                    >
+                      <Sparkles className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                      <span>Pesan Unit Ini</span>
+                    </button>
+                  </div>
+                )}
               </>
             )}
           </motion.div>

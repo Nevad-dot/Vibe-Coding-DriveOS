@@ -185,12 +185,12 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
     }
     setShowLogoutModal(false);
     setIsProfileOpen(false);
-    router.push("/login");
+    router.push("/");
   };
 
   return (
     <>
-      <header className="h-[64px] bg-surfaceLight-card border-b border-surfaceLight-border px-4 md:px-8 flex items-center justify-between shrink-0 z-20 relative">
+      <header className="h-[64px] bg-surfaceLight-card border-b border-surfaceLight-border px-4 md:px-8 flex items-center justify-between shrink-0 z-30 sticky top-0">
         {/* Left Side: Mobile Hamburger + Dynamic Breadcrumb */}
         <div className="flex items-center gap-2 sm:gap-2.5 text-[12.5px] sm:text-[13px] font-normal text-textGray-tertiary min-w-0">
           {onToggleMobileMenu && (

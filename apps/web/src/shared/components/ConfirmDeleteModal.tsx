@@ -61,18 +61,18 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 16 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="relative w-full max-w-[460px] bg-surfaceLight-card border border-surfaceLight-border rounded-3xl shadow-2xl z-10 p-6 md:p-7 flex flex-col gap-5"
+            className="relative w-full max-w-[460px] bg-surfaceLight-card dark:bg-[#16181F] border border-surfaceLight-border dark:border-[#222F43] rounded-3xl shadow-2xl z-10 p-6 md:p-7 flex flex-col gap-5"
           >
             {/* Top Warning Badge Header */}
             <div className="flex items-start justify-between gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-600 flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-6 h-6" strokeWidth={1.75} />
               </div>
 
               <button
                 type="button"
                 onClick={onClose}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-textGray-tertiary hover:text-textGray-display hover:bg-surfaceLight-pearl transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-textGray-tertiary hover:text-textGray-display hover:bg-surfaceLight-pearl dark:hover:bg-[#222F43] transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" strokeWidth={1.5} />
               </button>
@@ -89,11 +89,11 @@ export const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-surfaceLight-border">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-surfaceLight-border dark:border-[#222F43]">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-5 py-2.5 rounded-full border border-surfaceLight-border bg-surfaceLight-card text-textGray-display hover:bg-surfaceLight-pearl text-[13px] font-semibold transition-colors cursor-pointer"
+                className="px-5 py-2.5 rounded-full border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card dark:bg-[#16181F] text-textGray-display hover:bg-surfaceLight-pearl dark:hover:bg-[#222F43] text-[13px] font-semibold transition-colors cursor-pointer"
               >
                 Batal
               </button>

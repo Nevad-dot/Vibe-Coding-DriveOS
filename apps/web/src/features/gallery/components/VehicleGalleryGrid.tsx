@@ -177,26 +177,30 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
         description="Tindakan ini akan menghapus data unit kendaraan dari database DriveOS secara permanen."
       />
 
-      {/* Floating Undo Delete Toast Notification */}
+      {/* Floating Undo Delete Toast Notification - Positioned Bottom-Right */}
       <AnimatePresence>
         {lastDeletedVehicle && (
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] px-5 py-3 rounded-2xl bg-surfaceLight-card border border-surfaceLight-border shadow-2xl flex items-center gap-4 text-[13px]"
+            transition={{ type: "spring", stiffness: 450, damping: 30 }}
+            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999] w-[calc(100%-2rem)] sm:w-auto max-w-[calc(100%-2rem)] sm:max-w-md px-4 py-3 rounded-2xl bg-surfaceLight-card dark:bg-[#16181F] border border-surfaceLight-border dark:border-[#222F43] shadow-2xl flex items-center justify-between gap-3 text-[13px]"
           >
-            <span className="text-textGray-display font-medium">
-              Unit <strong className="font-bold">{lastDeletedVehicle.name}</strong> berhasil dihapus.
-            </span>
+            <div className="flex items-center gap-2 min-w-0 flex-1">
+              <span className="w-2 h-2 rounded-full bg-[#4B8E55] shrink-0 animate-pulse" />
+              <span className="text-textGray-display font-medium text-[12.5px] sm:text-[13px] truncate">
+                Unit <strong className="font-bold text-textGray-display">{lastDeletedVehicle.name}</strong> dihapus.
+              </span>
+            </div>
 
             <button
               type="button"
               onClick={handleUndoDelete}
-              className="px-4 py-1.5 rounded-full bg-green-gradient-pill text-white font-semibold text-[12.5px] inline-flex items-center gap-1.5 shadow-sm hover:opacity-95 cursor-pointer transition-opacity"
+              className="px-3.5 py-1.5 rounded-full bg-green-gradient-pill text-white font-semibold text-[12px] inline-flex items-center justify-center gap-1.5 shadow-xs hover:opacity-95 cursor-pointer shrink-0 whitespace-nowrap"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span>Batal Hapus (Undo)</span>
+              <span>Batal Hapus</span>
             </button>
           </motion.div>
         )}

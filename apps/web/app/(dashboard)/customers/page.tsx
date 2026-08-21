@@ -52,6 +52,10 @@ export default function CustomersPage() {
     setCampaigns((prev) => prev.filter((c) => c.id !== id));
   };
 
+  const handleRestoreCampaign = (restoredItem: CampaignItem) => {
+    setCampaigns((prev) => [restoredItem, ...prev]);
+  };
+
   return (
     <div className="w-full max-w-full flex flex-col min-h-screen">
       {/* Top Header Banner */}
@@ -71,6 +75,7 @@ export default function CustomersPage() {
           <CampaignsHistoryPanel
             campaigns={campaigns}
             onDeleteCampaign={handleDeleteCampaign}
+            onRestoreCampaign={handleRestoreCampaign}
           />
 
           {/* 3. Middle Section: Age Segment Revenue Distribution & Top Customers */}

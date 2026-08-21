@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Sign in to DriveOS",
@@ -30,11 +31,11 @@ export default function AuthLayout({
       {/* Left Pane - Command Center Hero (Visible on Desktop lg:flex, hidden on Mobile) */}
       <div className="hidden lg:flex w-1/2 bg-surfaceLight-canvas flex-col justify-between p-12 lg:p-16 h-screen sticky top-0 border-r border-surfaceLight-border dark:border-[#222F43] z-10 relative">
         {/* Top: Brand Logo */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        <Link href="/" className="flex items-center gap-1.5 shrink-0 hover:opacity-80 transition-opacity cursor-pointer">
           <span className="text-[24px] font-display font-bold tracking-tight text-textGray-display select-none">
             Drive<span className="text-[#4B8E55]">OS</span>
           </span>
-        </div>
+        </Link>
 
         {/* Center: Hero Message */}
         <div className="my-auto py-0">

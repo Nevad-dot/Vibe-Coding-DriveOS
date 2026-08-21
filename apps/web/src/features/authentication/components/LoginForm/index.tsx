@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 import { Button, Input } from "@/shared/ui/components";
 
 export const LoginForm: React.FC = () => {
@@ -53,6 +54,16 @@ export const LoginForm: React.FC = () => {
       transition={{ type: "spring", stiffness: 360, damping: 26 }}
       className="w-full max-w-[400px] mx-auto px-4 py-4 flex flex-col justify-center my-auto"
     >
+      {/* Back to Landing Page Link */}
+      <div className="mb-5 flex justify-center lg:justify-start">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-[12.5px] font-semibold text-textGray-tertiary hover:text-textGray-display transition-all px-3.5 py-1.5 rounded-full bg-surfaceLight-card dark:bg-[#16181F] border border-surfaceLight-border dark:border-[#222F43] shadow-2xs hover:border-[#4B8E55]/50 group"
+        >
+          <ArrowLeft className="w-3.5 h-3.5 text-[#4B8E55] group-hover:-translate-x-0.5 transition-transform" />
+          <span>Kembali ke Landing Page</span>
+        </Link>
+      </div>
       {/* Header Info */}
       <div className="mb-6 text-center lg:text-left">
         <span className="text-[13px] font-sans font-medium text-textGray-secondary block mb-0.5">
