@@ -456,10 +456,10 @@ export const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-[32px] sm:text-[48px] md:text-[54px] lg:text-[60px] font-display tracking-tight leading-tight max-w-4xl mx-auto"
+            className="text-[23px] sm:text-[42px] md:text-[52px] lg:text-[58px] font-display tracking-tight leading-[1.28] sm:leading-[1.18] max-w-[340px] sm:max-w-4xl mx-auto px-2 sm:px-0"
           >
-            <span className="font-bold text-textGray-display">Kelola bisnis otomotif Anda dalam </span>
-            <span className="font-extrabold text-green-gradient block sm:inline">satu sistem cerdas.</span>
+            <span className="font-bold text-textGray-display">Kelola bisnis otomotif Anda </span>
+            <span className="font-extrabold text-green-gradient block sm:inline">dalam satu sistem cerdas.</span>
           </motion.h1>
 
           {/* Supporting Copy */}
@@ -481,14 +481,15 @@ export const LandingPage: React.FC = () => {
           >
             <Link
               href="/signup"
-              className="w-full sm:w-auto px-7 py-3 text-[14px] font-semibold text-white bg-green-gradient-pill rounded-full shadow-xs hover:opacity-95 transition-all flex items-center justify-center gap-2 border border-white/20"
+              className="w-auto px-7 py-3 text-[14px] font-semibold text-white bg-green-gradient-pill rounded-full shadow-xs hover:opacity-95 transition-all flex items-center justify-center gap-2 border border-white/20 shrink-0"
             >
               <span>Mulai Sekarang</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
             <a
               href="#product"
-              className="w-full sm:w-auto px-7 py-3 text-[14px] font-medium text-textGray-primary hover:text-textGray-display border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card dark:bg-[#16181F] rounded-full hover:bg-surfaceLight-pearl dark:hover:bg-[#1E2028] transition-all flex items-center justify-center gap-2"
+              onClick={(e) => handleNavClick(e, "product")}
+              className="w-auto px-7 py-3 text-[14px] font-medium text-textGray-primary hover:text-textGray-display border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-card dark:bg-[#16181F] rounded-full hover:bg-surfaceLight-pearl dark:hover:bg-[#1E2028] transition-all flex items-center justify-center gap-2 shrink-0"
             >
               <span>Jelajahi Platform</span>
               <ChevronDown className="w-4 h-4 text-textGray-muted" />
@@ -1388,14 +1389,14 @@ export const LandingPage: React.FC = () => {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5">
             <Link
               href="/signup"
-              className="w-full sm:w-auto px-8 py-3.5 text-[14.5px] font-semibold text-white bg-green-gradient-pill rounded-full shadow-xs hover:opacity-95 transition-all flex items-center justify-center gap-2 border border-white/20"
+              className="w-auto px-8 py-3.5 text-[14.5px] font-semibold text-white bg-green-gradient-pill rounded-full shadow-xs hover:opacity-95 transition-all flex items-center justify-center gap-2 border border-white/20 shrink-0"
             >
               <span>Mulai Sekarang</span>
               <ArrowRight className="w-4.5 h-4.5" />
             </Link>
             <Link
               href="/login"
-              className="w-full sm:w-auto px-8 py-3.5 text-[14.5px] font-medium text-textGray-primary hover:text-textGray-display border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-canvas dark:bg-[#0E1015] rounded-full hover:bg-surfaceLight-pearl dark:hover:bg-[#16181F] transition-all"
+              className="w-auto px-8 py-3.5 text-[14.5px] font-medium text-textGray-primary hover:text-textGray-display border border-surfaceLight-border dark:border-[#222F43] bg-surfaceLight-canvas dark:bg-[#0E1015] rounded-full hover:bg-surfaceLight-pearl dark:hover:bg-[#16181F] transition-all shrink-0"
             >
               Log in
             </Link>

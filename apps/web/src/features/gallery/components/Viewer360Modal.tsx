@@ -203,15 +203,15 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
               </div>
             </div>
 
-            {/* Controls Toolbar */}
-            <div className="flex flex-wrap items-center justify-center gap-2 py-0.5">
+            {/* Controls Toolbar - Responsive 3-Column Mobile Row */}
+            <div className="grid grid-cols-3 sm:flex sm:items-center sm:justify-center gap-1.5 sm:gap-2 w-full py-0.5">
               {/* Rotate 90° */}
               <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.94 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={handleRotate}
-                className="px-3.5 py-1.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[12px] font-semibold hover:border-[#4B8E55] transition-colors cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shadow-2xs"
+                className="w-full sm:w-auto px-2 sm:px-3.5 py-1.5 rounded-full bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display text-[11px] sm:text-[12px] font-semibold hover:border-[#4B8E55] transition-colors cursor-pointer inline-flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap shadow-2xs"
               >
                 <RotateCw className="w-3.5 h-3.5 shrink-0 text-[#4B8E55]" />
                 <span>Putar 90°</span>
@@ -219,34 +219,36 @@ export const Viewer360Modal: React.FC<Viewer360ModalProps> = ({
 
               {/* Headlights Toggle */}
               <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.94 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={() => setHeadlightsOn(!headlightsOn)}
-                className={`px-3.5 py-1.5 rounded-full text-[12px] font-semibold transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shadow-2xs ${
+                className={`w-full sm:w-auto px-2 sm:px-3.5 py-1.5 rounded-full text-[11px] sm:text-[12px] font-semibold transition-all cursor-pointer inline-flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap shadow-2xs ${
                   headlightsOn
                     ? "bg-[#4B8E55] text-white border border-[#4B8E55]"
                     : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-[#4B8E55]"
                 }`}
               >
                 <Sun className={`w-3.5 h-3.5 shrink-0 ${headlightsOn ? "text-white animate-spin" : "text-[#4B8E55]"}`} />
-                <span>{headlightsOn ? "Lampu Nyala" : "Nyalakan Lampu"}</span>
+                <span className="hidden sm:inline">{headlightsOn ? "Lampu Nyala" : "Nyalakan Lampu"}</span>
+                <span className="sm:hidden">{headlightsOn ? "Nyala" : "Lampu"}</span>
               </motion.button>
 
               {/* Doors Toggle */}
               <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.94 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={() => setDoorsOpen(!doorsOpen)}
-                className={`px-3.5 py-1.5 rounded-full text-[12px] font-semibold transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap shadow-2xs ${
+                className={`w-full sm:w-auto px-2 sm:px-3.5 py-1.5 rounded-full text-[11px] sm:text-[12px] font-semibold transition-all cursor-pointer inline-flex items-center justify-center gap-1 sm:gap-1.5 whitespace-nowrap shadow-2xs ${
                   doorsOpen
                     ? "bg-[#4B8E55] text-white border border-[#4B8E55]"
                     : "bg-surfaceLight-pearl border border-surfaceLight-border text-textGray-display hover:border-[#4B8E55]"
                 }`}
               >
                 <DoorOpen className="w-3.5 h-3.5 shrink-0" />
-                <span>{doorsOpen ? "Tutup Pintu" : "Buka Pintu"}</span>
+                <span className="hidden sm:inline">{doorsOpen ? "Tutup Pintu" : "Buka Pintu"}</span>
+                <span className="sm:hidden">{doorsOpen ? "Tutup" : "Pintu"}</span>
               </motion.button>
             </div>
 

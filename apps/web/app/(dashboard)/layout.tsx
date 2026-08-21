@@ -49,8 +49,8 @@ export default function DashboardLayout({
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden z-10 relative max-w-full">
         <Header onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
 
-        {/* Scrollable Content Viewport with strict overflow-x-hidden */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-surfaceLight-pearl/80 w-full max-w-full">
+        {/* Scrollable Content Viewport with strict overflow-x-hidden & mobile browser bar clearance */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-surfaceLight-pearl/80 w-full max-w-full pb-28 sm:pb-8">
           {children}
         </main>
       </div>

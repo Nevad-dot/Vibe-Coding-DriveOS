@@ -13,7 +13,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen w-full bg-surfaceLight-canvas text-textGray-primary overflow-x-hidden font-sans relative">
+    <div className="flex flex-col lg:flex-row h-screen min-h-screen w-full bg-surfaceLight-canvas text-textGray-primary overflow-hidden font-sans relative">
       {/* High-Performance Radial Gradient Background Accents (0% GPU Overhead) */}
       <div
         className="absolute top-0 left-0 w-[550px] h-[550px] pointer-events-none z-0 opacity-80"
@@ -70,8 +70,8 @@ export default function AuthLayout({
         </div>
       </div>
 
-      {/* Right Pane - Form Workspace (Full Screen Mobile App Device Center Layout) */}
-      <div className="w-full lg:w-1/2 bg-surfaceLight-pearl dark:bg-[#0E1015] flex flex-col justify-center items-center min-h-screen py-8 px-4 z-10 relative">
+      {/* Right Pane - Form Workspace (Centered Vertically and Horizontally) */}
+      <div className="w-full lg:w-1/2 bg-surfaceLight-pearl dark:bg-[#0E1015] flex flex-col justify-center items-center h-full min-h-screen px-4 py-4 z-10 relative overflow-y-auto sm:overflow-hidden">
         {children}
       </div>
     </div>

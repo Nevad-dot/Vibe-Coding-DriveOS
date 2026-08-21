@@ -66,7 +66,7 @@ export default function CustomersPage() {
       </div>
 
       {/* Main Customers Canvas */}
-      <div className="bg-surfaceLight-pearl px-[20px] md:px-8 py-5 md:py-8 w-full min-h-[calc(100vh-200px)]">
+      <div className="bg-surfaceLight-pearl px-[20px] md:px-8 pt-5 pb-32 md:pt-8 md:pb-12 w-full min-h-[calc(100vh-200px)]">
         <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
           {/* 1. CRM Metrics Grid */}
           <CustomersMetricsGrid />

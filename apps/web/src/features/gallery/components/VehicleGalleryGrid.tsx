@@ -177,7 +177,7 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
         description="Tindakan ini akan menghapus data unit kendaraan dari database DriveOS secara permanen."
       />
 
-      {/* Floating Undo Delete Toast Notification - Positioned Bottom-Right */}
+      {/* Floating Undo Delete Toast Notification - Positioned Bottom-Right & Mobile Browser Bar Clear */}
       <AnimatePresence>
         {lastDeletedVehicle && (
           <motion.div
@@ -185,7 +185,7 @@ export const VehicleGalleryGrid: React.FC<VehicleGalleryGridProps> = ({ vehicles
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 450, damping: 30 }}
-            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999] w-[calc(100%-2rem)] sm:w-auto max-w-[calc(100%-2rem)] sm:max-w-md px-4 py-3 rounded-2xl bg-surfaceLight-card dark:bg-[#16181F] border border-surfaceLight-border dark:border-[#222F43] shadow-2xl flex items-center justify-between gap-3 text-[13px]"
+            className="fixed bottom-24 right-4 sm:bottom-6 sm:right-6 z-[999] w-[calc(100%-2rem)] sm:w-auto max-w-[calc(100%-2rem)] sm:max-w-md px-4 py-3 rounded-2xl bg-surfaceLight-card dark:bg-[#16181F] border border-surfaceLight-border dark:border-[#222F43] shadow-2xl flex items-center justify-between gap-3 text-[13px]"
           >
             <div className="flex items-center gap-2 min-w-0 flex-1">
               <span className="w-2 h-2 rounded-full bg-[#4B8E55] shrink-0 animate-pulse" />
